@@ -1,35 +1,38 @@
 #ifndef PATTERN_H
 # define PATTERN_H
 
-# include "tool.h"
+# include "tools.h"
 
 class	Pattern
 {
-	enum Type
-	{
-		fruit,
-		wall,
-		body
-	};
-
-	Point	_Position;
-	Point	_Size
-	Type 	_Type;
-	
-	Pattern();
-
 	public:
+		enum Type
+		{
+			fruit,
+			wall,
+			body
+		};
+
 		Pattern(Point position, Type type);
 		Pattern(Point position, Point size, Type type);
-		Pattern(Pattern&);
+		Pattern(const Pattern&);
 
-		Pattern		operator=(Pattern&);
-		virtual 	~Pattern();
+		Pattern		operator=(const Pattern&);
+		virtual		~Pattern();
 
 		Point		get_Position() const;
 		Point		get_Size() const;
 		Type		get_Type() const;
+		bool		get_Visible() const;
 		void		set_Position(Point position);
+
+	private:
+		Point		_Position;
+		Point		_Size;
+		Type 		_Type;
+		bool		_visible;
+		
+		Pattern();
 
 };
 

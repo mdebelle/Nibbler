@@ -3,9 +3,10 @@
 Snake::Snake(int x, int y) :
 	_Direction(LEFT)
 {
-	_Body.push_back(Pattern(Point(x, y), body));
-	_Body.push_back(Pattern(Point(x + 1, y), body));
-	_Body.push_back(Pattern(Point(x + 2, y), body));
+	_Body.push_back(Pattern(Point(x, y), Pattern::body));
+	_Body.push_back(Pattern(Point(x + 1, y), Pattern::body));
+	_Body.push_back(Pattern(Point(x + 2, y), Pattern::body));
+	_Body.push_back(Pattern(Point(x + 3, y), Pattern::body));
 	return ;
 }
 
@@ -14,14 +15,14 @@ Snake::~Snake()
 	return ;
 }
 
-void Snake::move()
+void	Snake::move()
 {
 	grow();
 	slim();
 	return ;
 }
 
-void Snake::moveTo(Direction dir)
+void	Snake::moveTo(Direction dir)
 {
 	if (dir + _Direction != 0)
 		_Direction = dir;
@@ -29,21 +30,22 @@ void Snake::moveTo(Direction dir)
 	return ;
 }
 
-void Snake::grow()
+void	Snake::grow()
 {
-	Point pos;
+	Point	pos(
+		_Body.front().get_Position().x,
+		_Body.front().get_Position().y
+	);
 
-	pos.x = _Body.front().get_Position().x;
-	pos.y = _Body.front().get_Position().y;
-	if (_direction == LEFT)
+	if (_Direction == LEFT)
 		pos.x -= 1;
-	else if (_direction == RIGHT)
+	else if (_Direction == RIGHT)
 		pos.x += 1;
-	else if (_direction == UP)
+	else if (_Direction == UP)
 		pos.y -= 1;
-	else if (_direction == DOWN)
+	else if (_Direction == DOWN)
 		pos.y += 1;
-	_Body.insert(_Body.begin(), Pattern(pos, body));
+	_Body.insert(_Body.begin(), Pattern(pos, Pattern::body));
 	return ;
 }
 

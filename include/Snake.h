@@ -6,29 +6,32 @@
 
 class Snake
 {
-	enum Direction
-	{
-		UP = -2,
-		LEFT = -1,
-		RIGHT = 1,
-		DOWN = 2
-	};
+	private:
+		enum Direction
+		{
+			UP = -2,
+			LEFT = -1,
+			RIGHT = 1,
+			DOWN = 2
+		};
 
-	Snake(Snake&);
-	Snake	operator=(Snake&);
+		Direction				_Direction;
+		std::vector<Pattern>	_Body;
+		int						_Alive;
 
-	Direction				_Direction;
-	std::vector<Pattern>	_Body;
+		Snake();
+		Snake(const Snake&);
+		Snake					operator=(const Snake&);
 
-public:
-	Snake(int x, int y);
-	~Snake();
 
-	void	move();
-	void	moveTo(Direction dir);
+	public:
+		Snake(int x, int y);
+		~Snake();
 
-	void	grow();
-	void	slim();
+		void					move();
+		void					moveTo(Direction dir);
+		void					grow();
+		void					slim();
 };
 
 #endif
