@@ -4,7 +4,10 @@ FLAGS	= g++ -Wall -Werror -Wextra
 
 LIBS	= -I include
 
+LIBS2	= -lncurses
+
 SRC		= main.cpp \
+		Game.cpp \
 		Area.cpp \
 		Pattern.cpp \
 		Snake.cpp \
@@ -14,12 +17,14 @@ OBJ = $(SRC:%.cpp=obj/%.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	mkdir -p obj
-	$(FLAGS) -o $@ $^ $(LIBS)
+$(NAME): obj $(OBJ)
+	$(FLAGS) -o $@ $(OBJ) $(LIBS2)
 
 obj/%.o: src/%.cpp
 	$(FLAGS) $(LIBS) -o $@ -c $<
+
+obj:
+	mkdir -p obj
 
 clean:
 	rm -rf $(OBJ)

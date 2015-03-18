@@ -25,12 +25,13 @@ class	Pattern
 		Type		get_Type() const;
 		bool		get_Visible() const;
 		void		set_Position(Point position);
+		void		set_Visible(bool);
 
 	private:
 		Point		_Position;
 		Point		_Size;
 		Type 		_Type;
-		bool		_visible;
+		bool		_Visible;
 		
 		Pattern();
 

@@ -54,7 +54,7 @@ Pattern::Type	Pattern::get_Type(void) const
 
 bool			Pattern::get_Visible(void) const
 {
-	return (_Type);
+	return (_Visible);
 }
 
 void			Pattern::set_Position(Point position)

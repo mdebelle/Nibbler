@@ -4,7 +4,7 @@
 class IDisplay
 {
 	public:
-		enum NibblerKey
+		enum Key
 		{
 			UP,
 			LEFT,
@@ -15,11 +15,11 @@ class IDisplay
 			ONE,	// NCurses
 			TWO,	// OpenGL
 			THREE	// SFML
-		}
+		};
 
-		virtual void		init(int width, int height) = 0;
-		virtual void		refresh(Game& game);
-		virtual NibblerKey	getEvent();
+		virtual void	init(int width, int height) = 0;
+		virtual void	refresh();
+		virtual Key		getEvent();
 };
 
 #endif

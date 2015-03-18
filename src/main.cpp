@@ -1,22 +1,20 @@
+#include "Game.h"
+
+void initGame(){}
+
 int		main(void)
 {
 
-
-	initGame();
-	Pattern		Fruit(Point(0,0), Point(1,1), fruit);
+	Game game;
 
 	while(42)
 	{
 
-		if (t % x == 0 && fruit.get_visible == false)
-			popfruit();
-
-		lisenEvent(&Game);
-		updateGame();
-		displayGame();
+		game.listen();
+		game.update();
+		game.display();
 
 	}
-
 
 	return (0);
 
