@@ -18,6 +18,7 @@ class Area
 
 		int			get_Width() const;
 		int			get_Height() const;
+		int			get_Area() const;
 		Point		get_Size() const;
 };
 

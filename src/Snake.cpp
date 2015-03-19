@@ -54,3 +54,21 @@ void	Snake::slim()
 	_Body.pop_back();
 	return ;
 }
+
+Point	Snake::getPosition() const
+{
+	return _Body.front().get_Position();
+}
+
+bool	Snake::isOnBody(Point point) const
+{
+	for (const Pattern& body_part : _Body)
+		if (body_part.get_Position() == point)
+			return 1;
+	return 0;
+}
+
+bool	Snake::eatsItself() const
+{
+	return isOnBody(_Body.front().get_Position());
+}

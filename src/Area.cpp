@@ -26,3 +26,7 @@ Point		Area::get_Size() const
 	return _Size;
 }
 
+int			Area::get_Area() const
+{
+	return _Size.x * _Size.y;
+}

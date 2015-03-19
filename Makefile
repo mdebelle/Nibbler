@@ -1,27 +1,28 @@
-NAME	= Nibbler
+NAME		= Nibbler
 
-FLAGS	= g++ -Wall -Werror -Wextra
+CXX		= g++
+CXXFLAGS	= -Wall -Werror -Wextra -std=c++11 -g
 
-LIBS	= -I include
-
-LIBS2	= -lncurses
+INC		= -I include
+LIB		= -ldl
 
 SRC		= main.cpp \
-		Game.cpp \
-		Area.cpp \
-		Pattern.cpp \
-		Snake.cpp \
-		tools.cpp
+		  Game.cpp \
+		  Area.cpp \
+		  Pattern.cpp \
+		  Snake.cpp \
+		  DisplayFactory.cpp \
+		  tools.cpp
 
-OBJ = $(SRC:%.cpp=obj/%.o)
+OBJ		= $(SRC:%.cpp=obj/%.o)
 
 all: $(NAME)
 
 $(NAME): obj $(OBJ)
-	$(FLAGS) -o $@ $(OBJ) $(LIBS2)
+	$(CXX) $(CXXFLAGS) -o $@ $(OBJ) $(LIB)
 
 obj/%.o: src/%.cpp
-	$(FLAGS) $(LIBS) -o $@ -c $<
+	$(CXX) $(CXXFLAGS) $(INC) -o $@ -c $<
 
 obj:
 	mkdir -p obj

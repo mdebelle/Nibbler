@@ -6,6 +6,7 @@ class IDisplay
 	public:
 		enum Key
 		{
+			NONE,	// Generic one without any effect
 			UP,
 			LEFT,
 			RIGHT,
@@ -18,8 +19,9 @@ class IDisplay
 		};
 
 		virtual void	init(int width, int height) = 0;
-		virtual void	refresh();
-		virtual Key		getEvent();
+		virtual void	refresh() = 0;
+		virtual Key		getEvent() = 0;
+		virtual void	close() = 0;
 };
 
 #endif

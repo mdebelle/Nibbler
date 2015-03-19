@@ -15,4 +15,6 @@ class Point
 		int		y;
 };
 
+bool	operator==(Point, Point);
+
 #endif
