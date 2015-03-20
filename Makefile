@@ -55,4 +55,6 @@ deps:
 	make -C lib/ncurses deps
 	make -C lib/opengl deps
 
-re: fclean all libs deps
+re: fclean all
+
+.PHONY: fclean all clean libs deps

@@ -31,3 +31,5 @@ deps:
 	brew install sfml
 
 re: fclean all
+
+.PHONY: fclean clean all deps

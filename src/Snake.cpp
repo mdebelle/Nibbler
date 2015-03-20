@@ -6,7 +6,6 @@ Snake::Snake(int x, int y) :
 	_Body.push_back(Pattern(Point(x, y), Pattern::body));
 	_Body.push_back(Pattern(Point(x + 1, y), Pattern::body));
 	_Body.push_back(Pattern(Point(x + 2, y), Pattern::body));
-	_Body.push_back(Pattern(Point(x + 3, y), Pattern::body));
 	return ;
 }
 
@@ -32,10 +31,7 @@ void	Snake::moveTo(Direction dir)
 
 void	Snake::grow()
 {
-	Point	pos(
-		_Body.front().get_Position().x,
-		_Body.front().get_Position().y
-	);
+	Point	pos(_Body.front().get_Position());
 
 	if (_Direction == LEFT)
 		pos.x -= 1;
@@ -60,9 +56,13 @@ Point	Snake::getPosition() const
 	return _Body.front().get_Position();
 }
 
+const std::vector<Pattern>& Snake::getBody() const
+{
+	return _Body;
+}
+
 bool	Snake::isOnBody(Point point) const
 {
-	(void)point;
 	for (const Pattern& body_part : _Body)
 		if (body_part.get_Position() == point)
 			return 1;
@@ -71,5 +71,9 @@ bool	Snake::isOnBody(Point point) const
 
 bool	Snake::eatsItself() const
 {
-	return isOnBody(_Body.front().get_Position());
+	std::vector<Pattern>::const_iterator it = _Body.begin();
+	for (it++; it != _Body.end(); it++)
+		if (it->get_Position() == _Body.front().get_Position())
+			return 1;
+	return 0;
 }

@@ -7,16 +7,16 @@ Point::Point(int px, int py)
 	return ;
 }
 
-Point::Point(const Point& other)
+Point::Point(const Point& other) : x(other.x), y(other.y)
 {
-	x = other.x;
-	y = other.y;
 	return ;
 }
 
-Point Point::operator=(const Point& other)
+Point &Point::operator=(const Point& other)
 {
-	return (Point(other));
+	x = other.x;
+	y = other.y;
+	return *this;
 }
 
 Point::~Point()

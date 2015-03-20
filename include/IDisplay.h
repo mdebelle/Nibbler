@@ -1,6 +1,8 @@
 #ifndef IDISPLAY_H
 # define IDISPLAY_H
 
+#include "Pattern.h"
+
 class IDisplay
 {
 	public:
@@ -19,10 +21,20 @@ class IDisplay
 		};
 
 		virtual ~IDisplay() {};
+
 		virtual void	init(int width, int height) = 0;
-		virtual void	refresh() = 0;
 		virtual Key		getEvent() = 0;
 		virtual void	close() = 0;
+
+		virtual void	drawField() = 0;
+		virtual void	drawPattern(
+			int posX,
+			int posY,
+			int sizeX,
+			int SizeY,
+			Pattern::Type type
+		) = 0;
+		virtual void	display() = 0;
 };
 
 #endif

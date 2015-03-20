@@ -10,7 +10,15 @@ class GlDisplay : public IDisplay
 		~GlDisplay();
 
 		void			init(int width, int height) override;
-		void			refresh() override;
+		void			drawField() override;
+		void	drawPattern(
+			int posX,
+			int posY,
+			int sizeX,
+			int SizeY,
+			Pattern::Type type
+		) override;
+		void			display() override;
 		IDisplay::Key	getEvent() override;
 		void			close() override;
 };

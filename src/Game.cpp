@@ -1,40 +1,41 @@
 #include "Game.h"
 #include <cstdlib>
 #include <ctime>
+#include <unistd.h>
 #include "DisplayFactory.h"
 
 Game::Game(int x, int y) :
 	_Fruit(Point(0, 0), Pattern::fruit),
 	_Snake((x / 2) - 1, y / 2),
+	_NextMove(Snake::LAST),
 	_Area(Point(x, y)),
 	_Display(nullptr),
 	_IsRunning(false)
 {
 	DisplayFactory::load(_Display, 1);
 	_Display->init(x, y);
+	std::srand(std::time(nullptr));
 	popFruit();
-	std::srand(std::time(0));
 	return ;
 }
 
 Game::~Game()
 {
+	_Display->close();
 	return ;
 }
 
 void	Game::launch()
 {
-	_Display->init(_Area.get_Width(), _Area.get_Height());
 	_IsRunning = true;
 
 	while (_IsRunning)
 	{
 		display();
+		usleep(500000);
 		listen();
 		update();
 	}
-
-	_Display->close();
 }
 
 
@@ -89,7 +90,6 @@ void	Game::KSpace()
 			key = IDisplay::SPACE;
 		}
 	}
-
 }
 
 void	Game::KOne()
@@ -117,7 +117,7 @@ void	Game::update()
 	if (pos.x < 0 || pos.y < 0 || pos.x > _Area.get_Width() ||
 		pos.y > _Area.get_Height() || _Snake.eatsItself())
 		_IsRunning = false;
-	else if (_Snake.getPosition() == _Fruit.get_Position())
+	if (_Snake.getPosition() == _Fruit.get_Position())
 	{
 		_Snake.grow();
 		popFruit();
@@ -131,19 +131,36 @@ void	Game::update()
 
 void	Game::display()
 {
-	_Display->refresh();
+	const std::vector<Pattern>& snake = _Snake.getBody();
+	_Display->drawField();
+	for (const Pattern& part : snake)
+	{
+		_Display->drawPattern(
+			part.get_Position().x,
+			part.get_Position().y,
+			part.get_Size().x,
+			part.get_Size().y,
+			part.get_Type()
+		);
+	}
+	_Display->drawPattern(
+		_Fruit.get_Position().x,
+		_Fruit.get_Position().y,
+		_Fruit.get_Size().x,
+		_Fruit.get_Size().y,
+		_Fruit.get_Type()
+	);
+	_Display->display();
 }
 
 void	Game::popFruit()
 {
-	int		area;
 	Point	pos(0, 0);
 
 	do
 	{
-		area = std::rand() % _Area.get_Area();
-		pos.y = area / _Area.get_Width();
-		pos.x = area % _Area.get_Width();
+		pos.y = std::rand() % _Area.get_Height();
+		pos.x = std::rand() % _Area.get_Width();
 
 	} while (_Snake.isOnBody(pos));
 	_Fruit.set_Position(pos);

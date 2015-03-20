@@ -21,7 +21,7 @@ public:
 private:
 	Game();
 	Game(const Game&);
-	Game operator=(const Game &);
+	Game& operator=(const Game &);
 
 	void				popFruit();
 	Pattern				_Fruit;

@@ -27,6 +27,7 @@ class Snake
 		Point					getPosition() const;
 		bool					isOnBody(Point) const;
 		bool					eatsItself() const;
+		const std::vector<Pattern>& getBody() const;
 
 	private:
 		Direction				_Direction;
@@ -35,7 +36,7 @@ class Snake
 
 		Snake();
 		Snake(const Snake&);
-		Snake					operator=(const Snake&);
+		Snake&					operator=(const Snake&);
 };
 
 #endif

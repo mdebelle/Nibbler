@@ -10,7 +10,7 @@ class Area
 
 		Area();
 		Area(const Area&);
-		Area		operator=(const Area&);
+		Area&		operator=(const Area&);
 
 	public:
 		Area(Point size);

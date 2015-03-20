@@ -16,7 +16,21 @@ void	SfDisplay::init(int width, int height)
 (void)height;
 }
 
-void	SfDisplay::refresh()
+void	SfDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::Type type)
+{
+(void)posX;
+(void)posY;
+(void)sizeX;
+(void)sizeY;
+(void)type;
+}
+
+void	SfDisplay::drawField()
+{
+
+}
+
+void	SfDisplay::display()
 {
 
 }

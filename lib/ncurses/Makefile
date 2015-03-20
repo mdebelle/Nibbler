@@ -30,3 +30,5 @@ deps:
 	@echo "Ncurses already installed on dumps"
 
 re: fclean all
+
+.PHONY: fclean clean all deps

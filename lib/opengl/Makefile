@@ -30,3 +30,5 @@ deps:
 	@echo "Please add code to install OpenGl if necessary."
 
 re: fclean all
+
+.PHONY: fclean clean all deps

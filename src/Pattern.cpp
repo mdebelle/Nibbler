@@ -18,9 +18,14 @@ Pattern::Pattern(const Pattern &other) :
 	return ;
 }
 
-Pattern			Pattern::operator=(const Pattern &other) 
+Pattern&		Pattern::operator=(const Pattern &other) 
 {
-	return (Pattern(other));
+	_Position = other._Position;
+	_Size = other._Size;
+	_Type = other._Type;
+	_Visible = other._Visible;
+	
+	return *this;
 }
 
 Pattern::Pattern(Point position, Point size, Type type) :

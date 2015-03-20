@@ -17,7 +17,7 @@ class	Pattern
 		Pattern(Point position, Point size, Type type);
 		Pattern(const Pattern&);
 
-		Pattern		operator=(const Pattern&);
+		Pattern&	operator=(const Pattern&);
 		virtual		~Pattern();
 
 		Point		get_Position() const;

@@ -16,7 +16,21 @@ void	GlDisplay::init(int width, int height)
 (void)height;
 }
 
-void	GlDisplay::refresh()
+void	GlDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::Type type)
+{
+(void)posX;
+(void)posY;
+(void)sizeX;
+(void)sizeY;
+(void)type;
+}
+
+void	GlDisplay::drawField()
+{
+
+}
+
+void	GlDisplay::display()
 {
 
 }
