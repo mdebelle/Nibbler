@@ -62,6 +62,7 @@ Point	Snake::getPosition() const
 
 bool	Snake::isOnBody(Point point) const
 {
+	(void)point;
 	for (const Pattern& body_part : _Body)
 		if (body_part.get_Position() == point)
 			return 1;

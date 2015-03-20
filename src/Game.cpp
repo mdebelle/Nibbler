@@ -27,7 +27,7 @@ void	Game::launch()
 	_Display->init(_Area.get_Width(), _Area.get_Height());
 	_IsRunning = true;
 
-	while(_IsRunning)
+	while (_IsRunning)
 	{
 		display();
 		listen();

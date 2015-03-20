@@ -18,6 +18,7 @@ class IDisplay
 			THREE	// SFML
 		};
 
+		virtual ~IDisplay() {};
 		virtual void	init(int width, int height) = 0;
 		virtual void	refresh() = 0;
 		virtual Key		getEvent() = 0;
