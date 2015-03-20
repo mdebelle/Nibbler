@@ -1,6 +1,7 @@
 #ifndef SFDISPLAY_H
 # define SFDISPLAY_H
 
+# include <map>
 # include "IDisplay.h"
 # include "tools.h"
 
@@ -26,6 +27,7 @@ class NcDisplay : public IDisplay
 	private:
 		int				_SizeX;
 		int				_SizeY;
+		std::map<int, IDisplay::Key>	_Key_map;
 };
 
 #endif

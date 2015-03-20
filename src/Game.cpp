@@ -12,6 +12,15 @@ Game::Game(int x, int y) :
 	_Display(nullptr),
 	_IsRunning(false)
 {
+	_Key_map[IDisplay::ESC] = &Game::KEsc;
+	_Key_map[IDisplay::SPACE] = &Game::KSpace;
+	_Key_map[IDisplay::UP] = &Game::KUp;
+	_Key_map[IDisplay::RIGHT] = &Game::KRight;
+	_Key_map[IDisplay::LEFT] = &Game::KLeft;
+	_Key_map[IDisplay::DOWN] = &Game::KDown;
+	_Key_map[IDisplay::ONE] = &Game::KOne;
+	_Key_map[IDisplay::TWO] = &Game::KTwo;
+	_Key_map[IDisplay::THREE] = &Game::KThree;
 	DisplayFactory::load(_Display, 1);
 	_Display->init(x, y);
 	std::srand(std::time(nullptr));

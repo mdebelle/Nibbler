@@ -3,6 +3,15 @@
 
 NcDisplay::NcDisplay() : _SizeX(0), _SizeY(0)
 {
+	_Key_map['d'] = IDisplay::RIGHT;
+	_Key_map['a'] = IDisplay::LEFT;
+	_Key_map['s'] = IDisplay::DOWN;
+	_Key_map['w'] = IDisplay::UP;
+	_Key_map[' '] = IDisplay::SPACE;
+	_Key_map[27] = IDisplay::ESC;
+	_Key_map['1'] = IDisplay::ONE;
+	_Key_map['2'] = IDisplay::TWO;
+	_Key_map['3'] = IDisplay::THREE;
 	return ;
 }
 
@@ -19,6 +28,8 @@ void	NcDisplay::init(int width, int height)
 	start_color();
 	noecho();
 	curs_set(FALSE);
+	cbreak();
+	timeout(1);
 	init_pair(1, COLOR_BLACK, COLOR_RED);
 	init_pair(2, COLOR_BLACK, COLOR_BLUE);
 	init_pair(3, COLOR_BLACK, COLOR_GREEN);
@@ -47,6 +58,7 @@ void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::T
 
 void	NcDisplay::drawField()
 {
+	clear();
 	attron(COLOR_PAIR(1));
 	move(0, 0);
 	for (int i = 0; i < _SizeX * 2 + 4; i++)
@@ -78,5 +90,12 @@ void	NcDisplay::close()
 
 IDisplay::Key	NcDisplay::getEvent()
 {
-	return IDisplay::NONE;
+	IDisplay::Key key = IDisplay::NONE;
+	try {
+		key = _Key_map.at(getch());
+	}
+	catch (std::exception& ex) {
+		key = IDisplay::NONE;
+	}
+	return key;
 }
