@@ -25,37 +25,41 @@ DisplayFactory::~DisplayFactory()
 
 void	DisplayFactory::load(IDisplay*& display, int idx)
 {
-	close(display);
-	instance()._Handle = dlopen(instance()._Libs.at(idx - 1).c_str(), RTLD_NOW);
-	if (!instance()._Handle)
+	try {
+		close(display);
+	}
+	catch (std::exception& ex) {
+		std::cerr << ex.what() << std::endl;
+	}
+	try {
+		display = instance().doLoad(idx);
+	}
+	catch (std::exception& ex)
 	{
-		std::cerr << "Failed to open library: " << dlerror() << std::endl;
+		std::cerr << ex.what() << std::endl;
 		if (idx != 1)
 		{
-			std::cerr << "Trying with default..." << std::endl;
-			load(display, 1);  // Test Opengl
-			return ;
+			std::cerr << "Trying with default (" << instance()._Libs[0]
+					  << ")..." << std::endl;
+			load(display, 1);
 		}
 		else
 			exit(-1);
 	}
+}
+
+IDisplay*	DisplayFactory::doLoad(int idx)
+{
+	instance()._Handle = dlopen(instance()._Libs.at(idx - 1).c_str(), RTLD_NOW);
+	if (!instance()._Handle)
+		throw std::runtime_error(std::string("Failed to open library: ") + dlerror());
 
 	dlerror(); // Be sure that no error is pending.
 	DisplayLoader loader = (DisplayLoader)dlsym(instance()._Handle, "class_loader");
-	char *error = dlerror();
-	if (error)
-	{
-		std::cerr << "Failed to load library: " << error << std::endl;
-		if (idx != 1)
-		{
-			std::cerr << "Trying with default..." << std::endl;
-			load(display, 1); // Test Opengl
-			return ;
-		}
-		else
-			exit(-1);
-	}
-	display = loader();
+	if (char *error = dlerror())
+		throw std::runtime_error(std::string("Failed to load library: ") + error);
+
+	return loader();
 }
 
 void	DisplayFactory::close(IDisplay*& display)
@@ -64,10 +68,10 @@ void	DisplayFactory::close(IDisplay*& display)
 	{
 		display->close();
 		delete display;
-		if (dlclose(instance()._Handle) != 0)
-			std::cerr << "Failed to close library: " << dlerror() << std::endl <<
-				"Some ressources may have been not deallocated." << std::endl;
 		display = nullptr;
+		if (dlclose(instance()._Handle) != 0)
+			throw std::runtime_error(std::string("Failed to close library: ") +
+				dlerror() + "\nSome ressources may have been not deallocated.\n");
 		instance()._Handle = nullptr;
 	}
 }

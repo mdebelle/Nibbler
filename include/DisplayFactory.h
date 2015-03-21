@@ -22,6 +22,7 @@ private:
 
 	static DisplayFactory& instance();
 
+	IDisplay*	doLoad(int);
 	void*	_Handle;
 	std::vector<std::string> _Libs;
 };
