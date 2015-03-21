@@ -25,6 +25,7 @@ DisplayFactory::~DisplayFactory()
 
 void	DisplayFactory::load(IDisplay*& display, int idx)
 {
+	close(display);
 	instance()._Handle = dlopen(instance()._Libs.at(idx - 1).c_str(), RTLD_NOW);
 	if (!instance()._Handle)
 	{
@@ -45,7 +46,14 @@ void	DisplayFactory::load(IDisplay*& display, int idx)
 	if (error)
 	{
 		std::cerr << "Failed to load library: " << error << std::endl;
-		exit(-1);
+		if (idx != 1)
+		{
+			std::cerr << "Trying with default..." << std::endl;
+			load(display, 1);
+			return ;
+		}
+		else
+			exit(-1);
 	}
 	display = loader();
 }
