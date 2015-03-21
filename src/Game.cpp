@@ -7,7 +7,6 @@
 Game::Game(int x, int y) :
 	_Fruit(Point(0, 0), Pattern::fruit),
 	_Snake((x / 2) - 1, y / 2),
-	_NextMove(Snake::LAST),
 	_Area(Point(x, y)),
 	_Display(nullptr),
 	_IsRunning(false)
@@ -41,7 +40,7 @@ void	Game::launch()
 	while (_IsRunning)
 	{
 		display();
-		usleep(500000);
+		usleep(200000);
 		listen();
 		update();
 	}
@@ -59,25 +58,25 @@ void	Game::listen()
 
 void	Game::  KLeft()
 {
-	_NextMove = Snake::LEFT;
+	_Snake.setDirection(Snake::LEFT);
 	return ;
 }
 
 void	Game::KRight()
 {
-	_NextMove = Snake::RIGHT;
+	_Snake.setDirection(Snake::RIGHT);
 	return ;
 }
 
 void	Game::KUp()
 {
-	_NextMove = Snake::UP;
+	_Snake.setDirection(Snake::UP);
 	return ;
 }
 
 void	Game::KDown()
 {
-	_NextMove = Snake::DOWN;
+	_Snake.setDirection(Snake::DOWN);
 	return ;
 }
 
@@ -131,17 +130,21 @@ void	Game::update()
 		_Snake.grow();
 		popFruit();
 	}
-	else if (_NextMove != Snake::LAST)
-		_Snake.moveTo(_NextMove);
 	else
 		_Snake.move();
-	_NextMove = Snake::LAST;
 }
 
 void	Game::display()
 {
 	const std::vector<Pattern>& snake = _Snake.getBody();
 	_Display->drawField();
+	_Display->drawPattern(
+		_Fruit.get_Position().x,
+		_Fruit.get_Position().y,
+		_Fruit.get_Size().x,
+		_Fruit.get_Size().y,
+		_Fruit.get_Type()
+	);
 	for (const Pattern& part : snake)
 	{
 		_Display->drawPattern(
@@ -152,13 +155,6 @@ void	Game::display()
 			part.get_Type()
 		);
 	}
-	_Display->drawPattern(
-		_Fruit.get_Position().x,
-		_Fruit.get_Position().y,
-		_Fruit.get_Size().x,
-		_Fruit.get_Size().y,
-		_Fruit.get_Type()
-	);
 	_Display->display();
 }
 

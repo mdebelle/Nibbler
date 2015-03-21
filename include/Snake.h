@@ -10,7 +10,6 @@ class Snake
 	public:
 		enum Direction
 		{
-			LAST = 0,
 			UP = -2,
 			LEFT = -1,
 			RIGHT = 1,
@@ -21,9 +20,9 @@ class Snake
 		~Snake();
 
 		void					move();
-		void					moveTo(Direction dir);
 		void					grow();
 		void					slim();
+		void					setDirection(Direction dir);
 		Point					getPosition() const;
 		bool					isOnBody(Point) const;
 		bool					eatsItself() const;

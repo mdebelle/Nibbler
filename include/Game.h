@@ -26,7 +26,6 @@ private:
 	void				popFruit();
 	Pattern				_Fruit;
 	Snake				_Snake;
-	Snake::Direction	_NextMove;
 	Area				_Area;
 
 	void				listen();

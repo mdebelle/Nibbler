@@ -21,11 +21,10 @@ void	Snake::move()
 	return ;
 }
 
-void	Snake::moveTo(Direction dir)
+void	Snake::setDirection(Direction dir)
 {
 	if (dir + _Direction != 0)
 		_Direction = dir;
-	move();
 	return ;
 }
 
