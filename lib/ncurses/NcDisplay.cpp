@@ -3,11 +3,11 @@
 
 NcDisplay::NcDisplay() : _SizeX(0), _SizeY(0)
 {
-	_Key_map['d'] = IDisplay::RIGHT;
-	_Key_map['a'] = IDisplay::LEFT;
-	_Key_map['s'] = IDisplay::DOWN;
-	_Key_map['w'] = IDisplay::UP;
-	_Key_map[' '] = IDisplay::SPACE;
+	_Key_map[0x1b5b43] = IDisplay::RIGHT;
+	_Key_map[0x1b5b44] = IDisplay::LEFT;
+	_Key_map[0x1b5b42] = IDisplay::DOWN;
+	_Key_map[0x1b5b41] = IDisplay::UP;
+	_Key_map[ESC] = IDisplay::SPACE;
 	_Key_map[27] = IDisplay::ESC;
 	_Key_map['1'] = IDisplay::ONE;
 	_Key_map['2'] = IDisplay::TWO;
@@ -93,9 +93,21 @@ void	NcDisplay::close()
 
 IDisplay::Key	NcDisplay::getEvent()
 {
-	IDisplay::Key key = IDisplay::NONE;
+	IDisplay::Key	key = IDisplay::NONE;
+	int				code, tmp;
+
+	code = getch();
+	if (code == 27)
+	{
+		code = 27;
+		while ((tmp = getch()) != ERR)
+		{
+			code <<= 8;
+			code += tmp;
+		}
+	}
 	try {
-		key = _Key_map.at(getch());
+		key = _Key_map.at(code);
 	}
 	catch (std::exception& ex) {
 		key = IDisplay::NONE;
