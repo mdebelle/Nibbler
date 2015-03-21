@@ -97,6 +97,8 @@ void	Game::KSpace()
 			_IsRunning = false;
 			key = IDisplay::SPACE;
 		}
+		else if (key == IDisplay::ONE || key == IDisplay::TWO || key == IDisplay::THREE)
+			(this->*(_Key_map.at(key)))();
 	}
 }
 
