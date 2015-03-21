@@ -10,7 +10,8 @@ class	Pattern
 		{
 			fruit,
 			wall,
-			body
+			body,
+			head
 		};
 
 		Pattern(Point position, Type type);

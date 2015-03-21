@@ -155,6 +155,13 @@ void	Game::display()
 			part.get_Type()
 		);
 	}
+	_Display->drawPattern(
+		snake[0].get_Position().x,
+		snake[0].get_Position().y,
+		snake[0].get_Size().x,
+		snake[0].get_Size().y,
+		Pattern::head
+	);
 	_Display->display();
 }
 

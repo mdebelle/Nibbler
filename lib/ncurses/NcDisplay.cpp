@@ -33,6 +33,7 @@ void	NcDisplay::init(int width, int height)
 	init_pair(1, COLOR_BLACK, COLOR_RED);
 	init_pair(2, COLOR_BLACK, COLOR_BLUE);
 	init_pair(3, COLOR_BLACK, COLOR_GREEN);
+	init_pair(4, COLOR_BLACK, COLOR_MAGENTA);
 }
 
 void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::Type type)
@@ -43,6 +44,8 @@ void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::T
 		colo = 2;
 	else if (type == Pattern::fruit)
 		colo = 3;
+	else if (type == Pattern::head)
+		colo = 4;
 	attron(COLOR_PAIR(colo));
 	for (int j = 1; j <= sizeY; j++)
 	{
