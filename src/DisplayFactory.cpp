@@ -4,8 +4,8 @@
 
 DisplayFactory::DisplayFactory()
 {
-	_Libs.push_back("lib/ncurses.so");
 	_Libs.push_back("lib/opengl.so");
+	_Libs.push_back("lib/ncurses.so");
 	_Libs.push_back("lib/sfml.so");
 }
 
@@ -33,7 +33,7 @@ void	DisplayFactory::load(IDisplay*& display, int idx)
 		if (idx != 1)
 		{
 			std::cerr << "Trying with default..." << std::endl;
-			load(display, 1);
+			load(display, 1);  // Test Opengl
 			return ;
 		}
 		else
@@ -49,7 +49,7 @@ void	DisplayFactory::load(IDisplay*& display, int idx)
 		if (idx != 1)
 		{
 			std::cerr << "Trying with default..." << std::endl;
-			load(display, 1);
+			load(display, 1); // Test Opengl
 			return ;
 		}
 		else
