@@ -7,7 +7,7 @@ NcDisplay::NcDisplay() : _SizeX(0), _SizeY(0)
 	_Key_map[0x1b5b44] = IDisplay::LEFT;
 	_Key_map[0x1b5b42] = IDisplay::DOWN;
 	_Key_map[0x1b5b41] = IDisplay::UP;
-	_Key_map[ESC] = IDisplay::SPACE;
+	_Key_map[' '] = IDisplay::SPACE;
 	_Key_map[27] = IDisplay::ESC;
 	_Key_map['1'] = IDisplay::ONE;
 	_Key_map['2'] = IDisplay::TWO;
