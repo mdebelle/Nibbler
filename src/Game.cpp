@@ -122,8 +122,8 @@ void	Game::KThree()
 void	Game::update()
 {
 	Point	pos = _Snake.getPosition();
-	if (pos.x < 0 || pos.y < 0 || pos.x > _Area.get_Width() ||
-		pos.y > _Area.get_Height() || _Snake.eatsItself())
+	if (pos.x < 0 || pos.y < 0 || pos.x >= _Area.get_Width() ||
+		pos.y >= _Area.get_Height() || _Snake.eatsItself())
 		_IsRunning = false;
 	if (_Snake.getPosition() == _Fruit.get_Position())
 	{
