@@ -30,10 +30,10 @@ void	NcDisplay::init(int width, int height)
 	curs_set(FALSE);
 	cbreak();
 	timeout(1);
-	init_pair(1, COLOR_BLACK, COLOR_RED);
-	init_pair(2, COLOR_BLACK, COLOR_BLUE);
-	init_pair(3, COLOR_BLACK, COLOR_GREEN);
-	init_pair(4, COLOR_BLACK, COLOR_MAGENTA);
+	init_pair(1, COLOR_BLACK, COLOR_WHITE);
+	init_pair(2, COLOR_BLACK, COLOR_GREEN);
+	init_pair(3, COLOR_BLACK, COLOR_RED);
+	init_pair(4, COLOR_BLACK, COLOR_YELLOW);
 }
 
 void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::Type type)
