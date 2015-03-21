@@ -6,6 +6,7 @@ Snake::Snake(int x, int y) :
 	_Body.push_back(Pattern(Point(x, y), Pattern::body));
 	_Body.push_back(Pattern(Point(x + 1, y), Pattern::body));
 	_Body.push_back(Pattern(Point(x + 2, y), Pattern::body));
+	_Body.push_back(Pattern(Point(x + 3, y), Pattern::body));
 	return ;
 }
 
@@ -53,6 +54,11 @@ void	Snake::slim()
 Point	Snake::getPosition() const
 {
 	return _Body.front().get_Position();
+}
+
+int		Snake::getSize() const
+{
+	return _Body.size();
 }
 
 const std::vector<Pattern>& Snake::getBody() const

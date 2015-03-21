@@ -27,6 +27,7 @@ class Snake
 		bool					isOnBody(Point) const;
 		bool					eatsItself() const;
 		const std::vector<Pattern>& getBody() const;
+		int						getSize() const;
 
 	private:
 		Direction				_Direction;

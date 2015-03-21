@@ -56,7 +56,7 @@ void	Game::listen()
 	return ;
 }
 
-void	Game::  KLeft()
+void	Game::KLeft()
 {
 	_Snake.setDirection(Snake::LEFT);
 	return ;
@@ -167,13 +167,20 @@ void	Game::display()
 
 void	Game::popFruit()
 {
-	Point	pos(0, 0);
+	int		fruit = std::rand() % (_Area.get_Area() - _Snake.getSize() - 1);
+	int		x = 0, y;
 
-	do
+	for (y = 0; fruit > 0; y++)
 	{
-		pos.y = std::rand() % _Area.get_Height();
-		pos.x = std::rand() % _Area.get_Width();
-
-	} while (_Snake.isOnBody(pos));
-	_Fruit.set_Position(pos);
+		for (x = 0; x < _Area.get_Width(); x++, fruit--)
+			if (_Snake.isOnBody(Point(x, y)))
+				fruit++;
+			else if (fruit == 0)
+				break;
+	}
+	if (y)
+		y--;
+	if (x == 15)
+		x = 0;
+	_Fruit.set_Position(Point(x, y));
 }
