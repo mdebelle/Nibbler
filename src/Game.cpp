@@ -11,6 +11,7 @@ Game::Game(int x, int y) :
 	_Area(Point(x, y)),
 	_Display(nullptr),
 	_IsRunning(false),
+	_IsPaused(false),
 	_Level(0)
 {
 	_Key_map[IDisplay::ESC] = &Game::KEsc;
@@ -50,7 +51,8 @@ void	Game::launch()
 		display();
 		usleep(200000 - (_Level * 10000));
 		listen();
-		update();
+		if (!_IsPaused)
+			update();
 	}
 }
 
@@ -66,25 +68,29 @@ void	Game::listen()
 
 void	Game::KLeft()
 {
-	_Snake.setDirection(Snake::LEFT);
+	if (!_IsPaused)
+		_Snake.setDirection(Snake::LEFT);
 	return ;
 }
 
 void	Game::KRight()
 {
-	_Snake.setDirection(Snake::RIGHT);
+	if (!_IsPaused)
+		_Snake.setDirection(Snake::RIGHT);
 	return ;
 }
 
 void	Game::KUp()
 {
-	_Snake.setDirection(Snake::UP);
+	if (!_IsPaused)
+		_Snake.setDirection(Snake::UP);
 	return ;
 }
 
 void	Game::KDown()
 {
-	_Snake.setDirection(Snake::DOWN);
+	if (!_IsPaused)
+		_Snake.setDirection(Snake::DOWN);
 	return ;
 }
 
@@ -96,18 +102,10 @@ void	Game::KEsc()
 
 void	Game::KSpace()
 {
-	IDisplay::Key key = IDisplay::NONE;
-	while (key != IDisplay::SPACE)
-	{
-		key = _Display->getEvent();
-		if (key == IDisplay::ESC)
-		{
-			_IsRunning = false;
-			key = IDisplay::SPACE;
-		}
-		else if (key == IDisplay::ONE || key == IDisplay::TWO || key == IDisplay::THREE)
-			(this->*(_Key_map.at(key)))();
-	}
+	if (_IsPaused)
+		_IsPaused = false;
+	else
+		_IsPaused = true;
 }
 
 void	Game::KOne()

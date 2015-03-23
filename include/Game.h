@@ -48,6 +48,7 @@ private:
 	IDisplay			*_Display;
 	std::map<IDisplay::Key, GameKey>	_Key_map;
 	bool				_IsRunning;
+	bool				_IsPaused;
 	int					_Level;
 };
 
