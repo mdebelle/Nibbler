@@ -10,7 +10,8 @@ Game::Game(int x, int y) :
 	_Snake((x / 2) - 1, y / 2),
 	_Area(Point(x, y)),
 	_Display(nullptr),
-	_IsRunning(false)
+	_IsRunning(false),
+	_Level(0)
 {
 	_Key_map[IDisplay::ESC] = &Game::KEsc;
 	_Key_map[IDisplay::SPACE] = &Game::KSpace;
@@ -47,7 +48,7 @@ void	Game::launch()
 	while (_IsRunning)
 	{
 		display();
-		usleep(200000);
+		usleep(200000 - (_Level * 10000));
 		listen();
 		update();
 	}
@@ -134,10 +135,19 @@ void	Game::update()
 	if (pos.x < 0 || pos.y < 0 || pos.x >= _Area.get_Width() ||
 		pos.y >= _Area.get_Height() || _Snake.eatsItself())
 		_IsRunning = false;
+	for (const Pattern& obs : _Obstacles)
+		if (pos == obs.get_Position())
+			_IsRunning = false;
 	if (_Snake.getPosition() == _Fruit.get_Position())
 	{
 		_Snake.grow();
 		popFruit();
+		if (_Level * 5 + 9 == _Snake.getSize())
+		{
+			_Level++;
+			for (int i = 0; i < 4; i++)
+				_Obstacles.push_back(Pattern(getRand(), Pattern::wall));
+		}
 	}
 	else
 		_Snake.move();
@@ -164,6 +174,16 @@ void	Game::display()
 			part.get_Type()
 		);
 	}
+	for (const Pattern& obs : _Obstacles)
+	{
+		_Display->drawPattern(
+			obs.get_Position().x,
+			obs.get_Position().y,
+			obs.get_Size().x,
+			obs.get_Size().y,
+			obs.get_Type()
+		);
+	}
 	_Display->drawPattern(
 		snake[0].get_Position().x,
 		snake[0].get_Position().y,
@@ -174,22 +194,35 @@ void	Game::display()
 	_Display->display();
 }
 
-void	Game::popFruit()
+int		Game::isOnObstacle(Point pt)
 {
-	int		fruit = std::rand() % (_Area.get_Area() - _Snake.getSize() - 1);
+	for (const Pattern& obs : _Obstacles)
+		if (pt == obs.get_Position())
+			return 1;
+	return 0;
+}
+
+Point	Game::getRand()
+{
+	int		pos = std::rand() % (_Area.get_Area() - _Snake.getSize() - _Obstacles.size() - 1);
 	int		x = 0, y;
 
-	for (y = 0; fruit > 0; y++)
+	for (y = 0; pos > 0; y++)
 	{
-		for (x = 0; x < _Area.get_Width(); x++, fruit--)
-			if (_Snake.isOnBody(Point(x, y)))
-				fruit++;
-			else if (fruit == 0)
+		for (x = 0; x < _Area.get_Width(); x++, pos--)
+			if (_Snake.isOnBody(Point(x, y)) || isOnObstacle(Point(x, y)))
+				pos++;
+			else if (pos == 0)
 				break;
 	}
 	if (y)
 		y--;
-	if (x == 15)
+	if (x == _Area.get_Width())
 		x = 0;
-	_Fruit.set_Position(Point(x, y));
+	return Point(x, y);
+}
+
+void	Game::popFruit()
+{
+	_Fruit.set_Position(getRand());
 }
