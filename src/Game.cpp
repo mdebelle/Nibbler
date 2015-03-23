@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include <unistd.h>
@@ -20,8 +21,14 @@ Game::Game(int x, int y) :
 	_Key_map[IDisplay::ONE] = &Game::KOne;
 	_Key_map[IDisplay::TWO] = &Game::KTwo;
 	_Key_map[IDisplay::THREE] = &Game::KThree;
-	DisplayFactory::load(_Display, 1);
-	_Display->init(x, y);
+	try {
+		DisplayFactory::load(_Display, 1);
+		_Display->init(x, y);
+	}
+	catch (std::exception& ex) {
+		std::cerr << "Error during initialization: " << ex.what() << std::endl;
+		exit(-1);
+	}
 	std::srand(std::time(nullptr));
 	popFruit();
 	return ;
