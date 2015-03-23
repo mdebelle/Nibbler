@@ -1,7 +1,11 @@
 #ifndef SFDISPLAY_H
 # define SFDISPLAY_H
 
-#include "IDisplay.h"
+# include <GL/glew.h>
+# include <GLFW/glfw3.h>
+# include "IDisplay.h"
+
+# define UNIT_SIZE	20
 
 class GlDisplay : public IDisplay
 {
@@ -21,6 +25,9 @@ class GlDisplay : public IDisplay
 		void			display() override;
 		IDisplay::Key	getEvent() override;
 		void			close() override;
+
+	private:
+		GLFWwindow*		_Window;
 };
 
 #endif

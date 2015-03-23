@@ -3,9 +3,9 @@ NAME		= ../opengl.so
 CXX			= g++
 CXXFLAGS	= -Wall -Werror -Wextra -fpic -std=c++11 -g
 
-INC			= -I ../../include
+INC			= -I ../../include -I ~/.brew/include
 
-LIB			= 
+LIB			= -L ~/.brew/lib -lGLEW -lglfw3
 
 SRC			= GlDisplay.cpp \
 			  class_loader.cpp
@@ -27,6 +27,9 @@ fclean: clean
 	rm -rf $(NAME)
 
 deps:
+	brew update
+	brew install glew
+	brew install glfw3
 	@echo "Please add code to install OpenGl if necessary."
 
 re: fclean all

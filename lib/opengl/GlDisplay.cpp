@@ -1,4 +1,5 @@
 #include "GlDisplay.h"
+#include <stdexcept>
 
 GlDisplay::GlDisplay()
 {
@@ -12,8 +13,24 @@ GlDisplay::~GlDisplay()
 
 void	GlDisplay::init(int width, int height)
 {
-(void)width;
-(void)height;
+	if (!glfwInit())
+		throw std::runtime_error("Failed to initialize GLFW.");
+
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+	_Window = glfwCreateWindow(width * UNIT_SIZE, height * UNIT_SIZE, "Nibbler", NULL, NULL);
+	if (!_Window)
+	{
+		glfwTerminate();
+		throw std::runtime_error("Failed to create window.");
+	}
+	glfwMakeContextCurrent(_Window);
+	glewExperimental = true; 
+	if (glewInit() != GLEW_OK)
+		throw std::runtime_error("Failed to initialize GLEW.");
 }
 
 void	GlDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::Type type)
