@@ -1,11 +1,11 @@
 NAME		= ../opengl.so
 
 CXX			= g++
-CXXFLAGS	= -Wall -Werror -Wextra -fpic -std=c++11 -g
+CXXFLAGS	= -Wall -Werror -Wextra -fpic -std=c++11 -g -Wno-deprecated
 
 INC			= -I ../../include
 
-LIB			= 
+LIB			= -framework GLUT -framework OpenGL
 
 SRC			= GlDisplay.cpp \
 			  class_loader.cpp
