@@ -43,9 +43,9 @@ void	NcDisplay::init(int width, int height)
 	cbreak();
 	timeout(1);
 	init_pair(1, COLOR_BLACK, COLOR_WHITE);
-	init_pair(2, COLOR_RED, COLOR_GREEN);
+	init_pair(2, COLOR_WHITE, COLOR_BLACK);
 	init_pair(3, COLOR_BLACK, COLOR_RED);
-	init_pair(4, COLOR_BLACK, COLOR_YELLOW);
+	init_pair(4, COLOR_WHITE, COLOR_BLACK);
 }
 
 void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::Type type)
@@ -84,9 +84,9 @@ void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::T
 			else if (type == Pattern::bodyUD)
 				addch(120|A_ALTCHARSET);
 			else if (type == Pattern::fruit)
-				addch( '>' );
+				addch( 'O' );
 			else
-				addch(' ');
+				addch('X');
 		}
 	}
 	attroff(COLOR_PAIR(colo));
