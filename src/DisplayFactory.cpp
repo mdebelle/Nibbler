@@ -4,8 +4,8 @@
 
 DisplayFactory::DisplayFactory()
 {
-	_Libs.push_back("lib/opengl.so");
 	_Libs.push_back("lib/ncurses.so");
+	_Libs.push_back("lib/opengl.so");
 	_Libs.push_back("lib/sfml.so");
 }
 

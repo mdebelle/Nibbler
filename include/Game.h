@@ -23,15 +23,17 @@ private:
 	Game(const Game&);
 	Game& operator=(const Game &);
 
+	Point				getRand();
 	void				popFruit();
 	Pattern				_Fruit;
 	Snake				_Snake;
 	Area				_Area;
+	std::vector<Pattern> _Obstacles;
 
 	void				listen();
 	void				update();
 	void				display();
-
+	int					isOnObstacle(Point);
 	/* Key handlers */
 	void				KLeft();
 	void				KRight();
@@ -46,6 +48,8 @@ private:
 	IDisplay			*_Display;
 	std::map<IDisplay::Key, GameKey>	_Key_map;
 	bool				_IsRunning;
+	bool				_IsPaused;
+	int					_Level;
 };
 
 #endif

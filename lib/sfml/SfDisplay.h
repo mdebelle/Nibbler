@@ -1,7 +1,11 @@
 #ifndef SFDISPLAY_H
 # define SFDISPLAY_H
 
-#include "IDisplay.h"
+# include <map>
+# include <SFML/Graphics.hpp>
+# include "IDisplay.h"
+
+# define UNIT_SIZE	20
 
 class SfDisplay : public IDisplay
 {
@@ -21,6 +25,11 @@ class SfDisplay : public IDisplay
 		IDisplay::Key	getEvent() override;
 		void			close() override;
 		void			display() override;
+
+	private:
+		sf::RenderWindow	_Window;
+		sf::RenderTexture	_Texture;
+		std::map<sf::Keyboard::Key, IDisplay::Key>	_Key_map;
 };
 
 #endif
