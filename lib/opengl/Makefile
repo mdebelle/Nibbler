@@ -5,7 +5,7 @@ CXXFLAGS	= -Wall -Werror -Wextra -fpic -std=c++11 -g
 
 INC			= -I ../../include -I ~/.brew/include
 
-LIB			= -L ~/.brew/lib -lGLEW -lglfw3
+LIB			= -L ~/.brew/lib -lGLEW -lglfw3 -framework OpenGL
 
 SRC			= GlDisplay.cpp \
 			  class_loader.cpp

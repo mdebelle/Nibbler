@@ -3,6 +3,7 @@
 
 # include <GL/glew.h>
 # include <GLFW/glfw3.h>
+# include <map>
 # include "IDisplay.h"
 
 # define UNIT_SIZE	20
@@ -28,6 +29,14 @@ class GlDisplay : public IDisplay
 
 	private:
 		GLFWwindow*		_Window;
+		std::map<int, IDisplay::Key> _Key_map;
+
+		GLuint			_ProgramID;
+		GLuint			_VertexArrayID;
+		GLuint			_VertexBuffer;
+
+		GLuint			loadShader(const char*, const char*);
+		GLfloat			g_vertex_buffer_data[9];
 };
 
 #endif
