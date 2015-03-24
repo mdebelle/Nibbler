@@ -146,13 +146,11 @@ void	GlDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::T
 
 void	GlDisplay::drawField()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClear( GL_COLOR_BUFFER_BIT );
 }
 
 void	GlDisplay::display()
 {
-	glClear( GL_COLOR_BUFFER_BIT );
-
 	glUseProgram(_ProgramID);
 
 	glEnableVertexAttribArray(0);
