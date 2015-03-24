@@ -1,12 +1,13 @@
 #include "Snake.h"
 
 Snake::Snake(int x, int y) :
-	_Direction(LEFT)
+	_Direction(LEFT),
+	_DirectionFrom(RIGHT)
 {
-	_Body.push_back(Pattern(Point(x, y), Pattern::body));
-	_Body.push_back(Pattern(Point(x + 1, y), Pattern::body));
-	_Body.push_back(Pattern(Point(x + 2, y), Pattern::body));
-	_Body.push_back(Pattern(Point(x + 3, y), Pattern::body));
+	_Body.push_back(Pattern(Point(x, y), Pattern::bodyLR));
+	_Body.push_back(Pattern(Point(x + 1, y), Pattern::bodyLR));
+	_Body.push_back(Pattern(Point(x + 2, y), Pattern::bodyLR));
+	_Body.push_back(Pattern(Point(x + 3, y), Pattern::bodyLR));
 	return ;
 }
 
@@ -33,14 +34,39 @@ void	Snake::grow()
 {
 	Point	pos(_Body.front().get_Position());
 
+
 	if (_Direction == LEFT)
+	{
 		pos.x -= 1;
+		if (_Body[0].get_Position().y == _Body[1].get_Position().y)
+			_Body[0].set_Type(Pattern::bodyLR);
+		else
+			(_Body[0].get_Position().y < _Body[1].get_Position().y) ? _Body[0].set_Type(Pattern::bodyLD) : _Body[0].set_Type(Pattern::bodyLU);
+	}
 	else if (_Direction == RIGHT)
+	{
 		pos.x += 1;
+		if (_Body[0].get_Position().y == _Body[1].get_Position().y)
+			_Body[0].set_Type(Pattern::bodyLR);
+		else
+			(_Body[0].get_Position().y < _Body[1].get_Position().y) ? _Body[0].set_Type(Pattern::bodyRD) : _Body[0].set_Type(Pattern::bodyRU);
+	}
 	else if (_Direction == UP)
+	{
 		pos.y -= 1;
+		if (_Body[0].get_Position().x == _Body[1].get_Position().x)
+			_Body[0].set_Type(Pattern::bodyUD);
+		else
+			(_Body[0].get_Position().x < _Body[1].get_Position().x) ? _Body[0].set_Type(Pattern::bodyRU) : _Body[0].set_Type(Pattern::bodyLU);
+	}
 	else if (_Direction == DOWN)
+	{
 		pos.y += 1;
+		if (_Body[0].get_Position().x == _Body[1].get_Position().x)
+			_Body[0].set_Type(Pattern::bodyUD);
+		else
+			(_Body[0].get_Position().x < _Body[1].get_Position().x) ? _Body[0].set_Type(Pattern::bodyRD) : _Body[0].set_Type(Pattern::bodyLD);
+	}
 	_Body.insert(_Body.begin(), Pattern(pos, Pattern::body));
 	return ;
 }

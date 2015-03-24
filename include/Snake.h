@@ -23,6 +23,7 @@ class Snake
 		void					grow();
 		void					slim();
 		void					setDirection(Direction dir);
+		void					setDirectionFrom(Direction dir);
 		Point					getPosition() const;
 		bool					isOnBody(Point) const;
 		bool					eatsItself() const;
@@ -31,6 +32,7 @@ class Snake
 
 	private:
 		Direction				_Direction;
+		Direction				_DirectionFrom;
 		std::vector<Pattern>	_Body;
 		int						_Alive;
 

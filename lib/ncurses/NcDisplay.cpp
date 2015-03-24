@@ -43,29 +43,50 @@ void	NcDisplay::init(int width, int height)
 	cbreak();
 	timeout(1);
 	init_pair(1, COLOR_BLACK, COLOR_WHITE);
-	init_pair(2, COLOR_BLACK, COLOR_GREEN);
+	init_pair(2, COLOR_WHITE, COLOR_BLACK);
 	init_pair(3, COLOR_BLACK, COLOR_RED);
-	init_pair(4, COLOR_BLACK, COLOR_YELLOW);
+	init_pair(4, COLOR_WHITE, COLOR_BLACK);
 }
 
 void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::Type type)
 {
 	int	colo = 1;
 
-	if (type == Pattern::body)
+	if (type == Pattern::body
+		|| type == Pattern::bodyLU
+		|| type == Pattern::bodyLD
+		|| type == Pattern::bodyRU
+		|| type == Pattern::bodyRD
+		|| type == Pattern::bodyLR
+		|| type == Pattern::bodyUD)
 		colo = 2;
 	else if (type == Pattern::fruit)
 		colo = 3;
 	else if (type == Pattern::head)
 		colo = 4;
+
 	attron(COLOR_PAIR(colo));
 	for (int j = 1; j <= sizeY; j++)
 	{
 		for (int i = 1; i <= sizeX; i++)
 		{
-			move(posY + j, (posX + i) * 2);
-			addch(' ');
-			addch(' ');
+			move(posY + j, (posX + i));
+			if (type == Pattern::bodyLU)
+				addch(106|A_ALTCHARSET);
+			else if (type == Pattern::bodyLD)
+				addch(107|A_ALTCHARSET);
+			else if (type == Pattern::bodyRU)
+				addch(109|A_ALTCHARSET);
+			else if (type == Pattern::bodyRD)
+				addch(108|A_ALTCHARSET);
+			else if (type == Pattern::bodyLR)
+				addch(ACS_HLINE);
+			else if (type == Pattern::bodyUD)
+				addch(120|A_ALTCHARSET);
+			else if (type == Pattern::fruit)
+				addch( 'O' );
+			else
+				addch('X');
 		}
 	}
 	attroff(COLOR_PAIR(colo));
@@ -76,20 +97,18 @@ void	NcDisplay::drawField()
 	clear();
 	attron(COLOR_PAIR(1));
 	move(0, 0);
-	for (int i = 0; i < _SizeX * 2 + 4; i++)
-		addch(' ');
+	for (int i = 0; i < _SizeX + 2; i++)
+		addch(97 | A_ALTCHARSET);
 	for (int i = 1; i <= _SizeY; i++)
 	{
 		move(i, 0);
-		addch(' ');
-		addch(' ');
-		move(i, _SizeX * 2 + 2);
-		addch(' ');
-		addch(' ');
+		addch(97 | A_ALTCHARSET);
+		move(i, _SizeX + 1);
+		addch(97 | A_ALTCHARSET);
 	}
 	move(_SizeY + 1, 0);
-	for (int i = 0; i < _SizeX * 2 + 4; i++)
-		addch(' ');
+	for (int i = 0; i < _SizeX + 2; i++)
+		addch(97 | A_ALTCHARSET);
 	attroff(COLOR_PAIR(1));
 }
 

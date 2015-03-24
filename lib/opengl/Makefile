@@ -1,7 +1,7 @@
 NAME		= ../opengl.so
 
 CXX			= g++
-CXXFLAGS	= -Wall -Werror -Wextra -fpic -std=c++11 -g
+CXXFLAGS	= -Wall -Werror -Wextra -fpic -std=c++11 -g -Wno-deprecated
 
 INC			= -I ../../include -I ~/.brew/include
 

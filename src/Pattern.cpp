@@ -74,3 +74,9 @@ void			Pattern::set_Visible(bool v)
 	return ;
 }
 
+
+void			Pattern::set_Type(Type t)
+{
+	_Type = t;
+	return ;
+}

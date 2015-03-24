@@ -11,6 +11,12 @@ class	Pattern
 			fruit,
 			wall,
 			body,
+			bodyLU,
+			bodyLD,
+			bodyRU,
+			bodyRD,
+			bodyLR,
+			bodyUD,
 			head
 		};
 
@@ -27,6 +33,7 @@ class	Pattern
 		bool		get_Visible() const;
 		void		set_Position(Point position);
 		void		set_Visible(bool);
+		void		set_Type(Type t);
 
 	private:
 		Point		_Position;
