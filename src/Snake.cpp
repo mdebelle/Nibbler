@@ -38,42 +38,34 @@ void	Snake::grow()
 	if (_Direction == LEFT)
 	{
 		pos.x -= 1;
-		if (_Body[0].get_Position().y < _Body[1].get_Position().y)
-			_Body[0].set_Type(Pattern::bodyLD);
-		else if (_Body[0].get_Position().y > _Body[1].get_Position().y)
-			_Body[0].set_Type(Pattern::bodyLU);
-		else
+		if (_Body[0].get_Position().y == _Body[1].get_Position().y)
 			_Body[0].set_Type(Pattern::bodyLR);
+		else
+			(_Body[0].get_Position().y < _Body[1].get_Position().y) ? _Body[0].set_Type(Pattern::bodyLD) : _Body[0].set_Type(Pattern::bodyLU);
 	}
 	else if (_Direction == RIGHT)
 	{
 		pos.x += 1;
-		if (_Body[0].get_Position().y < _Body[1].get_Position().y)
-			_Body[0].set_Type(Pattern::bodyRD);
-		else if (_Body[0].get_Position().y > _Body[1].get_Position().y)
-			_Body[0].set_Type(Pattern::bodyRU);
-		else
+		if (_Body[0].get_Position().y == _Body[1].get_Position().y)
 			_Body[0].set_Type(Pattern::bodyLR);
+		else
+			(_Body[0].get_Position().y < _Body[1].get_Position().y) ? _Body[0].set_Type(Pattern::bodyRD) : _Body[0].set_Type(Pattern::bodyRU);
 	}
 	else if (_Direction == UP)
 	{
 		pos.y -= 1;
-		if (_Body[0].get_Position().x < _Body[1].get_Position().x)
-			_Body[0].set_Type(Pattern::bodyRU);
-		else if (_Body[0].get_Position().x > _Body[1].get_Position().x)
-			_Body[0].set_Type(Pattern::bodyLU);
-		else
+		if (_Body[0].get_Position().x == _Body[1].get_Position().x)
 			_Body[0].set_Type(Pattern::bodyUD);
+		else
+			(_Body[0].get_Position().x < _Body[1].get_Position().x) ? _Body[0].set_Type(Pattern::bodyRU) : _Body[0].set_Type(Pattern::bodyLU);
 	}
 	else if (_Direction == DOWN)
 	{
 		pos.y += 1;
-		if (_Body[0].get_Position().x < _Body[1].get_Position().x)
-			_Body[0].set_Type(Pattern::bodyRD);
-		else if (_Body[0].get_Position().x > _Body[1].get_Position().x)
-			_Body[0].set_Type(Pattern::bodyLD);
-		else
+		if (_Body[0].get_Position().x == _Body[1].get_Position().x)
 			_Body[0].set_Type(Pattern::bodyUD);
+		else
+			(_Body[0].get_Position().x < _Body[1].get_Position().x) ? _Body[0].set_Type(Pattern::bodyRD) : _Body[0].set_Type(Pattern::bodyLD);
 	}
 	_Body.insert(_Body.begin(), Pattern(pos, Pattern::body));
 	return ;

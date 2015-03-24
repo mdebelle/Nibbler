@@ -43,7 +43,7 @@ void	NcDisplay::init(int width, int height)
 	cbreak();
 	timeout(1);
 	init_pair(1, COLOR_BLACK, COLOR_WHITE);
-	init_pair(2, COLOR_BLACK, COLOR_GREEN);
+	init_pair(2, COLOR_RED, COLOR_GREEN);
 	init_pair(3, COLOR_BLACK, COLOR_RED);
 	init_pair(4, COLOR_BLACK, COLOR_YELLOW);
 }
@@ -70,47 +70,23 @@ void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::T
 	{
 		for (int i = 1; i <= sizeX; i++)
 		{
-			move(posY + j, (posX + i) * 2);
+			move(posY + j, (posX + i));
 			if (type == Pattern::bodyLU)
-			{
 				addch(106|A_ALTCHARSET);
-				addch(106|A_ALTCHARSET);
-			}
 			else if (type == Pattern::bodyLD)
-			{
 				addch(107|A_ALTCHARSET);
-				addch(107|A_ALTCHARSET);
-			}
 			else if (type == Pattern::bodyRU)
-			{
 				addch(109|A_ALTCHARSET);
-				addch(109|A_ALTCHARSET);
-			}
 			else if (type == Pattern::bodyRD)
-			{
 				addch(108|A_ALTCHARSET);
-				addch(108|A_ALTCHARSET);
-			}
 			else if (type == Pattern::bodyLR)
-			{
 				addch(ACS_HLINE);
-				addch(ACS_HLINE);
-			}
 			else if (type == Pattern::bodyUD)
-			{
-				addch(ACS_VLINE);
-				addch(ACS_VLINE);
-			}
+				addch(120|A_ALTCHARSET);
 			else if (type == Pattern::fruit)
-			{
-				addch( '<' );
 				addch( '>' );
-			}
 			else
-			{
 				addch(' ');
-				addch(' ');
-			}
 		}
 	}
 	attroff(COLOR_PAIR(colo));
@@ -121,19 +97,17 @@ void	NcDisplay::drawField()
 	clear();
 	attron(COLOR_PAIR(1));
 	move(0, 0);
-	for (int i = 0; i < _SizeX * 2 + 4; i++)
+	for (int i = 0; i < _SizeX + 2; i++)
 		addch(97 | A_ALTCHARSET);
 	for (int i = 1; i <= _SizeY; i++)
 	{
 		move(i, 0);
 		addch(97 | A_ALTCHARSET);
-		addch(97 | A_ALTCHARSET);
-		move(i, _SizeX * 2 + 2);
-		addch(97 | A_ALTCHARSET);
+		move(i, _SizeX + 1);
 		addch(97 | A_ALTCHARSET);
 	}
 	move(_SizeY + 1, 0);
-	for (int i = 0; i < _SizeX * 2 + 4; i++)
+	for (int i = 0; i < _SizeX + 2; i++)
 		addch(97 | A_ALTCHARSET);
 	attroff(COLOR_PAIR(1));
 }
