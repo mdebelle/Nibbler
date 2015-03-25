@@ -84,6 +84,7 @@ void	Snake::speedincrease()
 	grow();
 	grow();
 	grow();
+	// speedincrease a pour bute non pas de faire grandire ++ le serpent mais de le faire ce déplacer plus vite
 	return ;
 }
 
@@ -91,6 +92,7 @@ void	Snake::speeddecrease()
 {
 	grow();
 	grow();
+	// speeddecrease a pour bute non pas de faire grandire ++ le serpent mais de le faire ce déplacer moins vite
 	return ;
 }
 
@@ -143,3 +145,4 @@ bool	Snake::eatsItself() const
 			return 1;
 	return 0;
 }
+
