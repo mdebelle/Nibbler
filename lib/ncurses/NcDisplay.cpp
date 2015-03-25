@@ -60,9 +60,17 @@ void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::T
 		|| type == Pattern::bodyLR
 		|| type == Pattern::bodyUD)
 		colo = 2;
-	else if (type == Pattern::fruit)
+	else if (type == Pattern::fruit
+		|| type == Pattern::fruit1
+		|| type == Pattern::fruit2
+		|| type == Pattern::fruit3
+		|| type == Pattern::fruit4)
 		colo = 3;
-	else if (type == Pattern::head)
+	else if (type == Pattern::head
+		|| type == Pattern::headL
+		|| type == Pattern::headR
+		|| type == Pattern::headU
+		|| type == Pattern::headD)
 		colo = 4;
 
 	attron(COLOR_PAIR(colo));
@@ -83,10 +91,24 @@ void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::T
 				addch(ACS_HLINE);
 			else if (type == Pattern::bodyUD)
 				addch(120|A_ALTCHARSET);
-			else if (type == Pattern::fruit)
-				addch( 'O' );
+			else if (type == Pattern::fruit1)
+				addch('1');
+			else if (type == Pattern::fruit2)
+				addch('2');
+			else if (type == Pattern::fruit3)
+				addch('3');
+			else if (type == Pattern::fruit4)
+				addch('4');
+			else if (type == Pattern::headL)
+				addch('<');	
+			else if (type == Pattern::headR)
+				addch('>');	
+			else if (type == Pattern::headU)
+				addch('^');	
+			else if (type == Pattern::headD)
+				addch('v');
 			else
-				addch('X');
+				addch(' ');
 		}
 	}
 	attroff(COLOR_PAIR(colo));

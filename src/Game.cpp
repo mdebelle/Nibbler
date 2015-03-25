@@ -138,7 +138,14 @@ void	Game::update()
 			_IsRunning = false;
 	if (_Snake.getPosition() == _Fruit.get_Position())
 	{
-		_Snake.grow();
+		if (_Fruit.get_Type() == Pattern::fruit1)
+			_Snake.grow();
+		else if (_Fruit.get_Type() == Pattern::fruit2)
+			_Snake.speedincrease();
+		else if (_Fruit.get_Type() == Pattern::fruit3)
+			_Snake.speeddecrease();
+		else if (_Fruit.get_Type() == Pattern::fruit4)
+			_Snake.scissors();
 		popFruit();
 		if (_Level * 5 + 9 == _Snake.getSize())
 		{
@@ -153,8 +160,10 @@ void	Game::update()
 
 void	Game::display()
 {
+
 	const std::vector<Pattern>& snake = _Snake.getBody();
 	_Display->drawField();
+
 	_Display->drawPattern(
 		_Fruit.get_Position().x,
 		_Fruit.get_Position().y,
@@ -162,6 +171,7 @@ void	Game::display()
 		_Fruit.get_Size().y,
 		_Fruit.get_Type()
 	);
+	
 	for (const Pattern& part : snake)
 	{
 		_Display->drawPattern(
@@ -187,8 +197,9 @@ void	Game::display()
 		snake[0].get_Position().y,
 		snake[0].get_Size().x,
 		snake[0].get_Size().y,
-		Pattern::head
+		snake[0].get_Type()
 	);
+	
 	_Display->display();
 }
 
@@ -222,5 +233,18 @@ Point	Game::getRand()
 
 void	Game::popFruit()
 {
+	static int	num = 0;
+
+	if (num % 2 == 0 )
+		_Fruit.set_Type(Pattern::fruit1);
+	else if (num % 3 == 0 )
+		_Fruit.set_Type(Pattern::fruit2);
+	else if (num % 5 == 0 )
+		_Fruit.set_Type(Pattern::fruit3);
+	else if (num % 7 == 0 )
+		_Fruit.set_Type(Pattern::fruit4);
+	else
+		_Fruit.set_Type(Pattern::fruit1);
 	_Fruit.set_Position(getRand());
+	num++;
 }

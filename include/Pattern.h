@@ -9,6 +9,10 @@ class	Pattern
 		enum Type
 		{
 			fruit,
+			fruit1,
+			fruit2,
+			fruit3,
+			fruit4,
 			wall,
 			body,
 			bodyLU,
@@ -17,7 +21,12 @@ class	Pattern
 			bodyRD,
 			bodyLR,
 			bodyUD,
-			head
+			head,
+			headL,
+			headR,
+			headU,
+			headD,
+
 		};
 
 		Pattern(Point position, Type type);

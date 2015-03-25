@@ -19,26 +19,29 @@ class Snake
 		Snake(int x, int y);
 		~Snake();
 
-		void					move();
-		void					grow();
-		void					slim();
-		void					setDirection(Direction dir);
-		void					setDirectionFrom(Direction dir);
-		Point					getPosition() const;
-		bool					isOnBody(Point) const;
-		bool					eatsItself() const;
-		const std::vector<Pattern>& getBody() const;
-		int						getSize() const;
+		void							move();
+		void							speedincrease();
+		void							speeddecrease();
+		void							scissors();
+		void							grow();
+		void							slim();
+		void							setDirection(Direction dir);
+		Direction						getDirection() const;
+		Point							getPosition() const;
+		bool							isOnBody(Point) const;
+		bool							eatsItself() const;
+		const std::vector<Pattern>&		getBody() const;
+		int								getSize() const;
 
 	private:
-		Direction				_Direction;
-		Direction				_DirectionFrom;
-		std::vector<Pattern>	_Body;
-		int						_Alive;
+		Direction						_Direction;
+		Direction						_DirectionFrom;
+		std::vector<Pattern>			_Body;
+		int								_Alive;
 
 		Snake();
 		Snake(const Snake&);
-		Snake&					operator=(const Snake&);
+		Snake&							operator=(const Snake&);
 };
 
 #endif
