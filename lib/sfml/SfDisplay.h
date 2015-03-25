@@ -22,6 +22,7 @@ class SfDisplay : public IDisplay
 			Pattern::Type type
 		) override;
 		void			drawField() override;
+		void			drawScoring( int pts ) override;
 		IDisplay::Key	getEvent() override;
 		void			close() override;
 		void			display() override;

@@ -149,6 +149,12 @@ void	GlDisplay::drawField()
 	glClear( GL_COLOR_BUFFER_BIT );
 }
 
+void	GlDisplay::drawScorring(int pts)
+{
+	(void)pts;
+	return ;
+}
+
 void	GlDisplay::display()
 {
 	glUseProgram(_ProgramID);

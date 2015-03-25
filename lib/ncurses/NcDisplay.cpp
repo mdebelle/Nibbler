@@ -114,6 +114,17 @@ void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::T
 	attroff(COLOR_PAIR(colo));
 }
 
+void	NcDisplay::drawScoring(int pts)
+{
+	attron(COLOR_PAIR(1));
+	move(_SizeY + 2, 0);
+	for (int i = 0; i < _SizeX + 2; i++)
+		addch(' ');
+	mvwprintw(stdscr, _SizeY + 2, 0, "%s %4d", "Scoring", pts);
+	attroff(COLOR_PAIR(1));
+	return ;
+}
+
 void	NcDisplay::drawField()
 {
 	clear();
@@ -131,6 +142,7 @@ void	NcDisplay::drawField()
 	move(_SizeY + 1, 0);
 	for (int i = 0; i < _SizeX + 2; i++)
 		addch(97 | A_ALTCHARSET);
+
 	attroff(COLOR_PAIR(1));
 }
 

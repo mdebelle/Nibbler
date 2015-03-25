@@ -46,6 +46,12 @@ void	SfDisplay::drawField()
 	_Texture.clear(sf::Color::Black);
 }
 
+void	SfDisplay::drawScoring(int pts)
+{
+	(void)pts;
+	return ;
+}
+
 void	SfDisplay::display()
 {
 	sf::Sprite sprite(_Texture.getTexture());

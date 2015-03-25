@@ -24,6 +24,7 @@ private:
 	Game& operator=(const Game &);
 
 	Point				getRand();
+	int					getPts() const;
 	void				popFruit();
 	Pattern				_Fruit;
 	Snake				_Snake;
@@ -50,6 +51,7 @@ private:
 	bool				_IsRunning;
 	bool				_IsPaused;
 	int					_Level;
+	int					_Pts;
 };
 
 #endif

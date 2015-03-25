@@ -12,7 +12,8 @@ Game::Game(int x, int y) :
 	_Display(nullptr),
 	_IsRunning(false),
 	_IsPaused(false),
-	_Level(0)
+	_Level(0),
+	_Pts(0)
 {
 	_Key_map[IDisplay::ESC] = &Game::KEsc;
 	_Key_map[IDisplay::SPACE] = &Game::KSpace;
@@ -199,7 +200,10 @@ void	Game::display()
 		snake[0].get_Size().y,
 		snake[0].get_Type()
 	);
+	_Pts++;
+	_Display->drawScoring(_Pts);
 	
+
 	_Display->display();
 }
 
@@ -229,6 +233,11 @@ Point	Game::getRand()
 	if (x == _Area.get_Width())
 		x = 0;
 	return Point(x, y);
+}
+
+int		Game::getPts() const
+{
+	return _Pts;
 }
 
 void	Game::popFruit()
