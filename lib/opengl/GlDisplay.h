@@ -36,7 +36,7 @@ class GlDisplay : public IDisplay
 		GLuint			_VertexArrayID;
 		GLuint			_VertexBuffer;
 
-		GLuint			loadShader(const char*, const char*);
+		void			loadShader(const char*);
 		GLfloat			g_vertex_buffer_data[9];
 };
 
