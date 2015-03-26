@@ -166,7 +166,7 @@ void	Game::update()
 		else if (_Fruit.get_Type() == Pattern::fruit4)
 			_Snake.scissors();
 		popFruit();
-		if (_Level * 5 + 9 == _Snake.getSize())
+		if (_Level * 5 + 9 <= _Snake.getSize())
 		{
 			_Level++;
 			for (int i = 0; i < 4; i++)
