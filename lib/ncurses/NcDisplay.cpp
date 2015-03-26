@@ -1,5 +1,4 @@
 #include "NcDisplay.h"
-#include <ncurses.h>
 #include <sys/ioctl.h>
 
 NcDisplay::NcDisplay() : _SizeX(0), _SizeY(0)
@@ -13,6 +12,23 @@ NcDisplay::NcDisplay() : _SizeX(0), _SizeY(0)
 	_Key_map['1'] = IDisplay::ONE;
 	_Key_map['2'] = IDisplay::TWO;
 	_Key_map['3'] = IDisplay::THREE;
+
+	_Charset[Pattern::bodyLU] = 106|A_ALTCHARSET;
+	_Charset[Pattern::bodyLD] = 107|A_ALTCHARSET;
+	_Charset[Pattern::bodyRU] = 109|A_ALTCHARSET;
+	_Charset[Pattern::bodyRD] = 108|A_ALTCHARSET;
+	_Charset[Pattern::bodyLR] = 113|A_ALTCHARSET;
+	_Charset[Pattern::bodyUD] = 120|A_ALTCHARSET;
+	_Charset[Pattern::fruit1] = '1';
+	_Charset[Pattern::fruit2] = '2';
+	_Charset[Pattern::fruit3] = '3';
+	_Charset[Pattern::fruit4] = '4';
+	_Charset[Pattern::headL] = '<';
+	_Charset[Pattern::headR] = '>';
+	_Charset[Pattern::headU] = '^';
+	_Charset[Pattern::headD] = 'v';
+	_Charset[Pattern::wall] = ' ';
+
 	return ;
 }
 
@@ -52,25 +68,13 @@ void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::T
 {
 	int	colo = 1;
 
-	if (type == Pattern::body
-		|| type == Pattern::bodyLU
-		|| type == Pattern::bodyLD
-		|| type == Pattern::bodyRU
-		|| type == Pattern::bodyRD
-		|| type == Pattern::bodyLR
-		|| type == Pattern::bodyUD)
+	if (type == Pattern::bodyLU || type == Pattern::bodyLD || type == Pattern::bodyRU ||
+		type == Pattern::bodyRD || type == Pattern::bodyLR || type == Pattern::bodyUD
+	)
 		colo = 2;
-	else if (type == Pattern::fruit
-		|| type == Pattern::fruit1
-		|| type == Pattern::fruit2
-		|| type == Pattern::fruit3
-		|| type == Pattern::fruit4)
+	else if (type == Pattern::fruit1 || type == Pattern::fruit2 || type == Pattern::fruit3 || type == Pattern::fruit4)
 		colo = 3;
-	else if (type == Pattern::head
-		|| type == Pattern::headL
-		|| type == Pattern::headR
-		|| type == Pattern::headU
-		|| type == Pattern::headD)
+	else if (type == Pattern::headL || type == Pattern::headR || type == Pattern::headU || type == Pattern::headD)
 		colo = 4;
 
 	attron(COLOR_PAIR(colo));
@@ -79,36 +83,7 @@ void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::T
 		for (int i = 1; i <= sizeX; i++)
 		{
 			move(posY + j, (posX + i));
-			if (type == Pattern::bodyLU)
-				addch(106|A_ALTCHARSET);
-			else if (type == Pattern::bodyLD)
-				addch(107|A_ALTCHARSET);
-			else if (type == Pattern::bodyRU)
-				addch(109|A_ALTCHARSET);
-			else if (type == Pattern::bodyRD)
-				addch(108|A_ALTCHARSET);
-			else if (type == Pattern::bodyLR)
-				addch(ACS_HLINE);
-			else if (type == Pattern::bodyUD)
-				addch(120|A_ALTCHARSET);
-			else if (type == Pattern::fruit1)
-				addch('1');
-			else if (type == Pattern::fruit2)
-				addch('2');
-			else if (type == Pattern::fruit3)
-				addch('3');
-			else if (type == Pattern::fruit4)
-				addch('4');
-			else if (type == Pattern::headL)
-				addch('<');	
-			else if (type == Pattern::headR)
-				addch('>');	
-			else if (type == Pattern::headU)
-				addch('^');	
-			else if (type == Pattern::headD)
-				addch('v');
-			else
-				addch(' ');
+			addch(_Charset.at(type));
 		}
 	}
 	attroff(COLOR_PAIR(colo));

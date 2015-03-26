@@ -2,6 +2,7 @@
 # define SFDISPLAY_H
 
 # include <map>
+# include <ncurses.h>
 # include "IDisplay.h"
 # include "tools.h"
 
@@ -29,6 +30,7 @@ class NcDisplay : public IDisplay
 		int				_SizeX;
 		int				_SizeY;
 		std::map<int, IDisplay::Key>	_Key_map;
+		std::map<Pattern::Type, chtype>	_Charset;
 };
 
 #endif

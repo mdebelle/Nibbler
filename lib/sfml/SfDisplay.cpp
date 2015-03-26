@@ -32,11 +32,13 @@ void	SfDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::T
 
 	pattern.setSize(sf::Vector2f(sizeX * UNIT_SIZE, sizeY * UNIT_SIZE));
 	pattern.setPosition(posX * UNIT_SIZE, posY * UNIT_SIZE);
-	if (type == Pattern::body)
+	if (type == Pattern::bodyLR || type == Pattern::bodyUD || type == Pattern::bodyLU ||
+		type == Pattern::bodyLD || type == Pattern::bodyRD || type == Pattern::bodyRU
+	)
 		pattern.setFillColor(sf::Color::Green);
-	else if (type == Pattern::head)
+	else if (type == Pattern::headL || type == Pattern::headR || type == Pattern::headU || type == Pattern::headD)
 		pattern.setFillColor(sf::Color::Yellow);
-	else if (type == Pattern::fruit)
+	else if (type == Pattern::fruit1 || type == Pattern::fruit2 || type == Pattern::fruit3 || type == Pattern::fruit4)
 		pattern.setFillColor(sf::Color::Red);
 	_Texture.draw(pattern);
 }

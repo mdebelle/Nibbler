@@ -8,20 +8,17 @@ class	Pattern
 	public:
 		enum Type
 		{
-			fruit,
 			fruit1,
 			fruit2,
 			fruit3,
 			fruit4,
 			wall,
-			body,
 			bodyLU,
 			bodyLD,
 			bodyRU,
 			bodyRD,
 			bodyLR,
 			bodyUD,
-			head,
 			headL,
 			headR,
 			headU,

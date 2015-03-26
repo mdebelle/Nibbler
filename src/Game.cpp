@@ -6,7 +6,7 @@
 #include "DisplayFactory.h"
 
 Game::Game(int x, int y) :
-	_Fruit(Point(0, 0), Pattern::fruit),
+	_Fruit(Point(0, 0), Pattern::fruit1),
 	_Snake((x / 2) - 1, y / 2),
 	_Area(Point(x, y)),
 	_Display(nullptr),
