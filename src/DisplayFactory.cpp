@@ -1,6 +1,7 @@
 #include "DisplayFactory.h"
 #include <iostream>
 #include <cstdlib>
+#include <stdexcept>
 
 DisplayFactory::DisplayFactory()
 {

@@ -3,9 +3,17 @@ NAME		= ../opengl.so
 CXX			= g++
 CXXFLAGS	= -Wall -Werror -Wextra -fpic -std=c++11 -g -Wno-deprecated
 
-INC			= -I ../../include -I ~/.brew/include
+OS			= $(shell uname -s)
+ifeq ($(OS),Linux)
+	LIB		= -L /usr/lib -lGL -lglfw
+	INC		= -I /usr/include
+else
+	LIB		= -L ~/.brew/lib -framework OpenGL -lglfw3
+	INC		= -I ~/.brew/include
+endif
 
-LIB			= -L ~/.brew/lib -lGLEW -lglfw3 -framework OpenGL
+INC			+= -I ../../include
+LIB			+= -lGLEW 
 
 SRC			= GlDisplay.cpp \
 			  class_loader.cpp

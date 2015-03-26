@@ -149,7 +149,7 @@ void	GlDisplay::drawField()
 	glClear( GL_COLOR_BUFFER_BIT );
 }
 
-void	GlDisplay::drawScorring(int pts)
+void	GlDisplay::drawScoring(int pts)
 {
 	(void)pts;
 	return ;

@@ -3,9 +3,16 @@ NAME		= ../sfml.so
 CXX			= g++
 CXXFLAGS	= -Wall -Werror -Wextra -fpic -std=c++11 -g
 
-INC			= -I ../../include -I ~/.brew/include
-
-LIB			= -L ~/.brew/lib -lsfml-system -lsfml-window -lsfml-graphics
+OS			= $(shell uname -s)
+ifeq ($(OS),Linux)
+	LIB		= -L /usr/lib
+	INC		= -I /usr/include
+else
+	LIB		= -L ~/.brew/lib
+	INC		= -I ~/.brew/include
+endif
+LIB			+= -lsfml-system -lsfml-window -lsfml-graphics
+INC			+= -I ../../include
 
 SRC			= SfDisplay.cpp \
 			  class_loader.cpp
