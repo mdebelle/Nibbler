@@ -175,6 +175,7 @@ void	Game::update()
 	}
 	else
 		_Snake.move();
+	_Pts++;
 }
 
 void	Game::display()
@@ -218,7 +219,6 @@ void	Game::display()
 		snake[0].get_Size().y,
 		snake[0].get_Type()
 	);
-	_Pts++;
 	_Display->drawScoring(_Pts);
 	
 
