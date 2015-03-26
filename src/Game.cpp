@@ -111,20 +111,38 @@ void	Game::KSpace()
 
 void	Game::KOne()
 {
-	DisplayFactory::load(_Display, 1);
-	_Display->init(_Area.get_Width(), _Area.get_Height());
+	try {
+		DisplayFactory::load(_Display, 1);
+		_Display->init(_Area.get_Width(), _Area.get_Height());
+	}
+	catch (std::exception& ex) {
+		std::cerr << ex.what() << std::endl;
+		exit(-1);
+	}
 }
 
 void	Game::KTwo()
 {
-	DisplayFactory::load(_Display, 2);
-	_Display->init(_Area.get_Width(), _Area.get_Height());
+	try {
+		DisplayFactory::load(_Display, 2);
+		_Display->init(_Area.get_Width(), _Area.get_Height());
+	}
+	catch (std::exception& ex) {
+		std::cerr << ex.what() << std::endl;
+		KOne();
+	}
 }
 
 void	Game::KThree()
 {
-	DisplayFactory::load(_Display, 3);
-	_Display->init(_Area.get_Width(), _Area.get_Height());
+	try {
+		DisplayFactory::load(_Display, 3);
+		_Display->init(_Area.get_Width(), _Area.get_Height());
+	}
+	catch (std::exception& ex) {
+		std::cerr << ex.what() << std::endl;
+		KOne();
+	}
 }
 
 
