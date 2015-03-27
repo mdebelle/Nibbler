@@ -1,9 +1,14 @@
 #ifndef SNAKE_H
 # define SNAKE_H
 
+# include <map>
 # include <vector>
 # include "Pattern.h"
 # include "tools.h"
+
+class Snake;
+typedef void(Snake::*DirSnake)();
+
 
 class Snake
 {
@@ -32,12 +37,17 @@ class Snake
 		bool							eatsItself() const;
 		const std::vector<Pattern>&		getBody() const;
 		int								getSize() const;
+		void							DirLeft();
+		void							DirRight();
+		void							DirUp();
+		void							DirDown();
 
 	private:
-		Direction						_Direction;
-		Direction						_DirectionFrom;
-		std::vector<Pattern>			_Body;
-		int								_Alive;
+		Direction								_Direction;
+		Direction								_DirectionFrom;
+		std::vector<Pattern>					_Body;
+		int										_Alive;
+		std::map<Snake::Direction, DirSnake>	_SnakeDir;
 
 		Snake();
 		Snake(const Snake&);

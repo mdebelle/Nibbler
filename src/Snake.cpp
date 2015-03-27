@@ -8,6 +8,12 @@ Snake::Snake(int x, int y) :
 	_Body.push_back(Pattern(Point(x + 1, y), Pattern::bodyLR));
 	_Body.push_back(Pattern(Point(x + 2, y), Pattern::bodyLR));
 	_Body.push_back(Pattern(Point(x + 3, y), Pattern::bodyLR));
+
+	_SnakeDir[Snake::UP] = &Snake::DirUp;
+	_SnakeDir[Snake::DOWN] = &Snake::DirDown;
+	_SnakeDir[Snake::LEFT] = &Snake::DirLeft;
+	_SnakeDir[Snake::RIGHT] = &Snake::DirRight;
+
 	return ;
 }
 
@@ -37,47 +43,70 @@ Snake::Direction	Snake::getDirection() const
 
 void	Snake::grow()
 {
-	Point	pos(_Body.front().get_Position());
 
-
-	if (_Direction == LEFT)
-	{
-		pos.x -= 1;
-		if (_Body[0].get_Position().y == _Body[1].get_Position().y)
-			_Body[0].set_Type(Pattern::bodyLR);
-		else
-			(_Body[0].get_Position().y < _Body[1].get_Position().y) ? _Body[0].set_Type(Pattern::bodyLD) : _Body[0].set_Type(Pattern::bodyLU);
-		_Body.insert(_Body.begin(), Pattern(pos, Pattern::headL));
-	}
-	else if (_Direction == RIGHT)
-	{
-		pos.x += 1;
-		if (_Body[0].get_Position().y == _Body[1].get_Position().y)
-			_Body[0].set_Type(Pattern::bodyLR);
-		else
-			(_Body[0].get_Position().y < _Body[1].get_Position().y) ? _Body[0].set_Type(Pattern::bodyRD) : _Body[0].set_Type(Pattern::bodyRU);
-		_Body.insert(_Body.begin(), Pattern(pos, Pattern::headR));
-	}
-	else if (_Direction == UP)
-	{
-		pos.y -= 1;
-		if (_Body[0].get_Position().x == _Body[1].get_Position().x)
-			_Body[0].set_Type(Pattern::bodyUD);
-		else
-			(_Body[0].get_Position().x < _Body[1].get_Position().x) ? _Body[0].set_Type(Pattern::bodyRU) : _Body[0].set_Type(Pattern::bodyLU);
-		_Body.insert(_Body.begin(), Pattern(pos, Pattern::headU));
-	}
-	else if (_Direction == DOWN)
-	{
-		pos.y += 1;
-		if (_Body[0].get_Position().x == _Body[1].get_Position().x)
-			_Body[0].set_Type(Pattern::bodyUD);
-		else
-			(_Body[0].get_Position().x < _Body[1].get_Position().x) ? _Body[0].set_Type(Pattern::bodyRD) : _Body[0].set_Type(Pattern::bodyLD);
-		_Body.insert(_Body.begin(), Pattern(pos, Pattern::headD));
-	}
+	(this->*(_SnakeDir.at(_Direction)))();
 	return ;
 }
+
+void	Snake::DirLeft()
+{
+	Point	pos(_Body.front().get_Position());
+
+	pos.x -= 1;
+	if (_Body[0].get_Position().y == _Body[1].get_Position().y)
+		_Body[0].set_Type(Pattern::bodyLR);
+	else
+		(_Body[0].get_Position().y < _Body[1].get_Position().y) ? _Body[0].set_Type(Pattern::bodyLD) : _Body[0].set_Type(Pattern::bodyLU);
+
+	_Body.insert(_Body.begin(), Pattern(pos, Pattern::headL));
+	return ;
+}
+
+void	Snake::DirRight()
+{
+	Point	pos(_Body.front().get_Position());
+
+	pos.x += 1;
+
+	if (_Body[0].get_Position().y == _Body[1].get_Position().y)
+		_Body[0].set_Type(Pattern::bodyLR);
+	else
+		(_Body[0].get_Position().y < _Body[1].get_Position().y) ? _Body[0].set_Type(Pattern::bodyRD) : _Body[0].set_Type(Pattern::bodyRU);
+
+	_Body.insert(_Body.begin(), Pattern(pos, Pattern::headR));
+	return ;
+}
+
+void	Snake::DirUp()
+{
+	Point	pos(_Body.front().get_Position());
+
+	pos.y -= 1;
+	
+	if (_Body[0].get_Position().x == _Body[1].get_Position().x)
+		_Body[0].set_Type(Pattern::bodyUD);
+	else
+		(_Body[0].get_Position().x < _Body[1].get_Position().x) ? _Body[0].set_Type(Pattern::bodyRU) : _Body[0].set_Type(Pattern::bodyLU);
+	
+	_Body.insert(_Body.begin(), Pattern(pos, Pattern::headU));
+	return ;
+}
+
+void	Snake::DirDown()
+{
+	Point	pos(_Body.front().get_Position());
+
+	pos.y += 1;
+
+	if (_Body[0].get_Position().x == _Body[1].get_Position().x)
+		_Body[0].set_Type(Pattern::bodyUD);
+	else
+		(_Body[0].get_Position().x < _Body[1].get_Position().x) ? _Body[0].set_Type(Pattern::bodyRD) : _Body[0].set_Type(Pattern::bodyLD);
+
+	_Body.insert(_Body.begin(), Pattern(pos, Pattern::headD));
+	return ;
+}
+
 
 void	Snake::speedincrease()
 {
