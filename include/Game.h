@@ -46,6 +46,7 @@ private:
 	void				KTwo();
 	void				KThree();
 
+	void				menu();
 	void				speedincrease();
 	void				speeddecrease();
 

@@ -13,7 +13,7 @@ Game::Game(int x, int y) :
 	_IsRunning(false),
 	_IsPaused(false),
 	_Level(0),
-	_Speed(0),
+	_Speed(1),
 	_Pts(0)
 {
 	_Key_map[IDisplay::ESC] = &Game::KEsc;
@@ -48,6 +48,9 @@ void	Game::launch()
 {
 	_IsRunning = true;
 
+	menu();
+ 
+ 	sleep(2);
 	while (_IsRunning)
 	{
 		display();
@@ -182,18 +185,23 @@ void	Game::update()
 void	Game::speeddecrease()
 {
 	if (_Speed > 0)
-		_Speed--;
+		_Speed -= 1;
 	return ;
 }
 
 void	Game::speedincrease()
 {
 	if (_Speed < 10)
-		_Speed++;
+		_Speed += 1;
 	return ;
 }
 
-
+void	Game::menu()
+{
+	_Display->drawMenu();
+	_Display->display();
+ 	return ;
+}
 
 void	Game::display()
 {
@@ -236,7 +244,7 @@ void	Game::display()
 		snake[0].get_Size().y,
 		snake[0].get_Type()
 	);
-	_Display->drawScoring(_Pts);
+	_Display->drawScoring(_Pts, _Level, _Speed);
 	
 
 	_Display->display();

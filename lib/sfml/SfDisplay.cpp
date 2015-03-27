@@ -48,9 +48,16 @@ void	SfDisplay::drawField()
 	_Texture.clear(sf::Color::Black);
 }
 
-void	SfDisplay::drawScoring(int pts)
+void	SfDisplay::drawMenu()
+{
+	return ;
+}
+
+void	SfDisplay::drawScoring(int pts, int level, int speed)
 {
 	(void)pts;
+	(void)level;
+	(void)speed;
 	return ;
 }
 

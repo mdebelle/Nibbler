@@ -27,7 +27,8 @@ class IDisplay
 		virtual void	close() = 0;
 
 		virtual void	drawField() = 0;
-		virtual void	drawScoring( int pts ) = 0;
+		virtual void	drawMenu() = 0;
+		virtual void	drawScoring(int pts, int level, int speed) = 0;
 		virtual void	drawPattern(
 			int posX,
 			int posY,

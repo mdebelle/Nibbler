@@ -14,7 +14,8 @@ class NcDisplay : public IDisplay
 
 		void			init(int width, int height) override;
 		void			drawField() override;
-		void			drawScoring( int pts ) override;
+		void			drawMenu() override;
+		void			drawScoring(int pts, int level, int speed) override;
 		void			drawPattern(
 			int posX,
 			int posY,
