@@ -25,8 +25,6 @@ class Snake
 		~Snake();
 
 		void							move();
-		void							speedincrease();
-		void							speeddecrease();
 		void							scissors();
 		void							grow();
 		void							slim();

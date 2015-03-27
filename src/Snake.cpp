@@ -107,25 +107,6 @@ void	Snake::DirDown()
 	return ;
 }
 
-
-void	Snake::speedincrease()
-{
-	grow();
-	grow();
-	grow();
-	// speedincrease a pour bute non pas de faire grandire +++ le serpent mais de le faire se déplacer plus vite
-	// Pas besoin de toucher le serpent pour ca, il vaut mieux modifier la classe Game. On aurait besoin d'une variable _Speed.
-	return ;
-}
-
-void	Snake::speeddecrease()
-{
-	grow();
-	grow();
-	// speeddecrease a pour bute non pas de faire grandire ++ le serpent mais de le faire se déplacer moins vite
-	return ;
-}
-
 void	Snake::scissors()
 {
 	for (unsigned int i = _Body.size() / 2; i > 0; i--)

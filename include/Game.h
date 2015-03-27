@@ -46,11 +46,15 @@ private:
 	void				KTwo();
 	void				KThree();
 
+	void				speedincrease();
+	void				speeddecrease();
+
 	IDisplay			*_Display;
 	std::map<IDisplay::Key, GameKey>	_Key_map;
 	bool				_IsRunning;
 	bool				_IsPaused;
 	int					_Level;
+	int					_Speed;
 	int					_Pts;
 };
 
