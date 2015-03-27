@@ -4,12 +4,7 @@
 #include <string>
 #include <fstream>
 
-GlDisplay::GlDisplay() :
-	g_vertex_buffer_data {
-		-1.0f, -1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f,
-		0.0f,  1.0f, 0.0f,
-	}
+GlDisplay::GlDisplay()
 {
 	_Key_map[GLFW_KEY_SPACE] = IDisplay::SPACE;
 	_Key_map[GLFW_KEY_ESCAPE] = IDisplay::ESC;
@@ -38,6 +33,8 @@ void	GlDisplay::init(int width, int height)
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+	_Width = width * UNIT_SIZE;
+	_Height = height * UNIT_SIZE;
 	_Window = glfwCreateWindow(width * UNIT_SIZE, height * UNIT_SIZE, "Nibbler", NULL, NULL);
 	if (!_Window)
 	{
@@ -54,8 +51,8 @@ void	GlDisplay::init(int width, int height)
 
 	_ProgramID = glCreateProgram();
 	try {
-		loadShader("lib/opengl/shader/vertex.glsl");
-		loadShader("lib/opengl/shader/fragment.glsl");
+		loadShader("lib/opengl/shader/vertex.glsl", GL_VERTEX_SHADER);
+		loadShader("lib/opengl/shader/fragment.glsl", GL_FRAGMENT_SHADER);
 	}
 	catch (std::exception& ex) { throw ex; }
 	glLinkProgram(_ProgramID);
@@ -72,21 +69,20 @@ void	GlDisplay::init(int width, int height)
 	}
 
 	glGenBuffers(1, &_VertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, _VertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+	glGenBuffers(1, &_ColorBuffer);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-void	GlDisplay::loadShader(const char* file_path)
+void	GlDisplay::loadShader(const char* file_path, GLenum shaderType)
 {
-	GLuint shaderID = glCreateShader(GL_VERTEX_SHADER);
+	GLuint shaderID = glCreateShader(shaderType);
 
 	std::string shaderCode;
 	std::ifstream shaderStream(file_path, std::ios::in);
-	if(!shaderStream.is_open())
+	if (!shaderStream.is_open())
 		throw std::runtime_error(std::string("Impossible to open ") + file_path + ".");
 	std::string line = "";
-	while(getline(shaderStream, line))
+	while (getline(shaderStream, line))
 		shaderCode += "\n" + line;
 	shaderStream.close();
 
@@ -99,7 +95,7 @@ void	GlDisplay::loadShader(const char* file_path)
 
 	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if ( InfoLogLength > 0 )
+	if (InfoLogLength > 0)
 	{
 		std::vector<char> errorMessage(InfoLogLength + 1);
 		glGetShaderInfoLog(shaderID, InfoLogLength, NULL, &errorMessage[0]);
@@ -112,17 +108,44 @@ void	GlDisplay::loadShader(const char* file_path)
 
 void	GlDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::Type type)
 {
+	float	sqrt_size = 2 / (_Width / UNIT_SIZE);
 
-	(void)posX;
-	(void)posY;
-	(void)sizeX;
-	(void)sizeY;
-	(void)type;
+	_Vertices.insert(_Vertices.end(), {
+		-1 + (posX * sqrt_size), 1 - (posY * sqrt_size), 0.0f,
+		-1 + ((posX + sizeX) * sqrt_size), 1 - (posY * sqrt_size), 0.0f,
+		-1 + (posX * sqrt_size), 1 - ((posY + sizeY) * sqrt_size), 0.0f,
+		-1 + ((posX + sizeX) * sqrt_size), 1 - (posY * sqrt_size), 0.0f,
+		-1 + (posX * sqrt_size), 1 - ((posY + sizeY) * sqrt_size), 0.0f,
+		-1 + ((posX + sizeX) * sqrt_size), 1 - ((posY + sizeY) * sqrt_size), 0.0f
+	});
+ 
+	float c[3] = { 0.0f, 0.0f, 0.0f };
+	if (type == Pattern::bodyLR || type == Pattern::bodyUD || type == Pattern::bodyLU ||
+		type == Pattern::bodyLD || type == Pattern::bodyRD || type == Pattern::bodyRU
+	)
+		c[1] = 1.0f;
+	else if (type == Pattern::headL || type == Pattern::headR || type == Pattern::headU || type == Pattern::headD)
+	{
+		c[0] = 1.0f;
+		c[1] = 1.0f;
+	}
+	else if (type == Pattern::fruit1 || type == Pattern::fruit2 || type == Pattern::fruit3 || type == Pattern::fruit4)
+		c[0] = 1.0f;
+	else
+	{
+		c[0] = 1.0f;
+		c[1] = 1.0f;
+		c[2] = 1.0f;
+	}
+	for (int i = 0; i < 6; i++)
+		_Colors.insert(_Colors.end(), { c[0], c[1], c[2] });
 }
 
 void	GlDisplay::drawField()
 {
 	glClear( GL_COLOR_BUFFER_BIT );
+	_Vertices.clear();
+	_Colors.clear();
 }
 
 void	GlDisplay::drawScoring(int pts)
@@ -137,10 +160,17 @@ void	GlDisplay::display()
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, _VertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * _Vertices.size(), &_Vertices[0], GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, _ColorBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * _Colors.size(), &_Colors[0], GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+	glDrawArrays(GL_TRIANGLES, 0, _Vertices.size());
 	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
 
 	glfwSwapBuffers(_Window);
 }
@@ -148,6 +178,7 @@ void	GlDisplay::display()
 void	GlDisplay::close()
 {
 	glDeleteBuffers(1, &_VertexBuffer);
+	glDeleteBuffers(1, &_ColorBuffer);
 	glDeleteVertexArrays(1, &_VertexArrayID);
 	glDeleteProgram(_ProgramID);
 	glfwTerminate();
