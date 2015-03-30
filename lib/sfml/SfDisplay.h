@@ -29,10 +29,11 @@ class SfDisplay : public IDisplay
 		void			display() override;
 
 	private:
+		sf::Vector2i		_Size;
 		sf::RenderWindow	_Window;
 		sf::RenderTexture	_Texture;
-		sf::Texture			_SnakeSpritesheet;
-		sf::Sprite			_SnakeSprite;
+		sf::Texture			_Spritesheet;
+		sf::Sprite			_Sprite;
 		std::map<sf::Keyboard::Key, IDisplay::Key>	_Key_map;
 		std::map<Pattern::Type, sf::Vector2i>		_SnakeAssets;
 };

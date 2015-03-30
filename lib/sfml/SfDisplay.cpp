@@ -42,28 +42,70 @@ SfDisplay::~SfDisplay()
 
 void	SfDisplay::init(int width, int height)
 {
-	if (!_SnakeSpritesheet.loadFromFile("lib/sfml/snake.png"))
+	_Size.x = width;
+	_Size.y = height;
+	if (!_Spritesheet.loadFromFile("lib/sfml/snake.png"))
 		throw std::runtime_error("Failed to load snake spritesheet (snake.png).");
-	_SnakeSprite.setTexture(_SnakeSpritesheet);
-	if (!_Texture.create(width * UNIT_SIZE, height * UNIT_SIZE))
+	_Sprite.setTexture(_Spritesheet);
+	if (!_Texture.create((width + 2) * UNIT_SIZE, (height + 2) * UNIT_SIZE))
 		throw std::runtime_error("Failed to create window.");
-	_Window.create(sf::VideoMode(width * UNIT_SIZE, height * UNIT_SIZE), "Nibbler");
+	_Window.create(sf::VideoMode((width + 2) * UNIT_SIZE, (height + 2) * UNIT_SIZE), "Nibbler");
 }
 
 void	SfDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::Type type)
 {
-	_SnakeSprite.setPosition(posX * UNIT_SIZE, posY * UNIT_SIZE);
-	_SnakeSprite.setTextureRect( {
+	_Sprite.setPosition((posX + 1) * UNIT_SIZE, (posY + 1) * UNIT_SIZE);
+	_Sprite.setTextureRect( {
 		_SnakeAssets[type].x * UNIT_SIZE,
 		_SnakeAssets[type].y * UNIT_SIZE,
 		sizeX * UNIT_SIZE, sizeY * UNIT_SIZE
 	} );
-	_Texture.draw(_SnakeSprite);
+	_Texture.draw(_Sprite);
 }
 
 void	SfDisplay::drawField()
 {
 	_Texture.clear(sf::Color::Black);
+
+	_Sprite.setPosition(0, 0);
+	_Sprite.setTextureRect({2 * UNIT_SIZE, 8 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
+	_Texture.draw(_Sprite);
+	_Sprite.setTextureRect({2 * UNIT_SIZE, 4 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
+	for (int i = 1; i < _Size.x + 1; i++)
+	{
+		_Sprite.setPosition(i * UNIT_SIZE, 0);
+		_Texture.draw(_Sprite);
+	}
+	_Sprite.setPosition((_Size.x + 1) * UNIT_SIZE, 0);
+	_Sprite.setTextureRect({2 * UNIT_SIZE, 5 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
+	_Texture.draw(_Sprite);
+	for (int j = 1; j < _Size.y + 1; j++)
+	{
+		_Sprite.setPosition(0, j * UNIT_SIZE);
+		_Sprite.setTextureRect({2 * UNIT_SIZE, 3 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
+		_Texture.draw(_Sprite);
+		_Sprite.setTextureRect({2 * UNIT_SIZE, 0 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
+		for (int i = 1; i < _Size.x + 1; i++)
+		{
+			_Sprite.setPosition(i * UNIT_SIZE, j * UNIT_SIZE);
+			_Texture.draw(_Sprite);
+		}
+		_Sprite.setPosition((_Size.x + 1) * UNIT_SIZE, j * UNIT_SIZE);
+		_Sprite.setTextureRect({2 * UNIT_SIZE, 1 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
+		_Texture.draw(_Sprite);
+	}
+	_Sprite.setPosition(0, (_Size.y + 1) * UNIT_SIZE);
+	_Sprite.setTextureRect({2 * UNIT_SIZE, 7 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
+	_Texture.draw(_Sprite);
+	_Sprite.setTextureRect({2 * UNIT_SIZE, 2 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
+	for (int i = 1; i < _Size.x + 1; i++)
+	{
+		_Sprite.setPosition(i * UNIT_SIZE, (_Size.y + 1) * UNIT_SIZE);
+		_Texture.draw(_Sprite);
+	}
+	_Sprite.setPosition((_Size.x + 1) * UNIT_SIZE, (_Size.y + 1) * UNIT_SIZE);
+	_Sprite.setTextureRect({2 * UNIT_SIZE, 6 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
+	_Texture.draw(_Sprite);
 }
 
 void	SfDisplay::drawMenu()
