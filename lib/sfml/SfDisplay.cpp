@@ -1,5 +1,7 @@
 #include "SfDisplay.h"
 
+// Alors comme ça on bosse à 7h30 du matin ?
+
 SfDisplay::SfDisplay()
 {
 	_Key_map[sf::Keyboard::Right] = IDisplay::RIGHT;
