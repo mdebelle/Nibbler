@@ -9,7 +9,6 @@
 class Snake;
 typedef void(Snake::*DirSnake)();
 
-
 class Snake
 {
 	public:
@@ -35,10 +34,6 @@ class Snake
 		bool							eatsItself() const;
 		const std::vector<Pattern>&		getBody() const;
 		int								getSize() const;
-		void							DirLeft();
-		void							DirRight();
-		void							DirUp();
-		void							DirDown();
 
 	private:
 		Direction								_Direction;
@@ -46,6 +41,12 @@ class Snake
 		std::vector<Pattern>					_Body;
 		int										_Alive;
 		std::map<Snake::Direction, DirSnake>	_SnakeDir;
+
+		void									updateTail();
+		void									DirLeft();
+		void									DirRight();
+		void									DirUp();
+		void									DirDown();
 
 		Snake();
 		Snake(const Snake&);

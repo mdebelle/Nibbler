@@ -141,6 +141,11 @@ void	GlDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::T
 		_Colors.insert(_Colors.end(), { c[0], c[1], c[2] });
 }
 
+void	GlDisplay::drawMenu()
+{
+
+}
+
 void	GlDisplay::drawField()
 {
 	glClear( GL_COLOR_BUFFER_BIT );
@@ -148,9 +153,11 @@ void	GlDisplay::drawField()
 	_Colors.clear();
 }
 
-void	GlDisplay::drawScoring(int pts)
+void	GlDisplay::drawScoring(int pts, int level, int speed)
 {
 	(void)pts;
+	(void)level;
+	(void)speed;
 	return ;
 }
 

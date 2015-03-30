@@ -8,22 +8,11 @@ class	Pattern
 	public:
 		enum Type
 		{
-			fruit1,
-			fruit2,
-			fruit3,
-			fruit4,
+			fruit1, fruit2, fruit3, fruit4,
 			wall,
-			bodyLU,
-			bodyLD,
-			bodyRU,
-			bodyRD,
-			bodyLR,
-			bodyUD,
-			headL,
-			headR,
-			headU,
-			headD,
-
+			bodyLU, bodyLD, bodyRU, bodyRD, bodyLR, bodyUD,
+			headL, headR, headU, headD,
+			tailL, tailR, tailU, tailD
 		};
 
 		Pattern(Point position, Type type);

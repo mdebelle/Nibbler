@@ -11,6 +11,27 @@ SfDisplay::SfDisplay()
 	_Key_map[sf::Keyboard::Num1] = IDisplay::ONE;
 	_Key_map[sf::Keyboard::Num2] = IDisplay::TWO;
 	_Key_map[sf::Keyboard::Num3] = IDisplay::THREE;
+
+	_SnakeAssets[Pattern::bodyUD] = {0, 0};
+	_SnakeAssets[Pattern::bodyLR] = {0, 1};
+	_SnakeAssets[Pattern::bodyLU] = {0, 2};
+	_SnakeAssets[Pattern::bodyRU] = {0, 3};
+	_SnakeAssets[Pattern::bodyRD] = {0, 4};
+	_SnakeAssets[Pattern::bodyLD] = {0, 5};
+	_SnakeAssets[Pattern::headD] = {0, 6};
+	_SnakeAssets[Pattern::headU] = {0, 7};
+	_SnakeAssets[Pattern::headL] = {0, 8};
+	_SnakeAssets[Pattern::headR] = {0, 9};
+	_SnakeAssets[Pattern::tailD] = {1, 0};
+	_SnakeAssets[Pattern::tailU] = {1, 1};
+	_SnakeAssets[Pattern::tailL] = {1, 2};
+	_SnakeAssets[Pattern::tailR] = {1, 3};
+	_SnakeAssets[Pattern::fruit1] = {1, 5};
+	_SnakeAssets[Pattern::fruit2] = {1, 4};
+	_SnakeAssets[Pattern::fruit3] = {1, 6};
+	_SnakeAssets[Pattern::fruit4] = {1, 7};
+	_SnakeAssets[Pattern::wall] = {1, 8};
+
 	return ;
 }
 
@@ -21,6 +42,9 @@ SfDisplay::~SfDisplay()
 
 void	SfDisplay::init(int width, int height)
 {
+	if (!_SnakeSpritesheet.loadFromFile("lib/sfml/snake.png"))
+		throw std::runtime_error("Failed to load snake spritesheet (snake.png).");
+	_SnakeSprite.setTexture(_SnakeSpritesheet);
 	if (!_Texture.create(width * UNIT_SIZE, height * UNIT_SIZE))
 		throw std::runtime_error("Failed to create window.");
 	_Window.create(sf::VideoMode(width * UNIT_SIZE, height * UNIT_SIZE), "Nibbler");
@@ -28,19 +52,13 @@ void	SfDisplay::init(int width, int height)
 
 void	SfDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::Type type)
 {
-	sf::RectangleShape pattern;
-
-	pattern.setSize(sf::Vector2f(sizeX * UNIT_SIZE, sizeY * UNIT_SIZE));
-	pattern.setPosition(posX * UNIT_SIZE, posY * UNIT_SIZE);
-	if (type == Pattern::bodyLR || type == Pattern::bodyUD || type == Pattern::bodyLU ||
-		type == Pattern::bodyLD || type == Pattern::bodyRD || type == Pattern::bodyRU
-	)
-		pattern.setFillColor(sf::Color::Green);
-	else if (type == Pattern::headL || type == Pattern::headR || type == Pattern::headU || type == Pattern::headD)
-		pattern.setFillColor(sf::Color::Yellow);
-	else if (type == Pattern::fruit1 || type == Pattern::fruit2 || type == Pattern::fruit3 || type == Pattern::fruit4)
-		pattern.setFillColor(sf::Color::Red);
-	_Texture.draw(pattern);
+	_SnakeSprite.setPosition(posX * UNIT_SIZE, posY * UNIT_SIZE);
+	_SnakeSprite.setTextureRect( {
+		_SnakeAssets[type].x * UNIT_SIZE,
+		_SnakeAssets[type].y * UNIT_SIZE,
+		sizeX * UNIT_SIZE, sizeY * UNIT_SIZE
+	} );
+	_Texture.draw(_SnakeSprite);
 }
 
 void	SfDisplay::drawField()

@@ -4,10 +4,10 @@ Snake::Snake(int x, int y) :
 	_Direction(LEFT),
 	_DirectionFrom(RIGHT)
 {
-	_Body.push_back(Pattern(Point(x, y), Pattern::bodyLR));
+	_Body.push_back(Pattern(Point(x, y), Pattern::headL));
 	_Body.push_back(Pattern(Point(x + 1, y), Pattern::bodyLR));
 	_Body.push_back(Pattern(Point(x + 2, y), Pattern::bodyLR));
-	_Body.push_back(Pattern(Point(x + 3, y), Pattern::bodyLR));
+	_Body.push_back(Pattern(Point(x + 3, y), Pattern::tailR));
 
 	_SnakeDir[Snake::UP] = &Snake::DirUp;
 	_SnakeDir[Snake::DOWN] = &Snake::DirDown;
@@ -43,7 +43,6 @@ Snake::Direction	Snake::getDirection() const
 
 void	Snake::grow()
 {
-
 	(this->*(_SnakeDir.at(_Direction)))();
 	return ;
 }
@@ -59,6 +58,7 @@ void	Snake::DirLeft()
 		(_Body[0].get_Position().y < _Body[1].get_Position().y) ? _Body[0].set_Type(Pattern::bodyLD) : _Body[0].set_Type(Pattern::bodyLU);
 
 	_Body.insert(_Body.begin(), Pattern(pos, Pattern::headL));
+	updateTail();
 	return ;
 }
 
@@ -74,6 +74,7 @@ void	Snake::DirRight()
 		(_Body[0].get_Position().y < _Body[1].get_Position().y) ? _Body[0].set_Type(Pattern::bodyRD) : _Body[0].set_Type(Pattern::bodyRU);
 
 	_Body.insert(_Body.begin(), Pattern(pos, Pattern::headR));
+	updateTail();
 	return ;
 }
 
@@ -89,6 +90,7 @@ void	Snake::DirUp()
 		(_Body[0].get_Position().x < _Body[1].get_Position().x) ? _Body[0].set_Type(Pattern::bodyRU) : _Body[0].set_Type(Pattern::bodyLU);
 	
 	_Body.insert(_Body.begin(), Pattern(pos, Pattern::headU));
+	updateTail();
 	return ;
 }
 
@@ -104,19 +106,37 @@ void	Snake::DirDown()
 		(_Body[0].get_Position().x < _Body[1].get_Position().x) ? _Body[0].set_Type(Pattern::bodyRD) : _Body[0].set_Type(Pattern::bodyLD);
 
 	_Body.insert(_Body.begin(), Pattern(pos, Pattern::headD));
+	updateTail();
 	return ;
+}
+
+void	Snake::updateTail()
+{
+	const Pattern& prev = _Body[_Body.size() - 2];
+
+	if (_Body.back().get_Position().x < prev.get_Position().x)
+		_Body.back().set_Type(Pattern::tailL);
+	else if (_Body.back().get_Position().x > prev.get_Position().x)
+		_Body.back().set_Type(Pattern::tailR);
+	else if (_Body.back().get_Position().y < prev.get_Position().y)
+		_Body.back().set_Type(Pattern::tailU);
+//	else if (_Body.end()->get_Position().y > prev.get_Position().y)
+	else
+		_Body.back().set_Type(Pattern::tailD);
 }
 
 void	Snake::scissors()
 {
 	for (unsigned int i = _Body.size() / 2; i > 0; i--)
 		_Body.pop_back();
+	updateTail();
 	return ;
 }
 
 void	Snake::slim()
 {
 	_Body.pop_back();
+	updateTail();
 	return ;
 }
 

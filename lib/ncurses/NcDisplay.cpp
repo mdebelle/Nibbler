@@ -27,6 +27,10 @@ NcDisplay::NcDisplay() : _SizeX(0), _SizeY(0)
 	_Charset[Pattern::headR] = '>';
 	_Charset[Pattern::headU] = '^';
 	_Charset[Pattern::headD] = 'v';
+	_Charset[Pattern::tailL] = 113|A_ALTCHARSET;
+	_Charset[Pattern::tailR] = 113|A_ALTCHARSET;
+	_Charset[Pattern::tailU] = 120|A_ALTCHARSET;
+	_Charset[Pattern::tailD] = 120|A_ALTCHARSET;
 	_Charset[Pattern::wall] = ' ';
 
 	return ;
@@ -71,7 +75,7 @@ void	NcDisplay::drawMenu()
 
 	j = 0;
 	attron(COLOR_PAIR(1));
-	for (int i = 0; i < 15; i++)
+	for (int i = 0; i < _SizeY; i++)
 	{
 		move(i, 0);
 		for (int j = 0; j < _SizeX + 2; j++)
@@ -99,13 +103,13 @@ void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::T
 	int	colo = 1;
 
 	if (type == Pattern::bodyLU || type == Pattern::bodyLD || type == Pattern::bodyRU ||
-		type == Pattern::bodyRD || type == Pattern::bodyLR || type == Pattern::bodyUD
+		type == Pattern::bodyRD || type == Pattern::bodyLR || type == Pattern::bodyUD ||
+		type == Pattern::headL || type == Pattern::headR || type == Pattern::headU || type == Pattern::headD ||
+		type == Pattern::tailL || type == Pattern::tailR || type == Pattern::tailU || type == Pattern::tailD
 	)
 		colo = 2;
 	else if (type == Pattern::fruit1 || type == Pattern::fruit2 || type == Pattern::fruit3 || type == Pattern::fruit4)
 		colo = 3;
-	else if (type == Pattern::headL || type == Pattern::headR || type == Pattern::headU || type == Pattern::headD)
-		colo = 4;
 
 	attron(COLOR_PAIR(colo));
 	for (int j = 1; j <= sizeY; j++)
@@ -131,7 +135,6 @@ void	NcDisplay::drawScoring(int pts, int level, int speed)
 			addch(' ');
 	mvwprintw(stdscr, _SizeY + 3, 0, "%s %2d %s %2d", "Level:", level, "Speed:", speed);
 	attroff(COLOR_PAIR(1));
-
 
 	return ;
 }
