@@ -214,8 +214,6 @@ void	Game::display()
 	_Display->drawPattern(
 		_Fruit.get_Position().x,
 		_Fruit.get_Position().y,
-		_Fruit.get_Size().x,
-		_Fruit.get_Size().y,
 		_Fruit.get_Type()
 	);
 	
@@ -224,8 +222,6 @@ void	Game::display()
 		_Display->drawPattern(
 			part.get_Position().x,
 			part.get_Position().y,
-			part.get_Size().x,
-			part.get_Size().y,
 			part.get_Type()
 		);
 	}
@@ -234,20 +230,10 @@ void	Game::display()
 		_Display->drawPattern(
 			obs.get_Position().x,
 			obs.get_Position().y,
-			obs.get_Size().x,
-			obs.get_Size().y,
 			obs.get_Type()
 		);
 	}
-	_Display->drawPattern(
-		snake[0].get_Position().x,
-		snake[0].get_Position().y,
-		snake[0].get_Size().x,
-		snake[0].get_Size().y,
-		snake[0].get_Type()
-	);
-	_Display->drawScoring(_Pts, _Level, _Speed);
-	
+	_Display->drawScoring(_Pts, _Level, _Speed, _Ate);
 
 	_Display->display();
 }

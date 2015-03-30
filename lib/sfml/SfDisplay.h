@@ -17,13 +17,11 @@ class SfDisplay : public IDisplay
 		void			drawPattern(
 			int posX,
 			int posY,
-			int sizeX,
-			int SizeY,
 			Pattern::Type type
 		) override;
 		void			drawMenu() override;
 		void			drawField() override;
-		void			drawScoring(int pts, int level, int speed) override;
+		void			drawScoring(int pts, int level, int speed, int ate) override;
 		IDisplay::Key	getEvent() override;
 		void			close() override;
 		void			display() override;

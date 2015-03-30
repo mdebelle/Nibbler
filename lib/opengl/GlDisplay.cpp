@@ -106,17 +106,17 @@ void	GlDisplay::loadShader(const char* file_path, GLenum shaderType)
 	glDeleteShader(shaderID);
 }
 
-void	GlDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::Type type)
+void	GlDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 {
 	float	sqrt_size = 2 / (_Width / UNIT_SIZE);
 
 	_Vertices.insert(_Vertices.end(), {
 		-1 + (posX * sqrt_size), 1 - (posY * sqrt_size), 0.0f,
-		-1 + ((posX + sizeX) * sqrt_size), 1 - (posY * sqrt_size), 0.0f,
-		-1 + (posX * sqrt_size), 1 - ((posY + sizeY) * sqrt_size), 0.0f,
-		-1 + ((posX + sizeX) * sqrt_size), 1 - (posY * sqrt_size), 0.0f,
-		-1 + (posX * sqrt_size), 1 - ((posY + sizeY) * sqrt_size), 0.0f,
-		-1 + ((posX + sizeX) * sqrt_size), 1 - ((posY + sizeY) * sqrt_size), 0.0f
+		-1 + ((posX + 1) * sqrt_size), 1 - (posY * sqrt_size), 0.0f,
+		-1 + (posX * sqrt_size), 1 - ((posY + 1) * sqrt_size), 0.0f,
+		-1 + ((posX + 1) * sqrt_size), 1 - (posY * sqrt_size), 0.0f,
+		-1 + (posX * sqrt_size), 1 - ((posY + 1) * sqrt_size), 0.0f,
+		-1 + ((posX + 1) * sqrt_size), 1 - ((posY + 1) * sqrt_size), 0.0f
 	});
  
 	float c[3] = { 0.0f, 0.0f, 0.0f };
@@ -153,11 +153,12 @@ void	GlDisplay::drawField()
 	_Colors.clear();
 }
 
-void	GlDisplay::drawScoring(int pts, int level, int speed)
+void	GlDisplay::drawScoring(int pts, int level, int speed, int ate)
 {
 	(void)pts;
 	(void)level;
 	(void)speed;
+	(void)ate;
 	return ;
 }
 

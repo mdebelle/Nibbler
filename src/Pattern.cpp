@@ -2,7 +2,6 @@
 
 Pattern::Pattern(Point position, Type type) : 
 	_Position(position),
-	_Size(1, 1),
 	_Type(type),
 	_Visible(false)
 {
@@ -11,7 +10,6 @@ Pattern::Pattern(Point position, Type type) :
 
 Pattern::Pattern(const Pattern &other) : 
 	_Position(other._Position),
-	_Size(other._Size),
 	_Type(other._Type),
 	_Visible(other._Visible)
 {
@@ -21,20 +19,10 @@ Pattern::Pattern(const Pattern &other) :
 Pattern&		Pattern::operator=(const Pattern &other) 
 {
 	_Position = other._Position;
-	_Size = other._Size;
 	_Type = other._Type;
 	_Visible = other._Visible;
 	
 	return *this;
-}
-
-Pattern::Pattern(Point position, Point size, Type type) :
-	_Position(position),
-	_Size(size),
-	_Type(type),
-	_Visible(false)
-{
-	return ;
 }
 
 Pattern::~Pattern()
@@ -45,11 +33,6 @@ Pattern::~Pattern()
 Point			Pattern::get_Position(void) const
 {
 	return (_Position);
-}
-
-Point			Pattern::get_Size(void) const
-{
-	return (_Size);
 }
 
 Pattern::Type	Pattern::get_Type(void) const

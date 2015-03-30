@@ -98,7 +98,7 @@ void	NcDisplay::drawMenu()
 	return ;
 }
 
-void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::Type type)
+void	NcDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 {
 	int	colo = 1;
 
@@ -112,28 +112,23 @@ void	NcDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::T
 		colo = 3;
 
 	attron(COLOR_PAIR(colo));
-	for (int j = 1; j <= sizeY; j++)
-	{
-		for (int i = 1; i <= sizeX; i++)
-		{
-			move(posY + j, (posX + i));
-			addch(_Charset.at(type));
-		}
-	}
+	move(posY, posX);
+	addch(_Charset.at(type));
 	attroff(COLOR_PAIR(colo));
 }
 
-void	NcDisplay::drawScoring(int pts, int level, int speed)
+void	NcDisplay::drawScoring(int pts, int level, int speed, int ate)
 {
+	(void)ate;
 	attron(COLOR_PAIR(1));
 	move(_SizeY + 2, 0);
 	for (int i = 0; i < _SizeX + 2; i++)
-			addch(' ');
-	mvwprintw(stdscr, _SizeY + 2, 0, "%s %6d %2d %2d", "Scoring", pts, level, speed);
+		addch(' ');
+	mvwprintw(stdscr, _SizeY + 2, 0, "%s %6d %s %3d", "Score:", pts, "  Ate: ", ate);
 	move(_SizeY + 3, 0);
 	for (int i = 0; i < _SizeX + 2; i++)
-			addch(' ');
-	mvwprintw(stdscr, _SizeY + 3, 0, "%s %2d %s %2d", "Level:", level, "Speed:", speed);
+		addch(' ');
+	mvwprintw(stdscr, _SizeY + 3, 0, "%s %6d %s %2d", "Level:", level, "  Speed:", speed);
 	attroff(COLOR_PAIR(1));
 
 	return ;

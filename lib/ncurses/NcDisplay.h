@@ -15,12 +15,10 @@ class NcDisplay : public IDisplay
 		void			init(int width, int height) override;
 		void			drawField() override;
 		void			drawMenu() override;
-		void			drawScoring(int pts, int level, int speed) override;
+		void			drawScoring(int pts, int level, int speed, int ate) override;
 		void			drawPattern(
 			int posX,
 			int posY,
-			int sizeX,
-			int SizeY,
 			Pattern::Type type
 		) override;
 		void			display() override;

@@ -28,12 +28,10 @@ class IDisplay
 
 		virtual void	drawField() = 0;
 		virtual void	drawMenu() = 0;
-		virtual void	drawScoring(int pts, int level, int speed) = 0;
+		virtual void	drawScoring(int pts, int level, int speed, int ate) = 0;
 		virtual void	drawPattern(
 			int posX,
 			int posY,
-			int sizeX,
-			int SizeY,
 			Pattern::Type type
 		) = 0;
 		virtual void	display() = 0;

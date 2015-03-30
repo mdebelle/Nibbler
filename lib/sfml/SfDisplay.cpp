@@ -52,13 +52,13 @@ void	SfDisplay::init(int width, int height)
 	_Window.create(sf::VideoMode((width + 2) * UNIT_SIZE, (height + 2) * UNIT_SIZE), "Nibbler");
 }
 
-void	SfDisplay::drawPattern(int posX, int posY, int sizeX, int sizeY, Pattern::Type type)
+void	SfDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 {
 	_Sprite.setPosition((posX + 1) * UNIT_SIZE, (posY + 1) * UNIT_SIZE);
 	_Sprite.setTextureRect( {
 		_SnakeAssets[type].x * UNIT_SIZE,
 		_SnakeAssets[type].y * UNIT_SIZE,
-		sizeX * UNIT_SIZE, sizeY * UNIT_SIZE
+		UNIT_SIZE, UNIT_SIZE
 	} );
 	_Texture.draw(_Sprite);
 }
@@ -113,11 +113,12 @@ void	SfDisplay::drawMenu()
 	return ;
 }
 
-void	SfDisplay::drawScoring(int pts, int level, int speed)
+void	SfDisplay::drawScoring(int pts, int level, int speed, int ate)
 {
 	(void)pts;
 	(void)level;
 	(void)speed;
+	(void)ate;
 	return ;
 }
 
