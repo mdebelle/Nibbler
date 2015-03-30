@@ -57,6 +57,7 @@ private:
 	int					_Level;
 	int					_Speed;
 	int					_Pts;
+	int					_Ate;
 };
 
 #endif

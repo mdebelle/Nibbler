@@ -12,9 +12,10 @@ Game::Game(int x, int y) :
 	_Display(nullptr),
 	_IsRunning(false),
 	_IsPaused(false),
-	_Level(0),
+	_Level(1),
 	_Speed(1),
-	_Pts(0)
+	_Pts(0),
+	_Ate(0)
 {
 	_Key_map[IDisplay::ESC] = &Game::KEsc;
 	_Key_map[IDisplay::SPACE] = &Game::KSpace;
@@ -54,7 +55,7 @@ void	Game::launch()
 	while (_IsRunning)
 	{
 		display();
-		usleep(200000 - ((_Level + _Speed) * 10000));
+		usleep(200000 - ((_Level - 1 + _Speed) * 10000));
 		listen();
 		if (!_IsPaused)
 			update();
@@ -161,16 +162,17 @@ void	Game::update()
 			_IsRunning = false;
 	if (_Snake.getPosition() == _Fruit.get_Position())
 	{
-		if (_Fruit.get_Type() == Pattern::fruit1)
-			_Snake.grow();
-		else if (_Fruit.get_Type() == Pattern::fruit2)
+		_Ate++;
+		if (_Fruit.get_Type() == Pattern::fruit2)
 			speedincrease();
-		else if (_Fruit.get_Type() == Pattern::fruit3)
+		if (_Fruit.get_Type() == Pattern::fruit3)
 			speeddecrease();
-		else if (_Fruit.get_Type() == Pattern::fruit4)
+		if (_Fruit.get_Type() == Pattern::fruit4)
 			_Snake.scissors();
+		else
+			_Snake.grow();
 		popFruit();
-		if (_Level * 5 + 9 <= _Snake.getSize())
+		if (_Level * 6 <= _Ate)
 		{
 			_Level++;
 			for (int i = 0; i < 4; i++)
