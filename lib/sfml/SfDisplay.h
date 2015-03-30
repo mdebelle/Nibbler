@@ -32,6 +32,7 @@ class SfDisplay : public IDisplay
 		sf::RenderTexture	_Texture;
 		sf::Texture			_Spritesheet;
 		sf::Sprite			_Sprite;
+		sf::Font			_Font;
 		std::map<sf::Keyboard::Key, IDisplay::Key>	_Key_map;
 		std::map<Pattern::Type, sf::Vector2i>		_SnakeAssets;
 };

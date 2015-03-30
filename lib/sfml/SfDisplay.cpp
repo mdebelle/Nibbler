@@ -46,10 +46,12 @@ void	SfDisplay::init(int width, int height)
 	_Size.y = height;
 	if (!_Spritesheet.loadFromFile("lib/sfml/snake.png"))
 		throw std::runtime_error("Failed to load snake spritesheet (snake.png).");
+	if (!_Font.loadFromFile("lib/sfml/font.ttf"))
+		throw std::runtime_error("Failed to load font (font.ttf).");
 	_Sprite.setTexture(_Spritesheet);
-	if (!_Texture.create((width + 2) * UNIT_SIZE, (height + 2) * UNIT_SIZE))
+	if (!_Texture.create((width + 2) * UNIT_SIZE, (height + 4) * UNIT_SIZE))
 		throw std::runtime_error("Failed to create window.");
-	_Window.create(sf::VideoMode((width + 2) * UNIT_SIZE, (height + 2) * UNIT_SIZE), "Nibbler");
+	_Window.create(sf::VideoMode((width + 2) * UNIT_SIZE, (height + 4) * UNIT_SIZE), "Nibbler");
 }
 
 void	SfDisplay::drawPattern(int posX, int posY, Pattern::Type type)
@@ -71,7 +73,7 @@ void	SfDisplay::drawField()
 	_Sprite.setTextureRect({2 * UNIT_SIZE, 8 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
 	_Texture.draw(_Sprite);
 	_Sprite.setTextureRect({2 * UNIT_SIZE, 4 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
-	for (int i = 1; i < _Size.x + 1; i++)
+	for (int i = 1; i <= _Size.x; i++)
 	{
 		_Sprite.setPosition(i * UNIT_SIZE, 0);
 		_Texture.draw(_Sprite);
@@ -79,13 +81,13 @@ void	SfDisplay::drawField()
 	_Sprite.setPosition((_Size.x + 1) * UNIT_SIZE, 0);
 	_Sprite.setTextureRect({2 * UNIT_SIZE, 5 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
 	_Texture.draw(_Sprite);
-	for (int j = 1; j < _Size.y + 1; j++)
+	for (int j = 1; j <= _Size.y; j++)
 	{
 		_Sprite.setPosition(0, j * UNIT_SIZE);
 		_Sprite.setTextureRect({2 * UNIT_SIZE, 3 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
 		_Texture.draw(_Sprite);
 		_Sprite.setTextureRect({2 * UNIT_SIZE, 0 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
-		for (int i = 1; i < _Size.x + 1; i++)
+		for (int i = 1; i <= _Size.x; i++)
 		{
 			_Sprite.setPosition(i * UNIT_SIZE, j * UNIT_SIZE);
 			_Texture.draw(_Sprite);
@@ -98,7 +100,7 @@ void	SfDisplay::drawField()
 	_Sprite.setTextureRect({2 * UNIT_SIZE, 7 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
 	_Texture.draw(_Sprite);
 	_Sprite.setTextureRect({2 * UNIT_SIZE, 2 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
-	for (int i = 1; i < _Size.x + 1; i++)
+	for (int i = 1; i <= _Size.x; i++)
 	{
 		_Sprite.setPosition(i * UNIT_SIZE, (_Size.y + 1) * UNIT_SIZE);
 		_Texture.draw(_Sprite);
@@ -115,10 +117,29 @@ void	SfDisplay::drawMenu()
 
 void	SfDisplay::drawScoring(int pts, int level, int speed, int ate)
 {
-	(void)pts;
-	(void)level;
-	(void)speed;
-	(void)ate;
+	_Sprite.setTextureRect({2 * UNIT_SIZE, 9 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
+	for (int j = _Size.y + 2; j <= _Size.y + 3; j++)
+		for (int i = 0; i <= _Size.x + 1; i++)
+		{
+			_Sprite.setPosition(i * UNIT_SIZE, j * UNIT_SIZE);
+			_Texture.draw(_Sprite);
+		}
+
+	sf::Text	text("", _Font, UNIT_SIZE * 0.80);
+	text.setColor(sf::Color::Black);
+	text.setStyle(sf::Text::Bold);
+	text.setString(std::string("Score: ") + std::to_string(pts));
+	text.setPosition(UNIT_SIZE / 2, (_Size.y + 1) * UNIT_SIZE + UNIT_SIZE / 1.5);
+	_Texture.draw(text);
+	text.setString(std::string("Level: ") + std::to_string(level));
+	text.setPosition(UNIT_SIZE / 2, (_Size.y + 2) * UNIT_SIZE + UNIT_SIZE / 1.5);
+	_Texture.draw(text);
+	text.setString(std::string("Ate: ") + std::to_string(ate));
+	text.setPosition(_Size.x * UNIT_SIZE / 2, (_Size.y + 1) * UNIT_SIZE + UNIT_SIZE / 1.5);
+	_Texture.draw(text);
+	text.setString(std::string("Speed: ") + std::to_string(speed));
+	text.setPosition(_Size.x * UNIT_SIZE / 2, (_Size.y + 2) * UNIT_SIZE + UNIT_SIZE / 1.5);
+	_Texture.draw(text);
 	return ;
 }
 
