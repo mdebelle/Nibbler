@@ -12,6 +12,10 @@ GlDisplay::GlDisplay()
 	_Key_map[GLFW_KEY_UP] = IDisplay::UP;
 	_Key_map[GLFW_KEY_LEFT] = IDisplay::LEFT;
 	_Key_map[GLFW_KEY_RIGHT] = IDisplay::RIGHT;
+	_Key_map[GLFW_KEY_W] = IDisplay::W;
+	_Key_map[GLFW_KEY_A] = IDisplay::A;
+	_Key_map[GLFW_KEY_S] = IDisplay::S;
+	_Key_map[GLFW_KEY_D] = IDisplay::D;
 	_Key_map[GLFW_KEY_1] = IDisplay::ONE;
 	_Key_map[GLFW_KEY_2] = IDisplay::TWO;
 	_Key_map[GLFW_KEY_3] = IDisplay::THREE;
@@ -42,6 +46,7 @@ void	GlDisplay::init(int width, int height)
 		throw std::runtime_error("Failed to create window.");
 	}
 	glfwMakeContextCurrent(_Window);
+	glfwSetInputMode(_Window, GLFW_STICKY_KEYS, 1);
 	glewExperimental = true; 
 	if (glewInit() != GLEW_OK)
 		throw std::runtime_error("Failed to initialize GLEW.");
@@ -121,22 +126,39 @@ void	GlDisplay::drawPattern(int posX, int posY, Pattern::Type type)
  
 	float c[3] = { 0.0f, 0.0f, 0.0f };
 	if (type == Pattern::bodyLR || type == Pattern::bodyUD || type == Pattern::bodyLU ||
-		type == Pattern::bodyLD || type == Pattern::bodyRD || type == Pattern::bodyRU
+		type == Pattern::bodyLD || type == Pattern::bodyRD || type == Pattern::bodyRU ||
+		type == Pattern::tailD || type == Pattern::tailU || type == Pattern::tailR || type == Pattern::tailL
 	)
-		c[1] = 1.0f;
-	else if (type == Pattern::headL || type == Pattern::headR || type == Pattern::headU || type == Pattern::headD)
+		c[1] = 0.4f;
+	else if (type == Pattern::bodyLR2 || type == Pattern::bodyUD2 || type == Pattern::bodyLU2 ||
+		type == Pattern::bodyLD2 || type == Pattern::bodyRD2 || type == Pattern::bodyRU2 ||
+		type == Pattern::tailD2 || type == Pattern::tailU2 || type == Pattern::tailR2 || type == Pattern::tailL2
+	)
 	{
-		c[0] = 1.0f;
-		c[1] = 1.0f;
+		c[1] = 0.4f;
+		c[0] = 0.5f;
 	}
-	else if (type == Pattern::fruit1 || type == Pattern::fruit2 || type == Pattern::fruit3 || type == Pattern::fruit4)
+	else if (type == Pattern::headL || type == Pattern::headR || type == Pattern::headU ||
+			 type == Pattern::headD || type == Pattern::headL2 || type == Pattern::headR2 ||
+			 type == Pattern::headU2 || type == Pattern::headD2
+	) {
+		c[0] = 0.9f;
+		c[1] = 0.9f;
+	}
+	else if (type == Pattern::fruit1)
 		c[0] = 1.0f;
-	else
+	else if (type == Pattern::fruit2)
 	{
 		c[0] = 1.0f;
+		c[2] = 1.0f;
+	}
+	else if (type == Pattern::fruit3)
+	{
 		c[1] = 1.0f;
 		c[2] = 1.0f;
 	}
+	else if (type == Pattern::fruit4)
+		c[2] = 1.0f;
 	for (int i = 0; i < 6; i++)
 		_Colors.insert(_Colors.end(), { c[0], c[1], c[2] });
 }
@@ -151,6 +173,12 @@ void	GlDisplay::drawField()
 	glClear( GL_COLOR_BUFFER_BIT );
 	_Vertices.clear();
 	_Colors.clear();
+	_Vertices.insert(_Vertices.end(), {
+		-1.0f, -1.0f, 0.0f, -1.0f, 1.0f, 0.0f, 1.0f, -1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f, -1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+	});
+	for (int i = 0; i < 18; i++)
+		_Colors.insert(_Colors.end(), 1.0f);
 }
 
 void	GlDisplay::drawScoring(int pts, int level, int speed, int ate)

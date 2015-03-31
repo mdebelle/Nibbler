@@ -8,6 +8,10 @@ SfDisplay::SfDisplay()
 	_Key_map[sf::Keyboard::Left] = IDisplay::LEFT;
 	_Key_map[sf::Keyboard::Down] = IDisplay::DOWN;
 	_Key_map[sf::Keyboard::Up] = IDisplay::UP;
+	_Key_map[sf::Keyboard::W] = IDisplay::W;
+	_Key_map[sf::Keyboard::A] = IDisplay::A;
+	_Key_map[sf::Keyboard::S] = IDisplay::S;
+	_Key_map[sf::Keyboard::D] = IDisplay::D;
 	_Key_map[sf::Keyboard::Space] = IDisplay::SPACE;
 	_Key_map[sf::Keyboard::Escape] = IDisplay::ESC;
 	_Key_map[sf::Keyboard::Num1] = IDisplay::ONE;
@@ -33,6 +37,20 @@ SfDisplay::SfDisplay()
 	_SnakeAssets[Pattern::fruit3] = {1, 6};
 	_SnakeAssets[Pattern::fruit4] = {1, 7};
 	_SnakeAssets[Pattern::wall] = {1, 8};
+	_SnakeAssets[Pattern::bodyUD2] = {3, 0};
+	_SnakeAssets[Pattern::bodyLR2] = {3, 1};
+	_SnakeAssets[Pattern::bodyLU2] = {3, 2};
+	_SnakeAssets[Pattern::bodyRU2] = {3, 3};
+	_SnakeAssets[Pattern::bodyRD2] = {3, 4};
+	_SnakeAssets[Pattern::bodyLD2] = {3, 5};
+	_SnakeAssets[Pattern::headD2] = {3, 6};
+	_SnakeAssets[Pattern::headU2] = {3, 7};
+	_SnakeAssets[Pattern::headL2] = {3, 8};
+	_SnakeAssets[Pattern::headR2] = {3, 9};
+	_SnakeAssets[Pattern::tailD2] = {4, 0};
+	_SnakeAssets[Pattern::tailU2] = {4, 1};
+	_SnakeAssets[Pattern::tailL2] = {4, 2};
+	_SnakeAssets[Pattern::tailR2] = {4, 3};
 
 	return ;
 }

@@ -8,16 +8,14 @@ class IDisplay
 	public:
 		enum Key
 		{
-			NONE,	// Generic one without any effect
-			UP,
-			LEFT,
-			RIGHT,
-			DOWN,
-			ESC,	// Quit
-			SPACE,	// Pause
-			ONE,	// NCurses
-			TWO,	// OpenGL
-			THREE	// SFML
+			NONE,					// Generic one without any effect
+			UP, LEFT, RIGHT, DOWN,	// First player moves
+			W, A, S, D,				// Second player moves
+			ESC,					// Quit
+			SPACE,					// Pause
+			ONE,					// NCurses
+			TWO,					// OpenGL
+			THREE					// SFML
 		};
 
 		virtual ~IDisplay() {};

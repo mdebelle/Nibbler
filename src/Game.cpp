@@ -5,24 +5,31 @@
 #include <unistd.h>
 #include "DisplayFactory.h"
 
-Game::Game(int x, int y) :
+Game::Game(int x, int y, bool multiplayer) :
 	_Fruit(Point(0, 0), Pattern::fruit1),
-	_Snake((x / 2) - 1, y / 2),
+	_Snake((x / 2) - 2, y / 2),
+	_Snake2((x / 2) - 2, y / 2 - 2),
 	_Area(Point(x, y)),
 	_Display(nullptr),
 	_IsRunning(false),
 	_IsPaused(false),
+	_Multi(multiplayer),
 	_Level(1),
 	_Speed(1),
 	_Pts(0),
 	_Ate(0)
 {
+	_Snake2.setAltColor();
 	_Key_map[IDisplay::ESC] = &Game::KEsc;
 	_Key_map[IDisplay::SPACE] = &Game::KSpace;
 	_Key_map[IDisplay::UP] = &Game::KUp;
 	_Key_map[IDisplay::RIGHT] = &Game::KRight;
 	_Key_map[IDisplay::LEFT] = &Game::KLeft;
 	_Key_map[IDisplay::DOWN] = &Game::KDown;
+	_Key_map[IDisplay::A] = &Game::KA;
+	_Key_map[IDisplay::W] = &Game::KW;
+	_Key_map[IDisplay::S] = &Game::KS;
+	_Key_map[IDisplay::D] = &Game::KD;
 	_Key_map[IDisplay::ONE] = &Game::KOne;
 	_Key_map[IDisplay::TWO] = &Game::KTwo;
 	_Key_map[IDisplay::THREE] = &Game::KThree;
@@ -100,6 +107,34 @@ void	Game::KDown()
 	return ;
 }
 
+void	Game::KA()
+{
+	if (!_IsPaused)
+		_Snake2.setDirection(Snake::LEFT);
+	return ;
+}
+
+void	Game::KD()
+{
+	if (!_IsPaused)
+		_Snake2.setDirection(Snake::RIGHT);
+	return ;
+}
+
+void	Game::KW()
+{
+	if (!_IsPaused)
+		_Snake2.setDirection(Snake::UP);
+	return ;
+}
+
+void	Game::KS()
+{
+	if (!_IsPaused)
+		_Snake2.setDirection(Snake::DOWN);
+	return ;
+}
+
 void	Game::KEsc()
 {
 	_IsRunning = false;
@@ -150,27 +185,37 @@ void	Game::KThree()
 	}
 }
 
-
 void	Game::update()
 {
 	Point	pos = _Snake.getPosition();
+	Point	pos2 = _Snake2.getPosition();
+
 	if (pos.x < 0 || pos.y < 0 || pos.x >= _Area.get_Width() ||
-		pos.y >= _Area.get_Height() || _Snake.eatsItself())
+		pos.y >= _Area.get_Height() || _Snake.eatsItself() || (_Multi && _Snake2.isOnBody(pos)))
 		_IsRunning = false;
-	for (const Pattern& obs : _Obstacles)
-		if (pos == obs.get_Position())
-			_IsRunning = false;
-	if (_Snake.getPosition() == _Fruit.get_Position())
+	if (_Multi && (pos2.x < 0 || pos2.y < 0 || pos2.x >= _Area.get_Width() ||
+		pos2.y >= _Area.get_Height() || _Snake2.eatsItself() || _Snake.isOnBody(pos2)))
+		_IsRunning = false;
+	if (isOnObstacle(pos) || isOnObstacle(pos2))
+		_IsRunning = false;
+	if (pos == _Fruit.get_Position() || pos2 == _Fruit.get_Position())
 	{
 		_Ate++;
 		if (_Fruit.get_Type() == Pattern::fruit2)
 			speedincrease();
 		if (_Fruit.get_Type() == Pattern::fruit3)
 			speeddecrease();
-		if (_Fruit.get_Type() == Pattern::fruit4)
+		if (_Fruit.get_Type() == Pattern::fruit4 && pos == _Fruit.get_Position())
 			_Snake.scissors();
+		else if (_Fruit.get_Type() == Pattern::fruit4)
+			_Snake2.scissors();
 		else
-			_Snake.grow();
+		{
+			if (pos == _Fruit.get_Position())
+				_Snake.grow();
+			else
+				_Snake2.grow();
+		}
 		popFruit();
 		if (_Level * 6 <= _Ate)
 		{
@@ -179,8 +224,10 @@ void	Game::update()
 				_Obstacles.push_back(Pattern(getRand(), Pattern::wall));
 		}
 	}
-	else
+	if (!(pos == _Fruit.get_Position()))
 		_Snake.move();
+	if (!(pos2 == _Fruit.get_Position()) && _Multi)
+		_Snake2.move();
 	_Pts++;
 }
 
@@ -207,8 +254,6 @@ void	Game::menu()
 
 void	Game::display()
 {
-
-	const std::vector<Pattern>& snake = _Snake.getBody();
 	_Display->drawField();
 
 	_Display->drawPattern(
@@ -217,7 +262,7 @@ void	Game::display()
 		_Fruit.get_Type()
 	);
 	
-	for (const Pattern& part : snake)
+	for (const Pattern& part : _Snake.getBody())
 	{
 		_Display->drawPattern(
 			part.get_Position().x,
@@ -225,6 +270,15 @@ void	Game::display()
 			part.get_Type()
 		);
 	}
+	if (_Multi)
+		for (const Pattern& part : _Snake2.getBody())
+		{
+			_Display->drawPattern(
+				part.get_Position().x,
+				part.get_Position().y,
+				part.get_Type()
+			);
+		}
 	for (const Pattern& obs : _Obstacles)
 	{
 		_Display->drawPattern(
@@ -248,13 +302,18 @@ int		Game::isOnObstacle(Point pt)
 
 Point	Game::getRand()
 {
-	int		pos = std::rand() % (_Area.get_Area() - _Snake.getSize() - _Obstacles.size() - 1);
+	int		avail = _Area.get_Area() - _Snake.getSize() - _Obstacles.size() - 1;
+	if (_Multi)
+		avail -= _Snake2.getSize();
+	int		pos = std::rand() % avail;
 	int		x = 0, y;
 
 	for (y = 0; pos > 0; y++)
 	{
 		for (x = 0; x < _Area.get_Width(); x++, pos--)
-			if (_Snake.isOnBody(Point(x, y)) || isOnObstacle(Point(x, y)))
+			if (_Snake.isOnBody(Point(x, y)) || isOnObstacle(Point(x, y)) ||
+				(_Multi && _Snake2.isOnBody(Point(x, y)))
+			)
 				pos++;
 			else if (pos == 0)
 				break;
@@ -266,25 +325,17 @@ Point	Game::getRand()
 	return Point(x, y);
 }
 
-int		Game::getPts() const
-{
-	return _Pts;
-}
-
 void	Game::popFruit()
 {
-	static int	num = 0;
+	int		num = std::rand() % 99;
 
-	if (num % 2 == 0 )
+	if (num >= 25)
 		_Fruit.set_Type(Pattern::fruit1);
-	else if (num % 3 == 0 )
+	else if (num < 25 && num >= 15)
 		_Fruit.set_Type(Pattern::fruit2);
-	else if (num % 5 == 0 )
+	else if (num < 15 && num >= 5)
 		_Fruit.set_Type(Pattern::fruit3);
-	else if (num % 7 == 0 )
+	else if (num >= 5)
 		_Fruit.set_Type(Pattern::fruit4);
-	else
-		_Fruit.set_Type(Pattern::fruit1);
 	_Fruit.set_Position(getRand());
-	num++;
 }

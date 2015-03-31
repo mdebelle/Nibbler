@@ -7,6 +7,10 @@ NcDisplay::NcDisplay() : _SizeX(0), _SizeY(0)
 	_Key_map[0x1b5b44] = IDisplay::LEFT;
 	_Key_map[0x1b5b42] = IDisplay::DOWN;
 	_Key_map[0x1b5b41] = IDisplay::UP;
+	_Key_map['d'] = IDisplay::D;
+	_Key_map['s'] = IDisplay::S;
+	_Key_map['a'] = IDisplay::A;
+	_Key_map['w'] = IDisplay::W;
 	_Key_map[' '] = IDisplay::SPACE;
 	_Key_map[27] = IDisplay::ESC;
 	_Key_map['1'] = IDisplay::ONE;
@@ -19,6 +23,12 @@ NcDisplay::NcDisplay() : _SizeX(0), _SizeY(0)
 	_Charset[Pattern::bodyRD] = 108|A_ALTCHARSET;
 	_Charset[Pattern::bodyLR] = 113|A_ALTCHARSET;
 	_Charset[Pattern::bodyUD] = 120|A_ALTCHARSET;
+	_Charset[Pattern::bodyLU2] = 106|A_ALTCHARSET;
+	_Charset[Pattern::bodyLD2] = 107|A_ALTCHARSET;
+	_Charset[Pattern::bodyRU2] = 109|A_ALTCHARSET;
+	_Charset[Pattern::bodyRD2] = 108|A_ALTCHARSET;
+	_Charset[Pattern::bodyLR2] = 113|A_ALTCHARSET;
+	_Charset[Pattern::bodyUD2] = 120|A_ALTCHARSET;
 	_Charset[Pattern::fruit1] = '1';
 	_Charset[Pattern::fruit2] = '2';
 	_Charset[Pattern::fruit3] = '3';
@@ -31,6 +41,14 @@ NcDisplay::NcDisplay() : _SizeX(0), _SizeY(0)
 	_Charset[Pattern::tailR] = 113|A_ALTCHARSET;
 	_Charset[Pattern::tailU] = 120|A_ALTCHARSET;
 	_Charset[Pattern::tailD] = 120|A_ALTCHARSET;
+	_Charset[Pattern::headL2] = '<';
+	_Charset[Pattern::headR2] = '>';
+	_Charset[Pattern::headU2] = '^';
+	_Charset[Pattern::headD2] = 'v';
+	_Charset[Pattern::tailL2] = 113|A_ALTCHARSET;
+	_Charset[Pattern::tailR2] = 113|A_ALTCHARSET;
+	_Charset[Pattern::tailU2] = 120|A_ALTCHARSET;
+	_Charset[Pattern::tailD2] = 120|A_ALTCHARSET;
 	_Charset[Pattern::wall] = ' ';
 
 	return ;
@@ -66,6 +84,7 @@ void	NcDisplay::init(int width, int height)
 	init_pair(2, COLOR_WHITE, COLOR_BLACK);
 	init_pair(3, COLOR_BLACK, COLOR_RED);
 	init_pair(4, COLOR_WHITE, COLOR_BLACK);
+	init_pair(5, COLOR_GREEN, COLOR_BLACK);
 }
 
 void	NcDisplay::drawMenu()
@@ -108,6 +127,12 @@ void	NcDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 		type == Pattern::tailL || type == Pattern::tailR || type == Pattern::tailU || type == Pattern::tailD
 	)
 		colo = 2;
+	if (type == Pattern::bodyLU2 || type == Pattern::bodyLD2 || type == Pattern::bodyRU2 ||
+		type == Pattern::bodyRD2 || type == Pattern::bodyLR2 || type == Pattern::bodyUD2 ||
+		type == Pattern::headL2 || type == Pattern::headR2 || type == Pattern::headU2 || type == Pattern::headD2 ||
+		type == Pattern::tailL2 || type == Pattern::tailR2 || type == Pattern::tailU2 || type == Pattern::tailD2
+	)
+		colo = 5;
 	else if (type == Pattern::fruit1 || type == Pattern::fruit2 || type == Pattern::fruit3 || type == Pattern::fruit4)
 		colo = 3;
 

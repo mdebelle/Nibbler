@@ -13,7 +13,7 @@ typedef void(Game::*GameKey)();
 class Game
 {
 public:
-	Game(int x, int y);
+	Game(int x, int y, bool multiplayer);
 	~Game();
 
 	void	launch();
@@ -24,10 +24,10 @@ private:
 	Game& operator=(const Game &);
 
 	Point				getRand();
-	int					getPts() const;
 	void				popFruit();
 	Pattern				_Fruit;
 	Snake				_Snake;
+	Snake				_Snake2;
 	Area				_Area;
 	std::vector<Pattern> _Obstacles;
 
@@ -40,6 +40,10 @@ private:
 	void				KRight();
 	void				KUp();
 	void				KDown();
+	void				KW();
+	void				KA();
+	void				KS();
+	void				KD();
 	void				KEsc();
 	void				KSpace();
 	void				KOne();
@@ -54,6 +58,7 @@ private:
 	std::map<IDisplay::Key, GameKey>	_Key_map;
 	bool				_IsRunning;
 	bool				_IsPaused;
+	bool				_Multi;
 	int					_Level;
 	int					_Speed;
 	int					_Pts;

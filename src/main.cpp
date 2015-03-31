@@ -12,8 +12,8 @@ static int		nan(const char *nb)
 
 int		main(int ac, char **av)
 {
-	if (ac != 3)
-		std::cerr << "Usage : Nibbler <size x> <size y>." << std::endl;
+	if (ac < 3 || ac > 4)
+		std::cerr << "Usage : Nibbler <size x> <size y> <multiplayer>." << std::endl;
 	else
 	{
 		int x = std::atoi(av[1]);
@@ -25,7 +25,7 @@ int		main(int ac, char **av)
 			std::cerr << "Error : size must be between 15 and 70 inclusive" << std::endl;
 		else
 		{
-			Game game(x, y);
+			Game game(x, y, ac == 4);
 			game.launch();
 		}
 	}

@@ -2,7 +2,7 @@
 
 Snake::Snake(int x, int y) :
 	_Direction(LEFT),
-	_DirectionFrom(RIGHT)
+	_AltColor(false)
 {
 	_Body.push_back(Pattern(Point(x, y), Pattern::headL));
 	_Body.push_back(Pattern(Point(x + 1, y), Pattern::bodyLR));
@@ -20,6 +20,13 @@ Snake::Snake(int x, int y) :
 Snake::~Snake()
 {
 	return ;
+}
+
+void	Snake::setAltColor()
+{
+	_AltColor = true;
+	for (Pattern& part : _Body)
+		part.set_AltColor();
 }
 
 void	Snake::move()
@@ -44,6 +51,11 @@ Snake::Direction	Snake::getDirection() const
 void	Snake::grow()
 {
 	(this->*(_SnakeDir.at(_Direction)))();
+	if (_AltColor)
+	{
+		_Body[0].set_AltColor();
+		_Body[1].set_AltColor();
+	}
 	return ;
 }
 
@@ -120,9 +132,11 @@ void	Snake::updateTail()
 		_Body.back().set_Type(Pattern::tailR);
 	else if (_Body.back().get_Position().y < prev.get_Position().y)
 		_Body.back().set_Type(Pattern::tailU);
-//	else if (_Body.end()->get_Position().y > prev.get_Position().y)
 	else
 		_Body.back().set_Type(Pattern::tailD);
+
+	if (_AltColor)
+		_Body.back().set_AltColor();
 }
 
 void	Snake::scissors()

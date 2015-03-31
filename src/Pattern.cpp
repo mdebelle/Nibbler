@@ -57,9 +57,40 @@ void			Pattern::set_Visible(bool v)
 	return ;
 }
 
-
 void			Pattern::set_Type(Type t)
 {
 	_Type = t;
 	return ;
+}
+
+void			Pattern::set_AltColor()
+{
+	if (_Type == bodyLU)
+		_Type = bodyLU2;
+	else if (_Type == bodyRU)
+		_Type = bodyRU2;
+	else if (_Type == bodyRD)
+		_Type = bodyRD2;
+	else if (_Type == bodyLD)
+		_Type = bodyLD2;
+	else if (_Type == bodyLR)
+		_Type = bodyLR2;
+	else if (_Type == bodyUD)
+		_Type = bodyUD2;
+	else if (_Type == headU)
+		_Type = headU2;
+	else if (_Type == headD)
+		_Type = headD2;
+	else if (_Type == headL)
+		_Type = headL2;
+	else if (_Type == headR)
+		_Type = headR2;
+	else if (_Type == tailU)
+		_Type = tailU2;
+	else if (_Type == tailD)
+		_Type = tailD2;
+	else if (_Type == tailL)
+		_Type = tailL2;
+	else if (_Type == tailR)
+		_Type = tailR2;
 }

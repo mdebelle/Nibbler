@@ -12,7 +12,10 @@ class	Pattern
 			wall,
 			bodyLU, bodyLD, bodyRU, bodyRD, bodyLR, bodyUD,
 			headL, headR, headU, headD,
-			tailL, tailR, tailU, tailD
+			tailL, tailR, tailU, tailD,
+			bodyLU2, bodyLD2, bodyRU2, bodyRD2, bodyLR2, bodyUD2,
+			headL2, headR2, headU2, headD2,
+			tailL2, tailR2, tailU2, tailD2
 		};
 
 		Pattern(Point position, Type type);
@@ -27,6 +30,7 @@ class	Pattern
 		void		set_Position(Point position);
 		void		set_Visible(bool);
 		void		set_Type(Type t);
+		void		set_AltColor();
 
 	private:
 		Point		_Position;

@@ -23,6 +23,7 @@ class Snake
 		Snake(int x, int y);
 		~Snake();
 
+		void							setAltColor();
 		void							move();
 		void							scissors();
 		void							grow();
@@ -37,10 +38,10 @@ class Snake
 
 	private:
 		Direction								_Direction;
-		Direction								_DirectionFrom;
 		std::vector<Pattern>					_Body;
 		int										_Alive;
 		std::map<Snake::Direction, DirSnake>	_SnakeDir;
+		bool									_AltColor;
 
 		void									updateTail();
 		void									DirLeft();
