@@ -66,7 +66,6 @@ void	Game::launch()
 		{
 			display();
 			_NextRefresh += std::chrono::milliseconds(50);
-		}
 		listen();
 		if (!_IsPaused)
 		{
@@ -82,6 +81,7 @@ void	Game::launch()
 			if (_Multi && (_Snake2.isOnBody(_Snake.getPosition()) ||
 				_Snake.isOnBody(_Snake2.getPosition())))
 				_IsRunning = false;
+		}
 		}
 	}
 }
