@@ -42,7 +42,7 @@ class Snake
 		void							setStart(std::chrono::steady_clock::time_point& time);
 
 	private:
-		Direction								_Direction;
+		std::vector<Direction>					_Direction;
 		std::vector<Pattern>					_Body;
 		std::map<Snake::Direction, DirSnake>	_SnakeDir;
 		bool									_AltColor;

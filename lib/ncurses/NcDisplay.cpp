@@ -1,3 +1,4 @@
+#include <chrono>
 #include "NcDisplay.h"
 #include <sys/ioctl.h>
 

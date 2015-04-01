@@ -1,7 +1,6 @@
 #include "Snake.h"
 
 Snake::Snake(int x, int y) :
-	_Direction(LEFT),
 	_AltColor(false),
 	_Speed(0),
 	_Pts(0),
@@ -18,6 +17,7 @@ Snake::Snake(int x, int y) :
 	_SnakeDir[Snake::LEFT] = &Snake::DirLeft;
 	_SnakeDir[Snake::RIGHT] = &Snake::DirRight;
 
+	_Direction.push_back(Direction::LEFT);
 	return ;
 }
 
@@ -42,7 +42,9 @@ void	Snake::move(int level)
 {
 	if (std::chrono::steady_clock::now() > _NextMove - std::chrono::milliseconds(level * 10))
 	{
-		(this->*(_SnakeDir.at(_Direction)))();
+		if (_Direction.size() > 1)
+			_Direction.erase(_Direction.begin());
+		(this->*(_SnakeDir.at(_Direction[0])))();
 		if (_AltColor)
 		{
 			_Body[0].set_AltColor();
@@ -63,8 +65,8 @@ void	Snake::move(int level)
 
 void	Snake::setDirection(Direction dir)
 {
-	if (dir + _Direction != 0)
-		_Direction = dir;
+	if (dir + _Direction.back() != 0)
+		_Direction.push_back(dir);
 	return ;
 }
 

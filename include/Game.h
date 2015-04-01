@@ -30,6 +30,7 @@ private:
 	Snake				_Snake2;
 	Area				_Area;
 	std::vector<Pattern> _Obstacles;
+	std::chrono::steady_clock::time_point _NextRefresh;
 
 	void				listen();
 	void				update(Snake&);
