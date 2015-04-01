@@ -99,17 +99,17 @@ void	NcDisplay::drawMenu()
 		for (int j = 0; j < _SizeX + 2; j++)
 			addch(' ');
 	}
+	
+	int centering = (_SizeX - 21) / 2;
 
-	move(0, 0);
-	mvwprintw(stdscr, 0, 0, "%s ", "                __");
-	move(1, 0);
-	mvwprintw(stdscr, 1, 0, "%s ", "     ______    /* >-<");
-	move(2, 0);
-	mvwprintw(stdscr, 2, 0, "%s ", " ___/ ____ \\__/ /");
-	move(3, 0);
-	mvwprintw(stdscr, 3, 0, "%s ", "<____/    \\____/");
-	move(4, 0);
-	mvwprintw(stdscr, 4, 0, "%s ", "");
+	move(0, centering);
+	mvwprintw(stdscr, 0, centering, "%s ", "                __");
+	mvwprintw(stdscr, 1, centering, "%s ", "     ______    /* >-<");
+	mvwprintw(stdscr, 2, centering, "%s ", " ___/ ____ \\__/ /");
+	mvwprintw(stdscr, 3, centering, "%s ", "<____/    \\____/");
+	mvwprintw(stdscr, 4, centering, "%s ", "");
+
+
 
 	attroff(COLOR_PAIR(1));
 	return ;
@@ -135,7 +135,7 @@ void	NcDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 		colo = 3;
 
 	attron(COLOR_PAIR(colo));
-	move(posY, posX);
+	move(posY + 1, posX + 1);
 	addch(_Charset.at(type));
 	attroff(COLOR_PAIR(colo));
 }

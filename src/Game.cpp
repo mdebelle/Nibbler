@@ -212,9 +212,10 @@ void	Game::update(Snake& snake)
 	Point	pos = snake.getPosition();
 
 	if (pos.x < 0 || pos.y < 0 || pos.x >= _Area.get_Width() ||
-		pos.y >= _Area.get_Height() || snake.eatsItself() || isOnObstacle(pos)
-	)
+		pos.y >= _Area.get_Height() || snake.eatsItself() || isOnObstacle(pos))
+	{
 		_IsRunning = false;
+	}
 	if (pos == _Fruit.get_Position())
 	{
 		snake.eat(_Fruit.get_Type());

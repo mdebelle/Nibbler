@@ -57,7 +57,7 @@ void	Snake::move(int level)
 			_SizeChange++;
 		}
 		updateTail();
-		_Pts++;
+//		_Pts++;
 		_NextMove += std::chrono::milliseconds(200 - ((_Speed + level) * 10));
 	}
 	return ;
@@ -153,11 +153,13 @@ void	Snake::updateTail()
 void	Snake::grow()
 {
 	_SizeChange++;
+//	_Pts++;
 	return ;
 }
 
 void	Snake::scissors()
 {
+	_Pts = _Pts + 10;
 	_SizeChange -= _Body.size() / 2;
 }
 
@@ -215,12 +217,14 @@ void	Snake::setPts(int pts)
 
 void	Snake::speedUp()
 {
+	_Pts = _Pts + 3;
 	if (_Speed < 10)
 		_Speed++;
 }
 
 void	Snake::speedDown()
 {
+	_Pts = _Pts + 5;
 	if (_Speed > 0)
 		_Speed--;
 }
@@ -242,5 +246,6 @@ void	Snake::eat(Pattern::Type type)
 		default:
 			break;
 	}
+	_Pts = _Pts + 2;
 	grow();
 }
