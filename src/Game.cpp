@@ -14,7 +14,7 @@ Game::Game(int x, int y, bool multiplayer) :
 	_IsRunning(false),
 	_IsPaused(false),
 	_Multi(multiplayer),
-	_Level(1)
+	_Level(0)
 {
 	_Snake2.setAltColor();
 	_Key_map[IDisplay::ESC] = &Game::KEsc;
@@ -56,14 +56,22 @@ void	Game::launch()
 	menu();
  
  	sleep(2);
+	std::chrono::steady_clock::time_point time = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
+	_Snake.setStart(time);
+	_Snake2.setStart(time);
 	while (_IsRunning)
 	{
 		display();
-		usleep(200000 - ((_Level - 1 + _Snake.getSpeed()) * 10000));
 		listen();
 		if (!_IsPaused)
 		{
 			update(_Snake);
+			if ((_Level + 1) * 6 <= _Snake.getAte() + _Snake2.getAte())
+			{
+				_Level++;
+				for (int i = 0; i < 4; i++)
+					_Obstacles.push_back(Pattern(getRand(), Pattern::wall));
+			}
 			if (_Multi)
 				update(_Snake2);
 			if (_Multi && (_Snake2.isOnBody(_Snake.getPosition()) ||
@@ -148,7 +156,12 @@ void	Game::KEsc()
 void	Game::KSpace()
 {
 	if (_IsPaused)
+	{
 		_IsPaused = false;
+		std::chrono::steady_clock::time_point time = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
+		_Snake.setStart(time);
+		_Snake2.setStart(time);
+	}
 	else
 		_IsPaused = true;
 }
@@ -201,16 +214,9 @@ void	Game::update(Snake& snake)
 	{
 		snake.eat(_Fruit.get_Type());
 		popFruit();
-		if (_Level * 6 <= snake.getAte())
-		{
-			_Level++;
-			for (int i = 0; i < 4; i++)
-				_Obstacles.push_back(Pattern(getRand(), Pattern::wall));
-		}
 	}
 
-	snake.move();
-	snake.setPts(_Snake.getPts() + 1); 
+	snake.move(_Level);
 }
 
 void	Game::menu()

@@ -3,6 +3,7 @@
 
 # include <map>
 # include <vector>
+# include <chrono>
 # include "Pattern.h"
 # include "tools.h"
 
@@ -24,7 +25,7 @@ class Snake
 		~Snake();
 
 		void							setAltColor();
-		void							move();
+		void							move(int level);
 		void							setDirection(Direction dir);
 		Point							getPosition() const;
 		bool							isOnBody(Point) const;
@@ -38,6 +39,7 @@ class Snake
 		void							speedDown();
 		void							setPts(int);
 		void							eat(Pattern::Type);
+		void							setStart(std::chrono::steady_clock::time_point& time);
 
 	private:
 		Direction								_Direction;
@@ -48,6 +50,7 @@ class Snake
 		int										_Pts;
 		int										_Ate;
 		int										_SizeChange;
+		std::chrono::steady_clock::time_point	_NextMove;
 
 		void									updateTail();
 		void									DirLeft();

@@ -26,6 +26,11 @@ Snake::~Snake()
 	return ;
 }
 
+void	Snake::setStart(std::chrono::steady_clock::time_point& time)
+{
+	_NextMove = time + std::chrono::milliseconds(_Speed * 10);
+}
+
 void	Snake::setAltColor()
 {
 	_AltColor = true;
@@ -33,21 +38,26 @@ void	Snake::setAltColor()
 		part.set_AltColor();
 }
 
-void	Snake::move()
+void	Snake::move(int level)
 {
-	(this->*(_SnakeDir.at(_Direction)))();
-	if (_AltColor)
+	if (std::chrono::steady_clock::now() > _NextMove - std::chrono::milliseconds(level * 10))
 	{
-		_Body[0].set_AltColor();
-		_Body[1].set_AltColor();
+		(this->*(_SnakeDir.at(_Direction)))();
+		if (_AltColor)
+		{
+			_Body[0].set_AltColor();
+			_Body[1].set_AltColor();
+		}
+		_SizeChange--;
+		while (_SizeChange < 0)
+		{
+			_Body.pop_back();
+			_SizeChange++;
+		}
+		updateTail();
+		_Pts++;
+		_NextMove += std::chrono::milliseconds(200 - ((_Speed + level) * 10));
 	}
-	_SizeChange--;
-	while (_SizeChange < 0)
-	{
-		_Body.pop_back();
-		_SizeChange++;
-	}
-	updateTail();
 	return ;
 }
 

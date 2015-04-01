@@ -64,7 +64,7 @@ void	NcDisplay::init(int width, int height)
 	struct winsize size;
 	if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
 		throw std::runtime_error("Can't get terminal size.");
-	if (height + 2 > size.ws_row || width * 2 + 4 > size.ws_col)
+	if (height + 5 > size.ws_row || width + 2 > size.ws_col)
 		throw std::runtime_error("Size is too big for the terminal size.");
 
 	_SizeX = width;
