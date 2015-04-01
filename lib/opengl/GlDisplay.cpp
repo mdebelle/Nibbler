@@ -46,7 +46,6 @@ void	GlDisplay::init(int width, int height)
 		throw std::runtime_error("Failed to create window.");
 	}
 	glfwMakeContextCurrent(_Window);
-	glfwSetInputMode(_Window, GLFW_STICKY_KEYS, 1);
 	glewExperimental = true; 
 	if (glewInit() != GLEW_OK)
 		throw std::runtime_error("Failed to initialize GLEW.");
