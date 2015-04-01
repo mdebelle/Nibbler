@@ -208,9 +208,8 @@ void	Game::update(Snake& snake)
 				_Obstacles.push_back(Pattern(getRand(), Pattern::wall));
 		}
 	}
-	else
-		snake.move();
 
+	snake.move();
 	snake.setPts(_Snake.getPts() + 1); 
 }
 
@@ -298,13 +297,13 @@ void	Game::popFruit()
 {
 	int		num = std::rand() % 99;
 
-	if (num >= 25)
+	if (num >= 30)
 		_Fruit.set_Type(Pattern::fruit1);
-	else if (num < 25 && num >= 15)
+	else if (num < 30 && num >= 20)
 		_Fruit.set_Type(Pattern::fruit2);
-	else if (num < 15 && num >= 5)
+	else if (num < 20 && num >= 10)
 		_Fruit.set_Type(Pattern::fruit3);
-	else if (num >= 5)
+	else if (num < 10)
 		_Fruit.set_Type(Pattern::fruit4);
 	_Fruit.set_Position(getRand());
 }

@@ -5,7 +5,8 @@ Snake::Snake(int x, int y) :
 	_AltColor(false),
 	_Speed(0),
 	_Pts(0),
-	_Ate(0)
+	_Ate(0),
+	_SizeChange(0)
 {
 	_Body.push_back(Pattern(Point(x, y), Pattern::headL));
 	_Body.push_back(Pattern(Point(x + 1, y), Pattern::bodyLR));
@@ -34,8 +35,19 @@ void	Snake::setAltColor()
 
 void	Snake::move()
 {
-	grow();
-	slim();
+	(this->*(_SnakeDir.at(_Direction)))();
+	if (_AltColor)
+	{
+		_Body[0].set_AltColor();
+		_Body[1].set_AltColor();
+	}
+	_SizeChange--;
+	while (_SizeChange < 0)
+	{
+		_Body.pop_back();
+		_SizeChange++;
+	}
+	updateTail();
 	return ;
 }
 
@@ -43,22 +55,6 @@ void	Snake::setDirection(Direction dir)
 {
 	if (dir + _Direction != 0)
 		_Direction = dir;
-	return ;
-}
-
-Snake::Direction	Snake::getDirection() const
-{
-	return _Direction;
-}
-
-void	Snake::grow()
-{
-	(this->*(_SnakeDir.at(_Direction)))();
-	if (_AltColor)
-	{
-		_Body[0].set_AltColor();
-		_Body[1].set_AltColor();
-	}
 	return ;
 }
 
@@ -142,19 +138,15 @@ void	Snake::updateTail()
 		_Body.back().set_AltColor();
 }
 
-void	Snake::scissors()
+void	Snake::grow()
 {
-	for (unsigned int i = _Body.size() / 2; i > 0; i--)
-		_Body.pop_back();
-	updateTail();
+	_SizeChange++;
 	return ;
 }
 
-void	Snake::slim()
+void	Snake::scissors()
 {
-	_Body.pop_back();
-	updateTail();
-	return ;
+	_SizeChange -= _Body.size() / 2;
 }
 
 Point	Snake::getPosition() const
@@ -183,7 +175,7 @@ bool	Snake::isOnBody(Point point) const
 bool	Snake::eatsItself() const
 {
 	std::vector<Pattern>::const_iterator it = _Body.begin();
-	for (it++; it != _Body.end(); it++)
+	for (++it; it != _Body.end(); ++it)
 		if (it->get_Position() == _Body.front().get_Position())
 			return 1;
 	return 0;
@@ -236,6 +228,7 @@ void	Snake::eat(Pattern::Type type)
 			scissors();
 			break;
 		default:
-			grow();
+			break;
 	}
+	grow();
 }

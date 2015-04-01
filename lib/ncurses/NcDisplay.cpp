@@ -90,16 +90,13 @@ void	NcDisplay::init(int width, int height)
 void	NcDisplay::drawMenu()
 {
 	clear();
-	int j;
 
-	j = 0;
 	attron(COLOR_PAIR(1));
 	for (int i = 0; i < _SizeY; i++)
 	{
 		move(i, 0);
 		for (int j = 0; j < _SizeX + 2; j++)
 			addch(' ');
-		j = 0;
 	}
 
 	move(0, 0);
@@ -193,13 +190,13 @@ void	NcDisplay::close()
 IDisplay::Key	NcDisplay::getEvent()
 {
 	IDisplay::Key	key = IDisplay::NONE;
-	int				code, tmp;
+	int				code;
 
 	code = getch();
 	if (code == 27)
 	{
 		code = 27;
-		while ((tmp = getch()) != ERR)
+		for (int tmp = getch(); tmp != ERR; tmp = getch())
 		{
 			code <<= 8;
 			code += tmp;

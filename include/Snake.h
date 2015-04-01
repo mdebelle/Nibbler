@@ -25,11 +25,7 @@ class Snake
 
 		void							setAltColor();
 		void							move();
-		void							scissors();
-		void							grow();
-		void							slim();
 		void							setDirection(Direction dir);
-		Direction						getDirection() const;
 		Point							getPosition() const;
 		bool							isOnBody(Point) const;
 		bool							eatsItself() const;
@@ -51,12 +47,15 @@ class Snake
 		int										_Speed;
 		int										_Pts;
 		int										_Ate;
+		int										_SizeChange;
 
 		void									updateTail();
 		void									DirLeft();
 		void									DirRight();
 		void									DirUp();
 		void									DirDown();
+		void									scissors();
+		void									grow();
 
 		Snake();
 		Snake(const Snake&);
