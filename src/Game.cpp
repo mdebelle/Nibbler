@@ -53,8 +53,12 @@ void	Game::launch()
 {
 	_IsRunning = true;
 
-	menu();
- 
+//	while (42)
+//	{
+//		listen()
+		menu();
+ //	}
+
  	sleep(2);
 	std::chrono::steady_clock::time_point time = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
 	_Snake.setStart(time);

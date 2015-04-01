@@ -92,33 +92,61 @@ void	NcDisplay::drawMenu()
 {
 	clear();
 
-	attron(COLOR_PAIR(1));
-	for (int i = 0; i < _SizeY; i++)
+
+	struct winsize size;
+	if (ioctl(0, TIOCGWINSZ, (char *) &size) != -1 && size.ws_col > 70)
 	{
-		move(i, 0);
-		for (int j = 0; j < _SizeX + 2; j++)
-			addch(' ');
+		attron(COLOR_PAIR(1));
+		for (int i = 0; i < _SizeY + 4; i++)
+		{
+			move(i, 0);
+			for (int j = 0; j < 70; j++)
+				addch(' ');
+		}
+
+		int centering = (70 - 21) / 2;
+
+		move(0, centering);
+		mvwprintw(stdscr, 0, centering, "%s ", "                __");
+		mvwprintw(stdscr, 1, centering, "%s ", "     ______    /* >-<");
+		mvwprintw(stdscr, 2, centering, "%s ", " ___/ ____ \\__/ /");
+		mvwprintw(stdscr, 3, centering, "%s ", "<____/    \\____/");
+		mvwprintw(stdscr, 4, centering, "%s ", "");
+		mvwprintw(stdscr, 6, 4, "%s ", " __   __   __   ______   ______   __       _____   _____ ");
+		mvwprintw(stdscr, 7, 4, "%s ", "|  \\ |  | |  | |  __  \\ |  __  \\ |  |     |  ___| |  _  \\");
+		mvwprintw(stdscr, 8, 4, "%s ", "|   \\|  | |  | | |__| | | |__| | |  |     | |_    | |_| |");
+		mvwprintw(stdscr, 9, 4, "%s ", "|       | |  | |  __ <  |  __ <  |  |     |  _|   |     /");
+		mvwprintw(stdscr, 10, 4, "%s ", "|  |\\   | |  | | |__| | | |__| | |  |___  | |___  | |\\  \\");
+		mvwprintw(stdscr, 11, 4, "%s ", "|__| \\__| |__| |______/ |______/ |______| |_____| |_| \\__\\");
+		attroff(COLOR_PAIR(1));
 	}
-	
-	int centering = (_SizeX - 21) / 2;
+	else
+	{
+		attron(COLOR_PAIR(1));
+		for (int i = 0; i < _SizeY; i++)
+		{
+			move(i, 0);
+			for (int j = 0; j < _SizeX + 2; j++)
+				addch(' ');
+		}
+		int centering = (_SizeX - 21) / 2;
 
-	move(0, centering);
-	mvwprintw(stdscr, 0, centering, "%s ", "                __");
-	mvwprintw(stdscr, 1, centering, "%s ", "     ______    /* >-<");
-	mvwprintw(stdscr, 2, centering, "%s ", " ___/ ____ \\__/ /");
-	mvwprintw(stdscr, 3, centering, "%s ", "<____/    \\____/");
-	mvwprintw(stdscr, 4, centering, "%s ", "");
+		move(0, centering);
+		mvwprintw(stdscr, 0, centering, "%s ", "                __");
+		mvwprintw(stdscr, 1, centering, "%s ", "     ______    /* >-<");
+		mvwprintw(stdscr, 2, centering, "%s ", " ___/ ____ \\__/ /");
+		mvwprintw(stdscr, 3, centering, "%s ", "<____/    \\____/");
+		mvwprintw(stdscr, 4, centering, "%s ", "");
+		attroff(COLOR_PAIR(1));
+	}
 
-
-
-	attroff(COLOR_PAIR(1));
 	return ;
 }
 
 void	NcDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 {
 	int	colo = 1;
-
+	int centering = 1;
 	if (type == Pattern::bodyLU || type == Pattern::bodyLD || type == Pattern::bodyRU ||
 		type == Pattern::bodyRD || type == Pattern::bodyLR || type == Pattern::bodyUD ||
 		type == Pattern::headL || type == Pattern::headR || type == Pattern::headU || type == Pattern::headD ||
@@ -135,23 +163,35 @@ void	NcDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 		colo = 3;
 
 	attron(COLOR_PAIR(colo));
-	move(posY + 1, posX + 1);
+	struct winsize size;
+	if (ioctl(0, TIOCGWINSZ, (char *) &size) != -1 && size.ws_col > 70)
+	{
+		centering = ((70 - _SizeX) / 2) + 1;
+	}
+	move(posY + 1, posX + centering);
 	addch(_Charset.at(type));
 	attroff(COLOR_PAIR(colo));
 }
 
 void	NcDisplay::drawScoring(int pts, int level, int speed, int ate)
 {
-	(void)ate;
+	int	centering = _SizeX + 2;
+	struct winsize size;
+	if (ioctl(0, TIOCGWINSZ, (char *) &size) != -1 && size.ws_col > 70)
+	{
+		centering = 70;
+	}
+	int middle = (centering - 23) / 2;
+
 	attron(COLOR_PAIR(1));
 	move(_SizeY + 2, 0);
-	for (int i = 0; i < _SizeX + 2; i++)
+	for (int i = 0; i < centering; i++)
 		addch(' ');
-	mvwprintw(stdscr, _SizeY + 2, 0, "%s %6d %s %3d", "Score:", pts, "  Ate: ", ate);
+	mvwprintw(stdscr, _SizeY + 2, middle, "%s %6d %s %3d", "Score:", pts, "  Ate: ", ate);
 	move(_SizeY + 3, 0);
-	for (int i = 0; i < _SizeX + 2; i++)
+	for (int i = 0; i < centering; i++)
 		addch(' ');
-	mvwprintw(stdscr, _SizeY + 3, 0, "%s %6d %s %2d", "Level:", level, "  Speed:", speed);
+	mvwprintw(stdscr, _SizeY + 3, middle, "%s %6d %s %2d", "Level:", level, "  Speed:", speed);
 	attroff(COLOR_PAIR(1));
 
 	return ;
@@ -159,22 +199,47 @@ void	NcDisplay::drawScoring(int pts, int level, int speed, int ate)
 
 void	NcDisplay::drawField()
 {
+	int centering = (70 - _SizeX) / 2;
 	clear();
 	attron(COLOR_PAIR(1));
-	move(0, 0);
-	for (int i = 0; i < _SizeX + 2; i++)
-		addch(97 | A_ALTCHARSET);
-	for (int i = 1; i <= _SizeY; i++)
-	{
-		move(i, 0);
-		addch(97 | A_ALTCHARSET);
-		move(i, _SizeX + 1);
-		addch(97 | A_ALTCHARSET);
-	}
-	move(_SizeY + 1, 0);
-	for (int i = 0; i < _SizeX + 2; i++)
-		addch(97 | A_ALTCHARSET);
 
+	struct winsize size;
+	if (ioctl(0, TIOCGWINSZ, (char *) &size) != -1 && size.ws_col > 70)
+	{
+		move(0, 0);
+		for (int i = 0; i < 70; i++)
+			addch(97 | A_ALTCHARSET);
+		for (int i = 1; i <= _SizeY; i++)
+		{
+			for (int j = 0; j < centering; j++)
+			{
+				move(i, j);
+				addch(' ');
+				move(i, _SizeX + 1 + centering + j);
+				addch(' ');
+			}
+		}
+		move(_SizeY + 1, 0);
+		for (int i = 0; i < 70; i++)
+			addch(97 | A_ALTCHARSET);
+
+	}
+	else
+	{
+		move(0, 0);
+		for (int i = 0; i < _SizeX + 2; i++)
+			addch(97 | A_ALTCHARSET);
+		for (int i = 1; i <= _SizeY; i++)
+		{
+				move(i, 0);
+				addch(97 | A_ALTCHARSET);
+				move(i, _SizeX + 1);
+				addch(97 | A_ALTCHARSET);
+		}
+		move(_SizeY + 1, 0);
+		for (int i = 0; i < _SizeX + 2; i++)
+			addch(97 | A_ALTCHARSET);
+	}
 	attroff(COLOR_PAIR(1));
 }
 

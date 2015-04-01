@@ -21,8 +21,8 @@ int		main(int ac, char **av)
 
 		if (nan(av[1]) || nan(av[2]))
 			std::cerr << "Error : parameter must be a positive number" << std::endl;
-		else if (x < 15 || y < 15 || x > 70 || y > 70)
-			std::cerr << "Error : size must be between 15 and 70 inclusive" << std::endl;
+		else if (x < 25 || y < 15 || x > 80 || y > 50)
+			std::cerr << "Error : size must be between 25x15 and 80x50 inclusive" << std::endl;
 		else
 		{
 			Game game(x, y, ac == 4);
