@@ -162,9 +162,9 @@ void	GlDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 		_Colors.insert(_Colors.end(), { c[0], c[1], c[2] });
 }
 
-void	GlDisplay::drawMenu()
+void	GlDisplay::drawMenu(bool multi)
 {
-
+	(void)multi;
 }
 
 void	GlDisplay::drawField()

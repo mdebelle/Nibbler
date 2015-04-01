@@ -59,6 +59,12 @@ private:
 	bool				_IsPaused;
 	bool				_Multi;
 	int					_Level;
+
+	//options pour le menu
+
+//	bool				_music;
+//	int					_graphOption; // Ncurses, OpenGL, SFML
+
 };
 
 #endif

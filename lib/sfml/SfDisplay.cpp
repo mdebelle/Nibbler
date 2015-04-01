@@ -130,8 +130,9 @@ void	SfDisplay::drawField()
 	_Texture.draw(_Sprite);
 }
 
-void	SfDisplay::drawMenu()
+void	SfDisplay::drawMenu(bool multi)
 {
+	(void)multi;
 	return ;
 }
 

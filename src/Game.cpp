@@ -4,6 +4,7 @@
 #include <ctime>
 #include <unistd.h>
 #include "DisplayFactory.h"
+#include "Menu.h"
 
 Game::Game(int x, int y, bool multiplayer) :
 	_Fruit(Point(0, 0), Pattern::fruit1),
@@ -31,8 +32,7 @@ Game::Game(int x, int y, bool multiplayer) :
 	_Key_map[IDisplay::TWO] = &Game::KTwo;
 	_Key_map[IDisplay::THREE] = &Game::KThree;
 	try {
-		DisplayFactory::load(_Display, 1);
-		_Display->init(x, y);
+		DisplayFactory::load(_Display, 1, x, y);
 	}
 	catch (std::exception& ex) {
 		std::cerr << "Error during initialization: " << ex.what() << std::endl;
@@ -95,7 +95,7 @@ void	Game::listen()
 {
 	IDisplay::Key key = _Display->getEvent();
 
-	if (key != IDisplay::NONE)
+	if (key != IDisplay::NONE && key != IDisplay::M)
 		(this->*(_Key_map.at(key)))();
 	return ;
 }
@@ -178,8 +178,7 @@ void	Game::KSpace()
 void	Game::KOne()
 {
 	try {
-		DisplayFactory::load(_Display, 1);
-		_Display->init(_Area.get_Width(), _Area.get_Height());
+		DisplayFactory::load(_Display, 1, _Area.get_Width(), _Area.get_Height());
 	}
 	catch (std::exception& ex) {
 		std::cerr << ex.what() << std::endl;
@@ -190,8 +189,7 @@ void	Game::KOne()
 void	Game::KTwo()
 {
 	try {
-		DisplayFactory::load(_Display, 2);
-		_Display->init(_Area.get_Width(), _Area.get_Height());
+		DisplayFactory::load(_Display, 2, _Area.get_Width(), _Area.get_Height());
 	}
 	catch (std::exception& ex) {
 		std::cerr << ex.what() << std::endl;
@@ -202,8 +200,7 @@ void	Game::KTwo()
 void	Game::KThree()
 {
 	try {
-		DisplayFactory::load(_Display, 3);
-		_Display->init(_Area.get_Width(), _Area.get_Height());
+		DisplayFactory::load(_Display, 3, _Area.get_Width(), _Area.get_Height());
 	}
 	catch (std::exception& ex) {
 		std::cerr << ex.what() << std::endl;
@@ -231,8 +228,21 @@ void	Game::update(Snake& snake)
 
 void	Game::menu()
 {
-	_Display->drawMenu();
-	_Display->display();
+	IDisplay::Key key = _Display->getEvent();
+	
+	while (42)
+	{	
+		key = _Display->getEvent();
+		if (key == IDisplay::M)
+		{
+			_Multi = (_Multi == true) ? false : true;
+		}
+		if (key == IDisplay::SPACE)
+			break ;
+		_Display->drawMenu(_Multi);
+		_Display->display();
+ 	
+ 	}
  	return ;
 }
 
@@ -296,8 +306,7 @@ Point	Game::getRand()
 	{
 		for (x = 0; x < _Area.get_Width(); x++, pos--)
 			if (_Snake.isOnBody(Point(x, y)) || isOnObstacle(Point(x, y)) ||
-				(_Multi && _Snake2.isOnBody(Point(x, y)))
-			)
+				(_Multi && _Snake2.isOnBody(Point(x, y))))
 				pos++;
 			else if (pos == 0)
 				break;

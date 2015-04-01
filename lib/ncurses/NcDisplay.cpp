@@ -17,6 +17,7 @@ NcDisplay::NcDisplay() : _SizeX(0), _SizeY(0)
 	_Key_map['1'] = IDisplay::ONE;
 	_Key_map['2'] = IDisplay::TWO;
 	_Key_map['3'] = IDisplay::THREE;
+	_Key_map['m'] = IDisplay::M;
 
 	_Charset[Pattern::bodyLU] = 106|A_ALTCHARSET;
 	_Charset[Pattern::bodyLD] = 107|A_ALTCHARSET;
@@ -88,7 +89,7 @@ void	NcDisplay::init(int width, int height)
 	init_pair(5, COLOR_GREEN, COLOR_BLACK);
 }
 
-void	NcDisplay::drawMenu()
+void	NcDisplay::drawMenu( bool multi )
 {
 	clear();
 
@@ -118,7 +119,31 @@ void	NcDisplay::drawMenu()
 		mvwprintw(stdscr, 9, 4, "%s ", "|       | |  | |  __ <  |  __ <  |  |     |  _|   |     /");
 		mvwprintw(stdscr, 10, 4, "%s ", "|  |\\   | |  | | |__| | | |__| | |  |___  | |___  | |\\  \\");
 		mvwprintw(stdscr, 11, 4, "%s ", "|__| \\__| |__| |______/ |______/ |______| |_____| |_| \\__\\");
+		mvwprintw(stdscr, 13, 4, "%s ", "#########################################################");
+
+			mvwprintw(stdscr, 15, 4, "Multi Player: ");
 		attroff(COLOR_PAIR(1));
+
+
+		if (multi == true)
+		{
+			attron(COLOR_PAIR(2));
+			mvwprintw(stdscr, 15, 18, "actived");
+			attroff(COLOR_PAIR(2));
+			attron(COLOR_PAIR(1));
+			mvwprintw(stdscr, 15, 26, " press 'm' to switch it!");
+			attroff(COLOR_PAIR(1));
+		}
+		else
+		{
+			attron(COLOR_PAIR(2));
+			mvwprintw(stdscr, 15, 18, "desactived");
+			attroff(COLOR_PAIR(2));
+			attron(COLOR_PAIR(1));
+			mvwprintw(stdscr, 15, 29, " press 'm' to switch it!");
+			attroff(COLOR_PAIR(1));
+		}
+
 	}
 	else
 	{

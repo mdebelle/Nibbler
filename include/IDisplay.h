@@ -15,7 +15,8 @@ class IDisplay
 			SPACE,					// Pause
 			ONE,					// NCurses
 			TWO,					// OpenGL
-			THREE					// SFML
+			THREE,					// SFML
+			M						// Multi Player Option
 		};
 
 		virtual ~IDisplay() {};
@@ -25,7 +26,7 @@ class IDisplay
 		virtual void	close() = 0;
 
 		virtual void	drawField() = 0;
-		virtual void	drawMenu() = 0;
+		virtual void	drawMenu(bool multi) = 0;
 		virtual void	drawScoring(int pts, int level, int speed, int ate) = 0;
 		virtual void	drawPattern(
 			int posX,

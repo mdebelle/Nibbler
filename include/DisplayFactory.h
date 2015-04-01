@@ -11,7 +11,7 @@ typedef IDisplay* (*DisplayLoader)();
 class DisplayFactory
 {
 public:
-	static void load(IDisplay*& display, int idx);
+	static void load(IDisplay*& display, int idx, int x, int y);
 	static void close(IDisplay *&display);
 
 private:

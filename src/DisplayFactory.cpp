@@ -24,7 +24,7 @@ DisplayFactory::~DisplayFactory()
 			"Some ressources may have been not deallocated." << std::endl;
 }
 
-void	DisplayFactory::load(IDisplay*& display, int idx)
+void	DisplayFactory::load(IDisplay*& display, int idx, int x, int y)
 {
 	try {
 		close(display);
@@ -34,6 +34,7 @@ void	DisplayFactory::load(IDisplay*& display, int idx)
 	}
 	try {
 		display = instance().doLoad(idx);
+		display->init(x, y);
 	}
 	catch (std::exception& ex)
 	{
@@ -42,7 +43,7 @@ void	DisplayFactory::load(IDisplay*& display, int idx)
 		{
 			std::cerr << "Trying with default (" << instance()._Libs[0]
 					  << ")..." << std::endl;
-			load(display, 1);
+			load(display, 1, x, y);
 		}
 		else
 			exit(-1);

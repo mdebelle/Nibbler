@@ -16,7 +16,7 @@ class GlDisplay : public IDisplay
 		~GlDisplay();
 
 		void			init(int width, int height) override;
-		void			drawMenu() override;
+		void			drawMenu(bool multi) override;
 		void			drawField() override;
 		void			drawScoring(int pts, int level, int speed, int ate) override;
 		void			drawPattern(int posX, int posY, Pattern::Type type) override;

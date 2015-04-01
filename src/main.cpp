@@ -25,6 +25,8 @@ int		main(int ac, char **av)
 			std::cerr << "Error : size must be between 25x15 and 80x50 inclusive" << std::endl;
 		else
 		{
+
+	//		Menu menu(x, y, ac == 4);
 			Game game(x, y, ac == 4);
 			game.launch();
 		}
