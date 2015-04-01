@@ -2,7 +2,10 @@
 
 Snake::Snake(int x, int y) :
 	_Direction(LEFT),
-	_AltColor(false)
+	_AltColor(false),
+	_Speed(0),
+	_Pts(0),
+	_Ate(0)
 {
 	_Body.push_back(Pattern(Point(x, y), Pattern::headL));
 	_Body.push_back(Pattern(Point(x + 1, y), Pattern::bodyLR));
@@ -95,12 +98,12 @@ void	Snake::DirUp()
 	Point	pos(_Body.front().get_Position());
 
 	pos.y -= 1;
-	
+
 	if (_Body[0].get_Position().x == _Body[1].get_Position().x)
 		_Body[0].set_Type(Pattern::bodyUD);
 	else
 		(_Body[0].get_Position().x < _Body[1].get_Position().x) ? _Body[0].set_Type(Pattern::bodyRU) : _Body[0].set_Type(Pattern::bodyLU);
-	
+
 	_Body.insert(_Body.begin(), Pattern(pos, Pattern::headU));
 	updateTail();
 	return ;
@@ -186,3 +189,53 @@ bool	Snake::eatsItself() const
 	return 0;
 }
 
+int		Snake::getSpeed() const
+{
+	return _Speed;
+}
+
+int		Snake::getAte() const
+{
+	return _Ate;
+}
+
+int		Snake::getPts() const
+{
+	return _Pts;
+}
+
+void	Snake::setPts(int pts)
+{
+	_Pts = pts;
+}
+
+void	Snake::speedUp()
+{
+	if (_Speed < 10)
+		_Speed++;
+}
+
+void	Snake::speedDown()
+{
+	if (_Speed > 0)
+		_Speed--;
+}
+
+void	Snake::eat(Pattern::Type type)
+{
+	_Ate++;
+	switch (type)
+	{
+		case Pattern::fruit2:
+			speedUp();
+			break;
+		case Pattern::fruit3:
+			speedDown();
+			break;
+		case Pattern::fruit4:
+			scissors();
+			break;
+		default:
+			grow();
+	}
+}

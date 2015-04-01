@@ -35,13 +35,22 @@ class Snake
 		bool							eatsItself() const;
 		const std::vector<Pattern>&		getBody() const;
 		int								getSize() const;
+		int								getSpeed() const;
+		int								getPts() const;
+		int								getAte() const;
+		void							speedUp();
+		void							speedDown();
+		void							setPts(int);
+		void							eat(Pattern::Type);
 
 	private:
 		Direction								_Direction;
 		std::vector<Pattern>					_Body;
-		int										_Alive;
 		std::map<Snake::Direction, DirSnake>	_SnakeDir;
 		bool									_AltColor;
+		int										_Speed;
+		int										_Pts;
+		int										_Ate;
 
 		void									updateTail();
 		void									DirLeft();

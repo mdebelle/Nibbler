@@ -14,10 +14,7 @@ Game::Game(int x, int y, bool multiplayer) :
 	_IsRunning(false),
 	_IsPaused(false),
 	_Multi(multiplayer),
-	_Level(1),
-	_Speed(1),
-	_Pts(0),
-	_Ate(0)
+	_Level(1)
 {
 	_Snake2.setAltColor();
 	_Key_map[IDisplay::ESC] = &Game::KEsc;
@@ -62,10 +59,17 @@ void	Game::launch()
 	while (_IsRunning)
 	{
 		display();
-		usleep(200000 - ((_Level - 1 + _Speed) * 10000));
+		usleep(200000 - ((_Level - 1 + _Snake.getSpeed()) * 10000));
 		listen();
 		if (!_IsPaused)
-			update();
+		{
+			update(_Snake);
+			if (_Multi)
+				update(_Snake2);
+			if (_Multi && (_Snake2.isOnBody(_Snake.getPosition()) ||
+				_Snake.isOnBody(_Snake2.getPosition())))
+				_IsRunning = false;
+		}
 	}
 }
 
@@ -185,64 +189,29 @@ void	Game::KThree()
 	}
 }
 
-void	Game::update()
+void	Game::update(Snake& snake)
 {
-	Point	pos = _Snake.getPosition();
-	Point	pos2 = _Snake2.getPosition();
+	Point	pos = snake.getPosition();
 
 	if (pos.x < 0 || pos.y < 0 || pos.x >= _Area.get_Width() ||
-		pos.y >= _Area.get_Height() || _Snake.eatsItself() || (_Multi && _Snake2.isOnBody(pos)))
+		pos.y >= _Area.get_Height() || snake.eatsItself() || isOnObstacle(pos)
+	)
 		_IsRunning = false;
-	if (_Multi && (pos2.x < 0 || pos2.y < 0 || pos2.x >= _Area.get_Width() ||
-		pos2.y >= _Area.get_Height() || _Snake2.eatsItself() || _Snake.isOnBody(pos2)))
-		_IsRunning = false;
-	if (isOnObstacle(pos) || isOnObstacle(pos2))
-		_IsRunning = false;
-	if (pos == _Fruit.get_Position() || pos2 == _Fruit.get_Position())
+	if (pos == _Fruit.get_Position())
 	{
-		_Ate++;
-		if (_Fruit.get_Type() == Pattern::fruit2)
-			speedincrease();
-		if (_Fruit.get_Type() == Pattern::fruit3)
-			speeddecrease();
-		if (_Fruit.get_Type() == Pattern::fruit4 && pos == _Fruit.get_Position())
-			_Snake.scissors();
-		else if (_Fruit.get_Type() == Pattern::fruit4)
-			_Snake2.scissors();
-		else
-		{
-			if (pos == _Fruit.get_Position())
-				_Snake.grow();
-			else
-				_Snake2.grow();
-		}
+		snake.eat(_Fruit.get_Type());
 		popFruit();
-		if (_Level * 6 <= _Ate)
+		if (_Level * 6 <= snake.getAte())
 		{
 			_Level++;
 			for (int i = 0; i < 4; i++)
 				_Obstacles.push_back(Pattern(getRand(), Pattern::wall));
 		}
 	}
-	if (!(pos == _Fruit.get_Position()))
-		_Snake.move();
-	if (!(pos2 == _Fruit.get_Position()) && _Multi)
-		_Snake2.move();
-	_Pts++;
-}
+	else
+		snake.move();
 
-void	Game::speeddecrease()
-{
-	if (_Speed > 0)
-		_Speed -= 1;
-	return ;
-}
-
-void	Game::speedincrease()
-{
-	if (_Speed < 10)
-		_Speed += 1;
-	return ;
+	snake.setPts(_Snake.getPts() + 1); 
 }
 
 void	Game::menu()
@@ -287,7 +256,7 @@ void	Game::display()
 			obs.get_Type()
 		);
 	}
-	_Display->drawScoring(_Pts, _Level, _Speed, _Ate);
+	_Display->drawScoring(_Snake.getPts(), _Level, _Snake.getSpeed(), _Snake.getAte());
 
 	_Display->display();
 }

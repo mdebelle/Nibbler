@@ -32,7 +32,7 @@ private:
 	std::vector<Pattern> _Obstacles;
 
 	void				listen();
-	void				update();
+	void				update(Snake&);
 	void				display();
 	int					isOnObstacle(Point);
 	/* Key handlers */
@@ -51,8 +51,6 @@ private:
 	void				KThree();
 
 	void				menu();
-	void				speedincrease();
-	void				speeddecrease();
 
 	IDisplay			*_Display;
 	std::map<IDisplay::Key, GameKey>	_Key_map;
@@ -60,9 +58,6 @@ private:
 	bool				_IsPaused;
 	bool				_Multi;
 	int					_Level;
-	int					_Speed;
-	int					_Pts;
-	int					_Ate;
 };
 
 #endif
