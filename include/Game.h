@@ -3,6 +3,7 @@
 
 # include <map>
 # include "IDisplay.h"
+# include "ISound.h"
 # include "Pattern.h"
 # include "Snake.h"
 # include "Area.h"
@@ -54,11 +55,13 @@ private:
 	void				menu();
 
 	IDisplay			*_Display;
+	ISound				*_Sound;
 	std::map<IDisplay::Key, GameKey>	_Key_map;
 	bool				_IsRunning;
 	bool				_IsPaused;
 	bool				_Multi;
 	int					_Level;
+	bool				_PlayedGameover;
 
 	//options pour le menu
 

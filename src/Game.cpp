@@ -4,6 +4,7 @@
 #include <ctime>
 #include <unistd.h>
 #include "DisplayFactory.h"
+#include "SoundFactory.h"
 #include "Menu.h"
 
 Game::Game(int x, int y, bool multiplayer) :
@@ -12,10 +13,12 @@ Game::Game(int x, int y, bool multiplayer) :
 	_Snake2((x / 2) - 2, y / 2 - 2),
 	_Area(Point(x, y)),
 	_Display(nullptr),
+	_Sound(nullptr),
 	_IsRunning(false),
 	_IsPaused(false),
 	_Multi(multiplayer),
-	_Level(0)
+	_Level(0),
+	_PlayedGameover(false)
 {
 	_Snake2.setAltColor();
 	_Key_map[IDisplay::ESC] = &Game::KEsc;
@@ -31,13 +34,9 @@ Game::Game(int x, int y, bool multiplayer) :
 	_Key_map[IDisplay::ONE] = &Game::KOne;
 	_Key_map[IDisplay::TWO] = &Game::KTwo;
 	_Key_map[IDisplay::THREE] = &Game::KThree;
-	try {
-		DisplayFactory::load(_Display, 1, x, y);
-	}
-	catch (std::exception& ex) {
-		std::cerr << "Error during initialization: " << ex.what() << std::endl;
-		exit(-1);
-	}
+
+	DisplayFactory::load(_Display, 1, x, y);
+	SoundFactory::load(_Sound, 1);
 	std::srand(std::time(nullptr));
 	popFruit();
 	return ;
@@ -46,6 +45,7 @@ Game::Game(int x, int y, bool multiplayer) :
 Game::~Game()
 {
 	_Display->close();
+	_Sound->close();
 	return ;
 }
 
@@ -54,6 +54,7 @@ void	Game::launch()
 	menu();
 
 	_IsRunning = true;
+	_Sound->play(ISound::MUSIC);
 	std::chrono::steady_clock::time_point time = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
 	_Snake.setStart(time);
 	_Snake2.setStart(time);
@@ -70,6 +71,7 @@ void	Game::launch()
 				update(_Snake);
 				if ((_Level + 1) * 6 <= _Snake.getAte() + _Snake2.getAte())
 				{
+					_Sound->play(ISound::LEVELUP);
 					_Level++;
 					for (int i = 0; i < 4; i++)
 						_Obstacles.push_back(Pattern(getRand(), Pattern::wall));
@@ -82,7 +84,14 @@ void	Game::launch()
 				time = std::chrono::steady_clock::now() + std::chrono::seconds(1);
 			}
 		}
+		if (!_IsRunning && !_PlayedGameover)
+		{
+			_Sound->stop(ISound::MUSIC);
+			_Sound->play(ISound::GAMEOVER);
+			_PlayedGameover = true;
+		}
 	}
+	_Sound->stop(ISound::MUSIC);
 }
 
 
@@ -154,6 +163,7 @@ void	Game::KS()
 void	Game::KEsc()
 {
 	_IsRunning = false;
+	_PlayedGameover = true;
 	return ;
 }
 
@@ -162,12 +172,16 @@ void	Game::KSpace()
 	if (_IsPaused)
 	{
 		_IsPaused = false;
+		_Sound->play(ISound::MUSIC);
 		std::chrono::steady_clock::time_point time = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
 		_Snake.setStart(time);
 		_Snake2.setStart(time);
 	}
 	else
+	{
+		_Sound->pause(ISound::MUSIC);
 		_IsPaused = true;
+	}
 }
 
 void	Game::KOne()
@@ -215,6 +229,23 @@ void	Game::update(Snake& snake)
 	if (pos == _Fruit.get_Position())
 	{
 		snake.eat(_Fruit.get_Type());
+		switch (_Fruit.get_Type())
+		{
+			case Pattern::fruit1:
+				_Sound->play(ISound::FRUIT1);
+				break;
+			case Pattern::fruit2:
+				_Sound->play(ISound::FRUIT2);
+				break;
+			case Pattern::fruit3:
+				_Sound->play(ISound::FRUIT3);
+				break;
+			case Pattern::fruit4:
+				_Sound->play(ISound::FRUIT4);
+				break;
+			default:
+				break;
+		}
 		popFruit();
 	}
 
