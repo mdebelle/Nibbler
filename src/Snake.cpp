@@ -255,3 +255,26 @@ void	Snake::eat(Pattern::Type type)
 	_Pts = _Pts + 2;
 	grow();
 }
+
+void	Snake::reset(int x, int y)
+{
+	_AltColor = false;
+	_Speed = 0;
+	_Pts = 0;
+	_Ate = 0;
+	_SizeChange = 0;
+	
+	_Body.clear();
+
+	_Body.push_back(Pattern(Point(x, y), Pattern::headL));
+	_Body.push_back(Pattern(Point(x + 1, y), Pattern::bodyLR));
+	_Body.push_back(Pattern(Point(x + 2, y), Pattern::bodyLR));
+	_Body.push_back(Pattern(Point(x + 3, y), Pattern::tailR));
+
+	_SnakeDir[Snake::UP] = &Snake::DirUp;
+	_SnakeDir[Snake::DOWN] = &Snake::DirDown;
+	_SnakeDir[Snake::LEFT] = &Snake::DirLeft;
+	_SnakeDir[Snake::RIGHT] = &Snake::DirRight;
+
+	_Direction.push_back(Direction::LEFT);
+}

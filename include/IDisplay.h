@@ -28,6 +28,7 @@ class IDisplay
 
 		virtual void	drawField() = 0;
 		virtual void	drawMenu(bool multi) = 0;
+		virtual void	drawRetry(bool multi) = 0;
 		virtual void	drawScoring(int pts, int player, int level, bool multi) = 0;
 //		virtual void	drawScoring(int pts, int level, int speed, int ate) = 0;
 		virtual void	drawPattern(

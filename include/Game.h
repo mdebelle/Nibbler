@@ -7,6 +7,7 @@
 # include "Pattern.h"
 # include "Snake.h"
 # include "Area.h"
+# include "menu.h"
 
 class Game;
 typedef void(Game::*GameKey)();
@@ -24,14 +25,14 @@ private:
 	Game(const Game&);
 	Game& operator=(const Game &);
 
-	Point				getRand();
-	void				popFruit();
-	Pattern				_Fruit;
-	Snake				_Snake;
-	Snake				_Snake2;
-	Area				_Area;
-	std::vector<Pattern> _Obstacles;
-	std::chrono::steady_clock::time_point _NextRefresh;
+	Point									getRand();
+	void									popFruit();
+	Pattern									_Fruit;
+	Snake									_Snake;
+	Snake									_Snake2;
+	Area									_Area;
+	std::vector<Pattern>					_Obstacles;
+	std::chrono::steady_clock::time_point	_NextRefresh;
 
 	void				listen();
 	void				update(Snake&);
@@ -53,6 +54,7 @@ private:
 	void				KThree();
 
 	void				menu();
+	void				retry();
 
 	IDisplay			*_Display;
 	ISound				*_Sound;

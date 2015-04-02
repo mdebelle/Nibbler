@@ -92,6 +92,7 @@ void	Game::launch()
 		}
 	}
 	_Sound->stop(ISound::MUSIC);
+	retry();
 }
 
 
@@ -266,10 +267,40 @@ void	Game::menu()
 		else if (key == IDisplay::SPACE)
 			break ;
 		_Display->drawMenu(_Multi);
-//		_Display->display();
+		_Display->display();
  	}
  	return ;
 }
+
+
+void	Game::retry()
+{
+	IDisplay::Key key = _Display->getEvent();
+	
+	bool	retry = false;
+
+	while (42)
+	{	
+		key = _Display->getEvent();
+		if (key == IDisplay::ESC)
+			break ;
+		else if (key == IDisplay::SPACE)
+		{
+			_Snake.reset((_Area.get_Width() / 2) - 2, _Area.get_Height() / 2);
+			_Snake2.reset((_Area.get_Width() / 2) - 2, _Area.get_Height() / 2 - 2);
+			retry = true;
+			break ;
+		}
+		_Display->drawRetry(_Multi);
+		_Display->display();
+ 	}
+ 	if (retry == true)
+ 	{
+ 		launch();
+ 	}
+ 	return ;
+}
+
 
 void	Game::display()
 {

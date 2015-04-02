@@ -167,6 +167,11 @@ void	GlDisplay::drawMenu(bool multi)
 	(void)multi;
 }
 
+void	GlDisplay::drawRetry(bool multi)
+{
+	(void)multi;
+}
+
 void	GlDisplay::drawField()
 {
 	glClear( GL_COLOR_BUFFER_BIT );

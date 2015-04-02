@@ -136,6 +136,12 @@ void	SfDisplay::drawMenu(bool multi)
 	return ;
 }
 
+void	SfDisplay::drawRetry(bool multi)
+{
+	(void)multi;
+	return ;
+}
+
 void SfDisplay::drawScoring(int pts, int player, int level, bool multi)
 {
 	(void)pts;

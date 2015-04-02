@@ -1,21 +1,24 @@
 #ifndef MENU_H
 # define MENU_H
 
-# include "IDisplay.h"
-# include "Game.h"
-# include "Area.h"
-
 class Menu
 {
 
 public:
 	~Menu();
-//	Game(int x, int y, bool multiplayer);
-	
+	Menu(char *name, bool value);
+
+	char		*getName(void) const;
+	bool		getStatus(void) const;
+	void		SwitchStatus(void);
+
 private:
 	Menu();
-	
-};
+	Menu(const Menu&);
+	Menu&		operator=(const Menu&);
 
+	char		*_Name;
+	bool		_Status;
+};
 
 #endif

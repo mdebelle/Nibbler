@@ -41,6 +41,7 @@ class Snake
 		void							setPts(int);
 		void							eat(Pattern::Type);
 		void							setStart(std::chrono::steady_clock::time_point& time);
+		void							reset(int x, int y);
 
 	private:
 		std::vector<Direction>					_Direction;
