@@ -180,14 +180,24 @@ void	GlDisplay::drawField()
 		_Colors.insert(_Colors.end(), 1.0f);
 }
 
-void	GlDisplay::drawScoring(int pts, int level, int speed, int ate)
+
+void	GlDisplay::drawScoring(int pts, int player, int level, bool multi)
 {
 	(void)pts;
+	(void)player;
 	(void)level;
-	(void)speed;
-	(void)ate;
+	(void)multi;
 	return ;
 }
+
+// void	GlDisplay::drawScoring(int pts, int level, int speed, int ate)
+// {
+// 	(void)pts;
+// 	(void)level;
+// 	(void)speed;
+// 	(void)ate;
+// 	return ;
+// }
 
 void	GlDisplay::display()
 {

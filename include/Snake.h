@@ -21,7 +21,7 @@ class Snake
 			DOWN = 2
 		};
 
-		Snake(int x, int y);
+		Snake(int x, int y, int player);
 		~Snake();
 
 		void							setAltColor();
@@ -34,6 +34,7 @@ class Snake
 		int								getSize() const;
 		int								getSpeed() const;
 		int								getPts() const;
+		int								getPlayer() const;
 		int								getAte() const;
 		void							speedUp();
 		void							speedDown();
@@ -51,6 +52,7 @@ class Snake
 		int										_Ate;
 		int										_SizeChange;
 		std::chrono::steady_clock::time_point	_NextMove;
+		int										_Player;
 
 		void									updateTail();
 		void									DirLeft();

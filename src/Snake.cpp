@@ -1,11 +1,12 @@
 #include "Snake.h"
 
-Snake::Snake(int x, int y) :
+Snake::Snake(int x, int y, int player) :
 	_AltColor(false),
 	_Speed(0),
 	_Pts(0),
 	_Ate(0),
-	_SizeChange(0)
+	_SizeChange(0),
+	_Player(player)
 {
 	_Body.push_back(Pattern(Point(x, y), Pattern::headL));
 	_Body.push_back(Pattern(Point(x + 1, y), Pattern::bodyLR));
@@ -208,6 +209,11 @@ int		Snake::getAte() const
 int		Snake::getPts() const
 {
 	return _Pts;
+}
+
+int		Snake::getPlayer() const
+{
+	return _Player;
 }
 
 void	Snake::setPts(int pts)

@@ -21,7 +21,8 @@ class SfDisplay : public IDisplay
 		) override;
 		void			drawMenu(bool multi) override;
 		void			drawField() override;
-		void			drawScoring(int pts, int level, int speed, int ate) override;
+		void			drawScoring(int pts, int player, int level, bool multi) override;
+//		void			drawScoring(int pts, int level, int speed, int ate) override;
 		IDisplay::Key	getEvent() override;
 		void			close() override;
 		void			display() override;

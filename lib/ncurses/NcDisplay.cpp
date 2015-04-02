@@ -198,7 +198,7 @@ void	NcDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 	attroff(COLOR_PAIR(colo));
 }
 
-void	NcDisplay::drawScoring(int pts, int level, int speed, int ate)
+void	NcDisplay::drawScoring(int pts, int player, int level, bool multi)
 {
 	int	centering = _SizeX + 2;
 	struct winsize size;
@@ -206,19 +206,35 @@ void	NcDisplay::drawScoring(int pts, int level, int speed, int ate)
 	{
 		centering = 70;
 	}
-	int middle = (centering - 23) / 2;
-
+	int middle = (centering - 25) / 2;
+	
 	attron(COLOR_PAIR(1));
-	move(_SizeY + 2, 0);
-	for (int i = 0; i < centering; i++)
-		addch(' ');
-	mvwprintw(stdscr, _SizeY + 2, middle, "%s %6d %s %3d", "Score:", pts, "  Ate: ", ate);
+	
 	move(_SizeY + 3, 0);
 	for (int i = 0; i < centering; i++)
 		addch(' ');
-	mvwprintw(stdscr, _SizeY + 3, middle, "%s %6d %s %2d", "Level:", level, "  Speed:", speed);
-	attroff(COLOR_PAIR(1));
+	if (multi == true)
+	{
+		if (player == 1)
+		{
+			move(_SizeY + 2, 0);
+			for (int i = 0; i < centering; i++)
+				addch(' ');
+			mvwprintw(stdscr, _SizeY + 2, middle, "Player1: %6d Level: %3d", pts, level);
+		}
+		else if (player == 2)
+			mvwprintw(stdscr, _SizeY + 3, middle, "Player2: %6d", pts);
+	}
+	else
+	{
+		move(_SizeY + 2, 0);
+		for (int i = 0; i < centering; i++)
+			addch(' ');
+		mvwprintw(stdscr, _SizeY + 2, middle, "%s %6d", "Score:", pts);
+		mvwprintw(stdscr, _SizeY + 3, middle, "%s %6d", "Level:", level);
 
+	}
+	attroff(COLOR_PAIR(1));
 	return ;
 }
 

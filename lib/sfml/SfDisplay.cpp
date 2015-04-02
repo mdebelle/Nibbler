@@ -136,33 +136,42 @@ void	SfDisplay::drawMenu(bool multi)
 	return ;
 }
 
-void	SfDisplay::drawScoring(int pts, int level, int speed, int ate)
+void SfDisplay::drawScoring(int pts, int player, int level, bool multi)
 {
-	_Sprite.setTextureRect({2 * UNIT_SIZE, 9 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
-	for (int j = _Size.y + 2; j <= _Size.y + 3; j++)
-		for (int i = 0; i <= _Size.x + 1; i++)
-		{
-			_Sprite.setPosition(i * UNIT_SIZE, j * UNIT_SIZE);
-			_Texture.draw(_Sprite);
-		}
-
-	sf::Text	text("", _Font, UNIT_SIZE * 0.80);
-	text.setColor(sf::Color::Black);
-	text.setStyle(sf::Text::Bold);
-	text.setString(std::string("Score: ") + std::to_string(pts));
-	text.setPosition(UNIT_SIZE / 2, (_Size.y + 1) * UNIT_SIZE + UNIT_SIZE / 1.5);
-	_Texture.draw(text);
-	text.setString(std::string("Level: ") + std::to_string(level));
-	text.setPosition(UNIT_SIZE / 2, (_Size.y + 2) * UNIT_SIZE + UNIT_SIZE / 1.5);
-	_Texture.draw(text);
-	text.setString(std::string("Ate: ") + std::to_string(ate));
-	text.setPosition(_Size.x * UNIT_SIZE / 2, (_Size.y + 1) * UNIT_SIZE + UNIT_SIZE / 1.5);
-	_Texture.draw(text);
-	text.setString(std::string("Speed: ") + std::to_string(speed));
-	text.setPosition(_Size.x * UNIT_SIZE / 2, (_Size.y + 2) * UNIT_SIZE + UNIT_SIZE / 1.5);
-	_Texture.draw(text);
+	(void)pts;
+	(void)player;
+	(void)level;
+	(void)multi;
 	return ;
 }
+
+// void	SfDisplay::drawScoring(int pts, int level, int speed, int ate)
+// {
+// 	_Sprite.setTextureRect({2 * UNIT_SIZE, 9 * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE});
+// 	for (int j = _Size.y + 2; j <= _Size.y + 3; j++)
+// 		for (int i = 0; i <= _Size.x + 1; i++)
+// 		{
+// 			_Sprite.setPosition(i * UNIT_SIZE, j * UNIT_SIZE);
+// 			_Texture.draw(_Sprite);
+// 		}
+
+// 	sf::Text	text("", _Font, UNIT_SIZE * 0.80);
+// 	text.setColor(sf::Color::Black);
+// 	text.setStyle(sf::Text::Bold);
+// 	text.setString(std::string("Score: ") + std::to_string(pts));
+// 	text.setPosition(UNIT_SIZE / 2, (_Size.y + 1) * UNIT_SIZE + UNIT_SIZE / 1.5);
+// 	_Texture.draw(text);
+// 	text.setString(std::string("Level: ") + std::to_string(level));
+// 	text.setPosition(UNIT_SIZE / 2, (_Size.y + 2) * UNIT_SIZE + UNIT_SIZE / 1.5);
+// 	_Texture.draw(text);
+// 	text.setString(std::string("Ate: ") + std::to_string(ate));
+// 	text.setPosition(_Size.x * UNIT_SIZE / 2, (_Size.y + 1) * UNIT_SIZE + UNIT_SIZE / 1.5);
+// 	_Texture.draw(text);
+// 	text.setString(std::string("Speed: ") + std::to_string(speed));
+// 	text.setPosition(_Size.x * UNIT_SIZE / 2, (_Size.y + 2) * UNIT_SIZE + UNIT_SIZE / 1.5);
+// 	_Texture.draw(text);
+// 	return ;
+// }
 
 void	SfDisplay::display()
 {

@@ -8,8 +8,8 @@
 
 Game::Game(int x, int y, bool multiplayer) :
 	_Fruit(Point(0, 0), Pattern::fruit1),
-	_Snake((x / 2) - 2, y / 2),
-	_Snake2((x / 2) - 2, y / 2 - 2),
+	_Snake((x / 2) - 2, y / 2, 1),
+	_Snake2((x / 2) - 2, y / 2 - 2, 2),
 	_Area(Point(x, y)),
 	_Display(nullptr),
 	_IsRunning(false),
@@ -31,6 +31,10 @@ Game::Game(int x, int y, bool multiplayer) :
 	_Key_map[IDisplay::ONE] = &Game::KOne;
 	_Key_map[IDisplay::TWO] = &Game::KTwo;
 	_Key_map[IDisplay::THREE] = &Game::KThree;
+
+	// _Key_option[IDisplay::OPTMULTI] = &Game::MenuOptionMulti;
+	// _Key_option[IDisplay::OPTSOUND] = &Game::MenuOptionMulti;
+
 	try {
 		DisplayFactory::load(_Display, 1, x, y);
 	}
@@ -232,10 +236,10 @@ void	Game::menu()
 		{
 			_Multi = (_Multi == true) ? false : true;
 		}
-		if (key == IDisplay::SPACE)
+		else if (key == IDisplay::SPACE)
 			break ;
 		_Display->drawMenu(_Multi);
-		_Display->display();
+//		_Display->display();
  	}
  	return ;
 }
@@ -275,7 +279,10 @@ void	Game::display()
 			obs.get_Type()
 		);
 	}
-	_Display->drawScoring(_Snake.getPts(), _Level, _Snake.getSpeed(), _Snake.getAte());
+
+	_Display->drawScoring(_Snake.getPts(), _Snake.getPlayer(), _Level, _Multi);
+	if (_Multi == true)
+		_Display->drawScoring(_Snake2.getPts(), _Snake2.getPlayer(), _Level, _Multi);
 
 	_Display->display();
 }
