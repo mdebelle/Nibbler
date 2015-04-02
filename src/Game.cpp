@@ -45,7 +45,8 @@ Game::Game(int x, int y, bool multiplayer) :
 Game::~Game()
 {
 	_Display->close();
-	_Sound->close();
+	if (_Sound)
+		_Sound->close();
 	return ;
 }
 
@@ -54,7 +55,8 @@ void	Game::launch()
 	menu();
 
 	_IsRunning = true;
-	_Sound->play(ISound::MUSIC);
+	if (_Sound)
+		_Sound->play(ISound::MUSIC);
 	std::chrono::steady_clock::time_point time = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
 	_Snake.setStart(time);
 	_Snake2.setStart(time);
@@ -71,7 +73,8 @@ void	Game::launch()
 				update(_Snake);
 				if ((_Level + 1) * 6 <= _Snake.getAte() + _Snake2.getAte())
 				{
-					_Sound->play(ISound::LEVELUP);
+					if (_Sound)
+						_Sound->play(ISound::LEVELUP);
 					_Level++;
 					for (int i = 0; i < 4; i++)
 						_Obstacles.push_back(Pattern(getRand(), Pattern::wall));
@@ -86,12 +89,16 @@ void	Game::launch()
 		}
 		if (!_IsRunning && !_PlayedGameover)
 		{
-			_Sound->stop(ISound::MUSIC);
-			_Sound->play(ISound::GAMEOVER);
+			if (_Sound)
+			{
+				_Sound->stop(ISound::MUSIC);
+				_Sound->play(ISound::GAMEOVER);
+			}
 			_PlayedGameover = true;
 		}
 	}
-	_Sound->stop(ISound::MUSIC);
+	if (_Sound)
+		_Sound->stop(ISound::MUSIC);
 	retry();
 }
 
@@ -173,14 +180,16 @@ void	Game::KSpace()
 	if (_IsPaused)
 	{
 		_IsPaused = false;
-		_Sound->play(ISound::MUSIC);
+		if (_Sound)
+			_Sound->play(ISound::MUSIC);
 		std::chrono::steady_clock::time_point time = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
 		_Snake.setStart(time);
 		_Snake2.setStart(time);
 	}
 	else
 	{
-		_Sound->pause(ISound::MUSIC);
+		if (_Sound)
+			_Sound->pause(ISound::MUSIC);
 		_IsPaused = true;
 	}
 }
@@ -230,22 +239,25 @@ void	Game::update(Snake& snake)
 	if (pos == _Fruit.get_Position())
 	{
 		snake.eat(_Fruit.get_Type());
-		switch (_Fruit.get_Type())
+		if (_Sound)
 		{
-			case Pattern::fruit1:
-				_Sound->play(ISound::FRUIT1);
-				break;
-			case Pattern::fruit2:
-				_Sound->play(ISound::FRUIT2);
-				break;
-			case Pattern::fruit3:
-				_Sound->play(ISound::FRUIT3);
-				break;
-			case Pattern::fruit4:
-				_Sound->play(ISound::FRUIT4);
-				break;
-			default:
-				break;
+			switch (_Fruit.get_Type())
+			{
+				case Pattern::fruit1:
+					_Sound->play(ISound::FRUIT1);
+					break;
+				case Pattern::fruit2:
+					_Sound->play(ISound::FRUIT2);
+					break;
+				case Pattern::fruit3:
+					_Sound->play(ISound::FRUIT3);
+					break;
+				case Pattern::fruit4:
+					_Sound->play(ISound::FRUIT4);
+					break;
+				default:
+					break;
+			}
 		}
 		popFruit();
 	}
@@ -263,6 +275,13 @@ void	Game::menu()
 		if (key == IDisplay::M)
 		{
 			_Multi = (_Multi == true) ? false : true;
+		}
+		if (key == IDisplay::S)
+		{
+			if (_Sound)
+				SoundFactory::close(_Sound);
+			else
+				SoundFactory::load(_Sound, 1);
 		}
 		else if (key == IDisplay::SPACE)
 			break ;
@@ -288,6 +307,7 @@ void	Game::retry()
 		{
 			_Snake.reset((_Area.get_Width() / 2) - 2, _Area.get_Height() / 2);
 			_Snake2.reset((_Area.get_Width() / 2) - 2, _Area.get_Height() / 2 - 2);
+			_Snake2.setAltColor();
 			retry = true;
 			break ;
 		}
@@ -295,9 +315,7 @@ void	Game::retry()
 		_Display->display();
  	}
  	if (retry == true)
- 	{
  		launch();
- 	}
  	return ;
 }
 
@@ -338,9 +356,9 @@ void	Game::display()
 		);
 	}
 
-	_Display->drawScoring(_Snake.getPts(), _Snake.getPlayer(), _Level, _Multi);
+	_Display->drawScoring(_Snake.getPts(), 1, _Level, _Multi);
 	if (_Multi == true)
-		_Display->drawScoring(_Snake2.getPts(), _Snake2.getPlayer(), _Level, _Multi);
+		_Display->drawScoring(_Snake2.getPts(), 2, _Level, _Multi);
 
 	_Display->display();
 }
