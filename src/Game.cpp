@@ -51,41 +51,36 @@ Game::~Game()
 
 void	Game::launch()
 {
+	menu();
+
 	_IsRunning = true;
-
-//	while (42)
-//	{
-//		listen()
-		menu();
- //	}
-
- 	sleep(2);
 	std::chrono::steady_clock::time_point time = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
 	_Snake.setStart(time);
 	_Snake2.setStart(time);
 	_NextRefresh = std::chrono::steady_clock::now();
-	while (_IsRunning)
+	while (_IsRunning || std::chrono::steady_clock::now() < time)
 	{
 		if (std::chrono::steady_clock::now() >= _NextRefresh)
 		{
 			display();
 			_NextRefresh += std::chrono::milliseconds(50);
-		listen();
-		if (!_IsPaused)
-		{
-			update(_Snake);
-			if ((_Level + 1) * 6 <= _Snake.getAte() + _Snake2.getAte())
+			listen();
+			if (!_IsPaused && _IsRunning)
 			{
-				_Level++;
-				for (int i = 0; i < 4; i++)
-					_Obstacles.push_back(Pattern(getRand(), Pattern::wall));
+				update(_Snake);
+				if ((_Level + 1) * 6 <= _Snake.getAte() + _Snake2.getAte())
+				{
+					_Level++;
+					for (int i = 0; i < 4; i++)
+						_Obstacles.push_back(Pattern(getRand(), Pattern::wall));
+				}
+				if (_Multi)
+					update(_Snake2);
+				if (_Multi && (_Snake2.isOnBody(_Snake.getPosition()) ||
+					_Snake.isOnBody(_Snake2.getPosition())))
+					_IsRunning = false;
+				time = std::chrono::steady_clock::now() + std::chrono::seconds(1);
 			}
-			if (_Multi)
-				update(_Snake2);
-			if (_Multi && (_Snake2.isOnBody(_Snake.getPosition()) ||
-				_Snake.isOnBody(_Snake2.getPosition())))
-				_IsRunning = false;
-		}
 		}
 	}
 }
@@ -241,7 +236,6 @@ void	Game::menu()
 			break ;
 		_Display->drawMenu(_Multi);
 		_Display->display();
- 	
  	}
  	return ;
 }
