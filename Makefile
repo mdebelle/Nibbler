@@ -12,6 +12,7 @@ SRC			= main.cpp \
 			  Pattern.cpp \
 			  Snake.cpp \
 			  DisplayFactory.cpp \
+			  SoundFactory.cpp \
 			  tools.cpp
 
 OBJ			= $(SRC:%.cpp=obj/%.o)
@@ -32,12 +33,14 @@ clean:
 	make -C lib/ncurses clean
 	make -C lib/opengl clean
 	make -C lib/sfml clean
+	make -C lib/sound clean
 
 fclean: clean
 	rm -rf $(NAME)
 	make -C lib/ncurses fclean
 	make -C lib/opengl fclean
 	make -C lib/sfml fclean
+	make -C lib/sound fclean
 
 lib/sfml.so:
 	make -C lib/sfml
@@ -48,12 +51,16 @@ lib/opengl.so:
 lib/ncurses.so:
 	make -C lib/ncurses
 
-libs: lib/sfml.so lib/opengl.so lib/ncurses.so
+lib/sfaudio.so:
+	make -C lib/sound
+
+libs: lib/sfml.so lib/opengl.so lib/ncurses.so lib/sfaudio.so
 
 deps:
 	make -C lib/sfml deps
 	make -C lib/ncurses deps
 	make -C lib/opengl deps
+	make -C lib/sound deps
 
 re: fclean all
 
