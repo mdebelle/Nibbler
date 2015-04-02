@@ -55,6 +55,7 @@ void	Game::launch()
 	menu();
 
 	_IsRunning = true;
+	_PlayedGameover = false;
 	if (_Sound)
 		_Sound->play(ISound::MUSIC);
 	std::chrono::steady_clock::time_point time = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
@@ -308,6 +309,8 @@ void	Game::retry()
 			_Snake.reset((_Area.get_Width() / 2) - 2, _Area.get_Height() / 2);
 			_Snake2.reset((_Area.get_Width() / 2) - 2, _Area.get_Height() / 2 - 2);
 			_Snake2.setAltColor();
+			_Obstacles.clear();
+			_Level = 0;
 			retry = true;
 			break ;
 		}

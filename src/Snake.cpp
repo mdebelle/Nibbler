@@ -58,7 +58,6 @@ void	Snake::move(int level)
 			_SizeChange++;
 		}
 		updateTail();
-//		_Pts++;
 		_NextMove += std::chrono::milliseconds(200 - ((_Speed + level) * 10));
 	}
 	return ;
@@ -265,16 +264,12 @@ void	Snake::reset(int x, int y)
 	_SizeChange = 0;
 	
 	_Body.clear();
+	_Direction.clear();
 
 	_Body.push_back(Pattern(Point(x, y), Pattern::headL));
 	_Body.push_back(Pattern(Point(x + 1, y), Pattern::bodyLR));
 	_Body.push_back(Pattern(Point(x + 2, y), Pattern::bodyLR));
 	_Body.push_back(Pattern(Point(x + 3, y), Pattern::tailR));
-
-	_SnakeDir[Snake::UP] = &Snake::DirUp;
-	_SnakeDir[Snake::DOWN] = &Snake::DirDown;
-	_SnakeDir[Snake::LEFT] = &Snake::DirLeft;
-	_SnakeDir[Snake::RIGHT] = &Snake::DirRight;
 
 	_Direction.push_back(Direction::LEFT);
 }
