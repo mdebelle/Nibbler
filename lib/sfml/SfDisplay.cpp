@@ -12,6 +12,7 @@ SfDisplay::SfDisplay()
 	_Key_map[sf::Keyboard::A] = IDisplay::A;
 	_Key_map[sf::Keyboard::S] = IDisplay::S;
 	_Key_map[sf::Keyboard::D] = IDisplay::D;
+	_Key_map[sf::Keyboard::M] = IDisplay::M;
 	_Key_map[sf::Keyboard::Space] = IDisplay::SPACE;
 	_Key_map[sf::Keyboard::Escape] = IDisplay::ESC;
 	_Key_map[sf::Keyboard::Num1] = IDisplay::ONE;
@@ -140,8 +141,29 @@ void	SfDisplay::drawField()
 
 void	SfDisplay::drawMenu(bool multi)
 {
-	(void)multi;
-	return ;
+	drawField();
+
+	sf::Text	text("NIBBLER", _Font, UNIT_SIZE * 3);
+	text.setColor(sf::Color::Black);
+	text.setStyle(sf::Text::Underlined|sf::Text::Bold);
+	text.setPosition(UNIT_SIZE * 1.5, UNIT_SIZE);
+	_Texture.draw(text);
+
+	sf::String str("Multiplayer: ");
+	str += multi ? "enabled" : "disabled";
+	str += ". Press 'M' to switch it!";
+	text.setStyle(sf::Text::Bold);
+	text.setPosition(UNIT_SIZE * 2, UNIT_SIZE * 6);
+	text.setCharacterSize(UNIT_SIZE * 0.80);
+	text.setString(str);
+	_Texture.draw(text);
+
+	text.setPosition(UNIT_SIZE * 2, UNIT_SIZE * 8);
+	text.setString("Press space to start.");
+	_Texture.draw(text);
+	text.setPosition(UNIT_SIZE * 2, UNIT_SIZE * 9);
+	text.setString("Press escape to quit.");
+	_Texture.draw(text);
 }
 
 void SfDisplay::drawScoring(int pts, int player, int level, bool multi)
