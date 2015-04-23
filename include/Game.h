@@ -35,6 +35,7 @@ private:
 	std::chrono::steady_clock::time_point	_NextRefresh;
 
 	void				listen();
+	void				update();
 	void				update(Snake&);
 	void				display();
 	int					isOnObstacle(Point);

@@ -70,38 +70,37 @@ void	Game::launch()
 				listen();
 				if (!_IsPaused && _IsRunning)
 				{
-					update(_Snake);
-					if ((_Level + 1) * 6 <= _Snake.getAte() + _Snake2.getAte())
-					{
-						if (_Sound)
-							_Sound->play(ISound::LEVELUP);
-						_Level++;
-						for (int i = 0; i < 4; i++)
-							_Obstacles.push_back(Pattern(getRand(), Pattern::wall));
-					}
-					if (_Multi)
-						update(_Snake2);
-					if (_Multi && (_Snake2.isOnBody(_Snake.getPosition()) ||
-						_Snake.isOnBody(_Snake2.getPosition())))
-						_IsRunning = false;
+					update();
 					time = std::chrono::steady_clock::now() + std::chrono::seconds(1);
 				}
 			}
-			if (!_IsRunning && !_PlayedGameover)
+			if (_Sound && !_IsRunning && !_PlayedGameover)
 			{
-				if (_Sound)
-				{
-					_Sound->stop(ISound::MUSIC);
-					_Sound->play(ISound::GAMEOVER);
-				}
+				_Sound->stop(ISound::MUSIC);
+				_Sound->play(ISound::GAMEOVER);
 				_PlayedGameover = true;
 			}
 		}
-		if (_Sound)
-			_Sound->stop(ISound::MUSIC);
 	}
 }
 
+void	Game::update()
+{
+	update(_Snake);
+	if ((_Level + 1) * 6 <= _Snake.getAte() + _Snake2.getAte())
+	{
+		if (_Sound)
+			_Sound->play(ISound::LEVELUP);
+		_Level++;
+		for (int i = 0; i < 4; i++)
+			_Obstacles.push_back(Pattern(getRand(), Pattern::wall));
+	}
+	if (_Multi)
+		update(_Snake2);
+	if (_Multi && (_Snake2.isOnBody(_Snake.getPosition()) ||
+		_Snake.isOnBody(_Snake2.getPosition())))
+		_IsRunning = false;
+}
 
 void	Game::listen()
 {
@@ -274,17 +273,26 @@ bool	Game::menu()
 		key = _Display->getEvent();
 		if (key == IDisplay::M)
 			_Multi = (_Multi == true) ? false : true;
-		if (key == IDisplay::S)
+		else if (key == IDisplay::S)
 		{
 			if (_Sound)
 				SoundFactory::close(_Sound);
 			else
-				SoundFactory::load(_Sound, 1);
+			{
+				try { SoundFactory::load(_Sound, 1); }
+				catch (std::exception& ex) {}
+			}
 		}
 		else if (key == IDisplay::SPACE)
 			break ;
-		if (key == IDisplay::ESC)
+		else if (key == IDisplay::ESC)
 			return false ;
+		else if (key == IDisplay::ONE)
+			KOne();
+		else if (key == IDisplay::TWO)
+			KTwo();
+		else if (key == IDisplay::THREE)
+			KThree();
 		_Display->drawMenu(_Multi);
 		_Display->display();
  	}
