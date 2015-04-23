@@ -20,10 +20,8 @@ class SfDisplay : public IDisplay
 			Pattern::Type type
 		) override;
 		void			drawMenu(bool multi) override;
-		void			drawRetry(bool multi) override;
 		void			drawField() override;
 		void			drawScoring(int pts, int player, int level, bool multi) override;
-//		void			drawScoring(int pts, int level, int speed, int ate) override;
 		IDisplay::Key	getEvent() override;
 		void			close() override;
 		void			display() override;

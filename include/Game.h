@@ -53,8 +53,8 @@ private:
 	void				KTwo();
 	void				KThree();
 
-	void				menu();
-	void				retry();
+	bool				menu();
+	void				reset();
 
 	IDisplay			*_Display;
 	ISound				*_Sound;

@@ -17,10 +17,8 @@ class GlDisplay : public IDisplay
 
 		void			init(int width, int height) override;
 		void			drawMenu(bool multi) override;
-		void			drawRetry(bool multi) override;
 		void			drawField() override;
 		void			drawScoring(int pts, int player, int level, bool multi) override;
-//		void			drawScoring(int pts, int level, int speed, int ate) override;
 		void			drawPattern(int posX, int posY, Pattern::Type type) override;
 		void			display() override;
 		IDisplay::Key	getEvent() override;

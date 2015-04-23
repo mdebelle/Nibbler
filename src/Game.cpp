@@ -52,55 +52,54 @@ Game::~Game()
 
 void	Game::launch()
 {
-	menu();
-
-	_IsRunning = true;
-	_PlayedGameover = false;
-	if (_Sound)
-		_Sound->play(ISound::MUSIC);
-	std::chrono::steady_clock::time_point time = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
-	_Snake.setStart(time);
-	_Snake2.setStart(time);
-	_NextRefresh = std::chrono::steady_clock::now();
-	while (_IsRunning || std::chrono::steady_clock::now() < time)
+	while (menu())
 	{
-		if (std::chrono::steady_clock::now() >= _NextRefresh)
+		reset();
+		if (_Sound)
+			_Sound->play(ISound::MUSIC);
+		std::chrono::steady_clock::time_point time = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
+		_Snake.setStart(time);
+		_Snake2.setStart(time);
+		_NextRefresh = std::chrono::steady_clock::now();
+		while (_IsRunning || std::chrono::steady_clock::now() < time)
 		{
-			display();
-			_NextRefresh += std::chrono::milliseconds(50);
-			listen();
-			if (!_IsPaused && _IsRunning)
+			if (std::chrono::steady_clock::now() >= _NextRefresh)
 			{
-				update(_Snake);
-				if ((_Level + 1) * 6 <= _Snake.getAte() + _Snake2.getAte())
+				display();
+				_NextRefresh += std::chrono::milliseconds(50);
+				listen();
+				if (!_IsPaused && _IsRunning)
 				{
-					if (_Sound)
-						_Sound->play(ISound::LEVELUP);
-					_Level++;
-					for (int i = 0; i < 4; i++)
-						_Obstacles.push_back(Pattern(getRand(), Pattern::wall));
+					update(_Snake);
+					if ((_Level + 1) * 6 <= _Snake.getAte() + _Snake2.getAte())
+					{
+						if (_Sound)
+							_Sound->play(ISound::LEVELUP);
+						_Level++;
+						for (int i = 0; i < 4; i++)
+							_Obstacles.push_back(Pattern(getRand(), Pattern::wall));
+					}
+					if (_Multi)
+						update(_Snake2);
+					if (_Multi && (_Snake2.isOnBody(_Snake.getPosition()) ||
+						_Snake.isOnBody(_Snake2.getPosition())))
+						_IsRunning = false;
+					time = std::chrono::steady_clock::now() + std::chrono::seconds(1);
 				}
-				if (_Multi)
-					update(_Snake2);
-				if (_Multi && (_Snake2.isOnBody(_Snake.getPosition()) ||
-					_Snake.isOnBody(_Snake2.getPosition())))
-					_IsRunning = false;
-				time = std::chrono::steady_clock::now() + std::chrono::seconds(1);
 			}
-		}
-		if (!_IsRunning && !_PlayedGameover)
-		{
-			if (_Sound)
+			if (!_IsRunning && !_PlayedGameover)
 			{
-				_Sound->stop(ISound::MUSIC);
-				_Sound->play(ISound::GAMEOVER);
+				if (_Sound)
+				{
+					_Sound->stop(ISound::MUSIC);
+					_Sound->play(ISound::GAMEOVER);
+				}
+				_PlayedGameover = true;
 			}
-			_PlayedGameover = true;
 		}
+		if (_Sound)
+			_Sound->stop(ISound::MUSIC);
 	}
-	if (_Sound)
-		_Sound->stop(ISound::MUSIC);
-	retry();
 }
 
 
@@ -266,7 +265,7 @@ void	Game::update(Snake& snake)
 	snake.move(_Level);
 }
 
-void	Game::menu()
+bool	Game::menu()
 {
 	IDisplay::Key key = _Display->getEvent();
 	
@@ -274,9 +273,7 @@ void	Game::menu()
 	{	
 		key = _Display->getEvent();
 		if (key == IDisplay::M)
-		{
 			_Multi = (_Multi == true) ? false : true;
-		}
 		if (key == IDisplay::S)
 		{
 			if (_Sound)
@@ -286,40 +283,25 @@ void	Game::menu()
 		}
 		else if (key == IDisplay::SPACE)
 			break ;
+		if (key == IDisplay::ESC)
+			return false ;
 		_Display->drawMenu(_Multi);
 		_Display->display();
  	}
- 	return ;
+ 	return true;
 }
 
 
-void	Game::retry()
+void	Game::reset()
 {
-	IDisplay::Key key = _Display->getEvent();
-	
-	bool	retry = false;
-
-	while (42)
-	{	
-		key = _Display->getEvent();
-		if (key == IDisplay::ESC)
-			break ;
-		else if (key == IDisplay::SPACE)
-		{
-			_Snake.reset((_Area.get_Width() / 2) - 2, _Area.get_Height() / 2);
-			_Snake2.reset((_Area.get_Width() / 2) - 2, _Area.get_Height() / 2 - 2);
-			_Snake2.setAltColor();
-			_Obstacles.clear();
-			_Level = 0;
-			retry = true;
-			break ;
-		}
-		_Display->drawRetry(_Multi);
-		_Display->display();
- 	}
- 	if (retry == true)
- 		launch();
- 	return ;
+	_IsRunning = true;
+	_PlayedGameover = false;
+	_Snake.reset((_Area.get_Width() / 2) - 2, _Area.get_Height() / 2);
+	_Snake2.reset((_Area.get_Width() / 2) - 2, _Area.get_Height() / 2 - 2);
+	_Snake2.setAltColor();
+	_Obstacles.clear();
+	_Level = 0;
+	return ;
 }
 
 

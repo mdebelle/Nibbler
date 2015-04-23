@@ -168,65 +168,6 @@ void	NcDisplay::drawMenu( bool multi )
 	return ;
 }
 
-void	NcDisplay::drawRetry(bool multi)
-{
-	clear();
-
-	(void)multi;
-	struct winsize size;
-	if (ioctl(0, TIOCGWINSZ, (char *) &size) != -1 && size.ws_col > 70)
-	{
-		attron(COLOR_PAIR(1));
-		for (int i = 0; i < _SizeY + 4; i++)
-		{
-			move(i, 0);
-			for (int j = 0; j < 70; j++)
-				addch(' ');
-		}
-
-		int centering = (70 - 21) / 2;
-
-		move(0, centering);
-		mvwprintw(stdscr, 0, centering, "%s ", "                __");
-		mvwprintw(stdscr, 1, centering, "%s ", "     ______    /* >-<");
-		mvwprintw(stdscr, 2, centering, "%s ", " ___/ ____ \\__/ /");
-		mvwprintw(stdscr, 3, centering, "%s ", "<____/    \\____/");
-		mvwprintw(stdscr, 4, centering, "%s ", "");
-		mvwprintw(stdscr, 6, 4, "%s ", " __   __   __   ______   ______   __       _____   _____ ");
-		mvwprintw(stdscr, 7, 4, "%s ", "|  \\ |  | |  | |  __  \\ |  __  \\ |  |     |  ___| |  _  \\");
-		mvwprintw(stdscr, 8, 4, "%s ", "|   \\|  | |  | | |__| | | |__| | |  |     | |_    | |_| |");
-		mvwprintw(stdscr, 9, 4, "%s ", "|       | |  | |  __ <  |  __ <  |  |     |  _|   |     /");
-		mvwprintw(stdscr, 10, 4, "%s ", "|  |\\   | |  | | |__| | | |__| | |  |___  | |___  | |\\  \\");
-		mvwprintw(stdscr, 11, 4, "%s ", "|__| \\__| |__| |______/ |______/ |______| |_____| |_| \\__\\");
-		mvwprintw(stdscr, 13, 4, "%s ", "#########################################################");
-		mvwprintw(stdscr, 15, centering, "%s ", "[ touch SPACE to start a new Game ]");
-		attroff(COLOR_PAIR(1));
-	}
-	else
-	{
-		attron(COLOR_PAIR(1));
-		for (int i = 0; i < _SizeY; i++)
-		{
-			move(i, 0);
-			for (int j = 0; j < _SizeX + 2; j++)
-				addch(' ');
-		}
-		int centering = (_SizeX - 21) / 2;
-
-		move(0, centering);
-		mvwprintw(stdscr, 0, centering, "%s ", "                __");
-		mvwprintw(stdscr, 1, centering, "%s ", "     ______    /* >-<");
-		mvwprintw(stdscr, 2, centering, "%s ", " ___/ ____ \\__/ /");
-		mvwprintw(stdscr, 3, centering, "%s ", "<____/    \\____/");
-		mvwprintw(stdscr, 4, centering, "%s ", "");
-		mvwprintw(stdscr, 5, centering, "%s ", "[ touch SPACE to start a new Game ]");
-
-
-		attroff(COLOR_PAIR(1));
-	}
-}
-
-
 void	NcDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 {
 	int	colo = 1;
