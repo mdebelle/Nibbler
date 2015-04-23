@@ -32,6 +32,7 @@ void	SoundFactory::load(ISound*& sound, int idx)
 	}
 	try {
 		sound = instance().doLoad(idx);
+		sound->init();
 	}
 	catch (std::exception& ex)
 	{
@@ -43,9 +44,8 @@ void	SoundFactory::load(ISound*& sound, int idx)
 			load(sound, 1);
 		}
 		else
-			exit(-1);
+			sound = nullptr;
 	}
-	sound->init();
 }
 
 ISound*		SoundFactory::doLoad(int idx)
