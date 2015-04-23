@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include "DisplayFactory.h"
 #include "SoundFactory.h"
-#include "Menu.h"
 
 Game::Game(int x, int y, bool multiplayer) :
 	_Fruit(Point(0, 0), Pattern::fruit1),
