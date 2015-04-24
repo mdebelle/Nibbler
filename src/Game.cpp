@@ -170,6 +170,8 @@ void	Game::KEsc()
 {
 	_IsRunning = false;
 	_PlayedGameover = true;
+	if (_Sound)
+		_Sound->stop(ISound::MUSIC);
 	return ;
 }
 
