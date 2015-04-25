@@ -1,6 +1,6 @@
 NAME		= ../sfaudio.so
 
-CXX			= g++
+CXX			= clang++
 CXXFLAGS	= -Wall -Werror -Wextra -fpic -std=c++11 -g
 
 OS			= $(shell uname -s)

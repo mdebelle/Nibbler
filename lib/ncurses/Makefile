@@ -1,6 +1,6 @@
 NAME		= ../ncurses.so
 
-CXX			= g++
+CXX			= clang++
 CXXFLAGS	= -Wall -Werror -Wextra -std=c++11 -g
 
 INC			= -I ../../include
