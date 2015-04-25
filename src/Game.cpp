@@ -6,7 +6,7 @@
 #include "DisplayFactory.h"
 #include "SoundFactory.h"
 
-Game::Game(int x, int y, bool multiplayer) :
+Game::Game(int x, int y) :
 	_Fruit(Point(0, 0), Pattern::fruit1),
 	_Snake((x / 2) - 2, y / 2, 1),
 	_Snake2((x / 2) - 2, y / 2 - 2, 2),
@@ -15,7 +15,7 @@ Game::Game(int x, int y, bool multiplayer) :
 	_Sound(nullptr),
 	_IsRunning(false),
 	_IsPaused(false),
-	_Multi(multiplayer),
+	_Multi(false),
 	_Level(0),
 	_PlayedGameover(false)
 {

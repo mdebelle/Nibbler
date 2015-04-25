@@ -15,7 +15,7 @@ typedef void(Game::*GameKey)();
 class Game
 {
 public:
-	Game(int x, int y, bool multiplayer);
+	Game(int x, int y);
 	~Game();
 
 	void	launch();
