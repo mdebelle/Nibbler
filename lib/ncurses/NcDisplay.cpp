@@ -89,10 +89,9 @@ void	NcDisplay::init(int width, int height)
 	init_pair(5, COLOR_GREEN, COLOR_BLACK);
 }
 
-void	NcDisplay::drawMenu( bool multi )
+void	NcDisplay::drawMenu( bool multi, bool sound )
 {
 	clear();
-
 
 	struct winsize size;
 	if (ioctl(0, TIOCGWINSZ, (char *) &size) != -1 && size.ws_col > 70)
@@ -107,43 +106,36 @@ void	NcDisplay::drawMenu( bool multi )
 
 		int centering = (70 - 21) / 2;
 
-		move(0, centering);
-		mvwprintw(stdscr, 0, centering, "%s ", "                __");
-		mvwprintw(stdscr, 1, centering, "%s ", "     ______    /* >-<");
-		mvwprintw(stdscr, 2, centering, "%s ", " ___/ ____ \\__/ /");
-		mvwprintw(stdscr, 3, centering, "%s ", "<____/    \\____/");
-		mvwprintw(stdscr, 4, centering, "%s ", "");
-		mvwprintw(stdscr, 6, 4, "%s ", " __   __   __   ______   ______   __       _____   _____ ");
-		mvwprintw(stdscr, 7, 4, "%s ", "|  \\ |  | |  | |  __  \\ |  __  \\ |  |     |  ___| |  _  \\");
-		mvwprintw(stdscr, 8, 4, "%s ", "|   \\|  | |  | | |__| | | |__| | |  |     | |_    | |_| |");
-		mvwprintw(stdscr, 9, 4, "%s ", "|       | |  | |  __ <  |  __ <  |  |     |  _|   |     /");
-		mvwprintw(stdscr, 10, 4, "%s ", "|  |\\   | |  | | |__| | | |__| | |  |___  | |___  | |\\  \\");
-		mvwprintw(stdscr, 11, 4, "%s ", "|__| \\__| |__| |______/ |______/ |______| |_____| |_| \\__\\");
-		mvwprintw(stdscr, 13, 4, "%s ", "#########################################################");
+		mvprintw(0, centering, "                __");
+		mvprintw(1, centering, "     ______    /* >-<");
+		mvprintw(2, centering, " ___/ ____ \\__/ /");
+		mvprintw(3, centering, "<____/    \\____/");
+		mvprintw(5, 4, " __   __   __   ______   ______   __       _____   _____ ");
+		mvprintw(6, 4, "|  \\ |  | |  | |  __  \\ |  __  \\ |  |     |  ___| |  _  \\");
+		mvprintw(7, 4, "|   \\|  | |  | | |__| | | |__| | |  |     | |_    | |_| |");
+		mvprintw(8, 4, "|       | |  | |  __ <  |  __ <  |  |     |  _|   |     /");
+		mvprintw(9, 4, "|  |\\   | |  | | |__| | | |__| | |  |___  | |___  | |\\  \\");
+		mvprintw(10, 4, "|__| \\__| |__| |______/ |______/ |______| |_____| |_| \\__\\");
+		mvprintw(12, 4, "#########################################################");
 
-			mvwprintw(stdscr, 15, 4, "Multi Player: ");
-		attroff(COLOR_PAIR(1));
-
-
-		if (multi == true)
-		{
-			attron(COLOR_PAIR(2));
-			mvwprintw(stdscr, 15, 18, "actived");
-			attroff(COLOR_PAIR(2));
-			attron(COLOR_PAIR(1));
-			mvwprintw(stdscr, 15, 26, " press 'm' to switch it!");
-			attroff(COLOR_PAIR(1));
-		}
+		mvprintw(14, 4, "Multi Player: ");
+		attron(COLOR_PAIR(2));
+		if (multi)
+			printw("enabled");
 		else
-		{
-			attron(COLOR_PAIR(2));
-			mvwprintw(stdscr, 15, 18, "desactived");
-			attroff(COLOR_PAIR(2));
-			attron(COLOR_PAIR(1));
-			mvwprintw(stdscr, 15, 29, " press 'm' to switch it!");
-			attroff(COLOR_PAIR(1));
-		}
+			printw("disabled");
+		attron(COLOR_PAIR(1));
+		printw(" press 'm' to switch it!");
 
+		mvprintw(15, 4, "Sound: ");
+		attron(COLOR_PAIR(2));
+		if (sound)
+			printw("enabled");
+		else
+			printw("disabled");
+		attron(COLOR_PAIR(1));
+		printw(" press 's' to switch it!");
+		mvprintw(16, 4, "Press space to start or escape to quit.");
 	}
 	else
 	{
@@ -156,13 +148,30 @@ void	NcDisplay::drawMenu( bool multi )
 		}
 		int centering = (_SizeX - 21) / 2;
 
-		move(0, centering);
-		mvwprintw(stdscr, 0, centering, "%s ", "                __");
-		mvwprintw(stdscr, 1, centering, "%s ", "     ______    /* >-<");
-		mvwprintw(stdscr, 2, centering, "%s ", " ___/ ____ \\__/ /");
-		mvwprintw(stdscr, 3, centering, "%s ", "<____/    \\____/");
-		mvwprintw(stdscr, 4, centering, "%s ", "");
-		attroff(COLOR_PAIR(1));
+		mvprintw(0, centering, "                __");
+		mvprintw(1, centering, "     ______    /* >-<");
+		mvprintw(2, centering, " ___/ ____ \\__/ /");
+		mvprintw(3, centering, "<____/    \\____/");
+
+		mvprintw(6, 1, "Multi Player: ");
+		attron(COLOR_PAIR(2));
+		if (multi)
+			printw("enabled");
+		else
+			printw("disabled");
+		attron(COLOR_PAIR(1));
+		mvprintw(7, 1, "Press 'm' to switch it!");
+
+		mvprintw(9, 1, "Sound: ");
+		attron(COLOR_PAIR(2));
+		if (sound)
+			printw("enabled");
+		else
+			printw("disabled");
+		attron(COLOR_PAIR(1));
+		mvprintw(10, 1, "Press 's' to switch it!");
+		mvprintw(12, 1, "Press space to start.");
+		mvprintw(13, 1, "Press escape to quit.");
 	}
 
 	return ;

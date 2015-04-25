@@ -294,7 +294,7 @@ bool	Game::menu()
 			KTwo();
 		else if (key == IDisplay::THREE)
 			KThree();
-		_Display->drawMenu(_Multi);
+		_Display->drawMenu(_Multi, _Sound != nullptr);
 		_Display->display();
  	}
  	return true;

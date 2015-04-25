@@ -65,12 +65,6 @@ private:
 	bool				_Multi;
 	int					_Level;
 	bool				_PlayedGameover;
-
-	//options pour le menu
-
-//	bool				_music;
-//	int					_graphOption; // Ncurses, OpenGL, SFML
-
 };
 
 #endif
