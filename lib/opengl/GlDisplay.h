@@ -6,6 +6,7 @@
 # include <map>
 # include <vector>
 # include "IDisplay.h"
+# include "Text.h"
 
 # define UNIT_SIZE	20
 
@@ -24,18 +25,20 @@ class GlDisplay : public IDisplay
 		IDisplay::Key	getEvent() override;
 		void			close() override;
 
+		static int		_LastKey;
+
 	private:
 		GLFWwindow*		_Window;
 		float				_Width;
 		float				_Height;
 		std::map<int, IDisplay::Key> _Key_map;
 
+		Text			_Text;
 		GLuint			_ProgramID;
 		GLuint			_VertexArrayID;
 		GLuint			_VertexBuffer;
 		GLuint			_ColorBuffer;
 
-		void			loadShader(const char*, GLenum);
 		std::vector<GLfloat>	_Vertices;
 		std::vector<GLfloat>	_Colors;
 };

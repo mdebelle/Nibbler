@@ -1,6 +1,6 @@
 NAME		= ../opengl.so
 
-CXX			= g++
+CXX			= clang++
 CXXFLAGS	= -Wall -Werror -Wextra -fpic -std=c++11 -g -Wno-deprecated
 
 OS			= $(shell uname -s)
@@ -16,7 +16,9 @@ INC			+= -I ../../include
 LIB			+= -lGLEW 
 
 SRC			= GlDisplay.cpp \
-			  class_loader.cpp
+			  class_loader.cpp \
+			  loaders.cpp \
+			  Text.cpp
 
 OBJ			= $(SRC:%.cpp=%.o)
 
@@ -38,7 +40,6 @@ deps:
 	brew update
 	brew install glew
 	brew install glfw3
-	@echo "Please add code to install OpenGl if necessary."
 
 re: fclean all
 

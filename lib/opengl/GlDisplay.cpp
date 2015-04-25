@@ -3,8 +3,25 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include "loaders.h"
 
-GlDisplay::GlDisplay()
+int GlDisplay::_LastKey = 0;
+
+void
+keycallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (action == GLFW_PRESS)
+		GlDisplay::_LastKey = key;
+	(void)window;
+	(void)scancode;
+	(void)action;
+	(void)mods;
+}
+
+GlDisplay::GlDisplay() :
+	_Window(nullptr),
+	_Width(0),
+	_Height(0)
 {
 	_Key_map[GLFW_KEY_SPACE] = IDisplay::SPACE;
 	_Key_map[GLFW_KEY_ESCAPE] = IDisplay::ESC;
@@ -16,6 +33,7 @@ GlDisplay::GlDisplay()
 	_Key_map[GLFW_KEY_A] = IDisplay::A;
 	_Key_map[GLFW_KEY_S] = IDisplay::S;
 	_Key_map[GLFW_KEY_D] = IDisplay::D;
+	_Key_map[GLFW_KEY_M] = IDisplay::M;
 	_Key_map[GLFW_KEY_1] = IDisplay::ONE;
 	_Key_map[GLFW_KEY_2] = IDisplay::TWO;
 	_Key_map[GLFW_KEY_3] = IDisplay::THREE;
@@ -37,92 +55,48 @@ void	GlDisplay::init(int width, int height)
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	_Width = width * UNIT_SIZE;
-	_Height = height * UNIT_SIZE;
+	_Width = width;
+	_Height = height;
 	_Window = glfwCreateWindow(width * UNIT_SIZE, height * UNIT_SIZE, "Nibbler", NULL, NULL);
 	if (!_Window)
 	{
 		glfwTerminate();
 		throw std::runtime_error("Failed to create window.");
 	}
+	glfwSetKeyCallback(_Window, &keycallback);
 	glfwMakeContextCurrent(_Window);
-	glewExperimental = true; 
+
+	glewExperimental = true;
 	if (glewInit() != GLEW_OK)
 		throw std::runtime_error("Failed to initialize GLEW.");
+
+	try { _Text.init("lib/opengl/text.dds"); }
+	catch (std::exception& ex) { throw; }
 
 	glGenVertexArrays(1, &_VertexArrayID);
 	glBindVertexArray(_VertexArrayID);
 
-	_ProgramID = glCreateProgram();
-	try {
-		loadShader("lib/opengl/shader/vertex.glsl", GL_VERTEX_SHADER);
-		loadShader("lib/opengl/shader/fragment.glsl", GL_FRAGMENT_SHADER);
-	}
-	catch (std::exception& ex) { throw ex; }
-	glLinkProgram(_ProgramID);
-
-	GLint Result = GL_FALSE;
-	int InfoLogLength;
-	glGetProgramiv(_ProgramID, GL_LINK_STATUS, &Result);
-	glGetProgramiv(_ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if ( InfoLogLength > 0 )
-	{
-		std::vector<char> ProgramErrorMessage(InfoLogLength+1);
-		glGetProgramInfoLog(_ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-		throw std::runtime_error(&ProgramErrorMessage[0]);
-	}
+	try { _ProgramID = loadShaders("vertex.glsl", "fragment.glsl"); }
+	catch (std::exception& ex) { throw; }
 
 	glGenBuffers(1, &_VertexBuffer);
 	glGenBuffers(1, &_ColorBuffer);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-}
-
-void	GlDisplay::loadShader(const char* file_path, GLenum shaderType)
-{
-	GLuint shaderID = glCreateShader(shaderType);
-
-	std::string shaderCode;
-	std::ifstream shaderStream(file_path, std::ios::in);
-	if (!shaderStream.is_open())
-		throw std::runtime_error(std::string("Impossible to open ") + file_path + ".");
-	std::string line = "";
-	while (getline(shaderStream, line))
-		shaderCode += "\n" + line;
-	shaderStream.close();
-
-	GLint Result = GL_FALSE;
-	int InfoLogLength;
-
-	char const * sourcePointer = shaderCode.c_str();
-	glShaderSource(shaderID, 1, &sourcePointer , NULL);
-	glCompileShader(shaderID);
-
-	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &Result);
-	glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 0)
-	{
-		std::vector<char> errorMessage(InfoLogLength + 1);
-		glGetShaderInfoLog(shaderID, InfoLogLength, NULL, &errorMessage[0]);
-		throw std::runtime_error(&errorMessage[0]);
-	}
-
-	glAttachShader(_ProgramID, shaderID);
-	glDeleteShader(shaderID);
 }
 
 void	GlDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 {
-	float	sqrt_size = 2 / (_Width / UNIT_SIZE);
+	float	sqrt_wsize = 2 / _Width;
+	float	sqrt_hsize = 2 / _Height;
 
 	_Vertices.insert(_Vertices.end(), {
-		-1 + (posX * sqrt_size), 1 - (posY * sqrt_size), 0.0f,
-		-1 + ((posX + 1) * sqrt_size), 1 - (posY * sqrt_size), 0.0f,
-		-1 + (posX * sqrt_size), 1 - ((posY + 1) * sqrt_size), 0.0f,
-		-1 + ((posX + 1) * sqrt_size), 1 - (posY * sqrt_size), 0.0f,
-		-1 + (posX * sqrt_size), 1 - ((posY + 1) * sqrt_size), 0.0f,
-		-1 + ((posX + 1) * sqrt_size), 1 - ((posY + 1) * sqrt_size), 0.0f
+		-1 + (posX * sqrt_wsize)		, 1 - (posY * sqrt_hsize), 0.0f,
+		-1 + ((posX + 1) * sqrt_wsize)	, 1 - (posY * sqrt_hsize), 0.0f,
+		-1 + (posX * sqrt_wsize)		, 1 - ((posY + 1) * sqrt_hsize), 0.0f,
+		-1 + ((posX + 1) * sqrt_wsize)	, 1 - (posY * sqrt_hsize), 0.0f,
+		-1 + (posX * sqrt_wsize)		, 1 - ((posY + 1) * sqrt_hsize), 0.0f,
+		-1 + ((posX + 1) * sqrt_wsize)	, 1 - ((posY + 1) * sqrt_hsize), 0.0f
 	});
- 
+
 	float c[3] = { 0.0f, 0.0f, 0.0f };
 	if (type == Pattern::bodyLR || type == Pattern::bodyUD || type == Pattern::bodyLU ||
 		type == Pattern::bodyLD || type == Pattern::bodyRD || type == Pattern::bodyRU ||
@@ -164,20 +138,23 @@ void	GlDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 
 void	GlDisplay::drawMenu(bool multi)
 {
-	(void)multi;
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClear( GL_COLOR_BUFFER_BIT );
+	_Vertices.clear();
+	_Colors.clear();
+	_Text.print("NIBBLER", 0, (_Height * UNIT_SIZE * 2) - UNIT_SIZE * 5, UNIT_SIZE * 4);
+	std::string str("Multiplayer: ");
+	str += multi ? "enabled" : "disabled";
+	str += ". Press 'M' to switch it!";
+	_Text.print(str, 0, (_Height * UNIT_SIZE * 2) - UNIT_SIZE * 11, UNIT_SIZE * 2);
 }
 
 void	GlDisplay::drawField()
 {
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear( GL_COLOR_BUFFER_BIT );
 	_Vertices.clear();
 	_Colors.clear();
-	_Vertices.insert(_Vertices.end(), {
-		-1.0f, -1.0f, 0.0f, -1.0f, 1.0f, 0.0f, 1.0f, -1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f, -1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-	});
-	for (int i = 0; i < 18; i++)
-		_Colors.insert(_Colors.end(), 1.0f);
 }
 
 
@@ -189,15 +166,6 @@ void	GlDisplay::drawScoring(int pts, int player, int level, bool multi)
 	(void)multi;
 	return ;
 }
-
-// void	GlDisplay::drawScoring(int pts, int level, int speed, int ate)
-// {
-// 	(void)pts;
-// 	(void)level;
-// 	(void)speed;
-// 	(void)ate;
-// 	return ;
-// }
 
 void	GlDisplay::display()
 {
@@ -232,10 +200,12 @@ void	GlDisplay::close()
 IDisplay::Key	GlDisplay::getEvent()
 {
 	glfwPollEvents();
-	for (auto key : _Key_map)
-	{
-		if (glfwGetKey(_Window, key.first) == GLFW_PRESS)
-			return key.second;
-	}
+	if (_LastKey)
+		try {
+			IDisplay::Key key = _Key_map.at(_LastKey);
+			_LastKey = 0;
+			return key;
+		}
+		catch(std::exception& ex) { _LastKey = 0; }
 	return IDisplay::NONE;
 }
