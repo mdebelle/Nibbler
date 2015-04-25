@@ -135,7 +135,7 @@ void	GlDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 		_Colors.insert(_Colors.end(), { c[0], c[1], c[2] });
 }
 
-void	GlDisplay::drawMenu(bool multi)
+void	GlDisplay::drawMenu(bool multi, bool sound)
 {
 	glClear( GL_COLOR_BUFFER_BIT );
 	_Vertices.clear();
@@ -145,8 +145,12 @@ void	GlDisplay::drawMenu(bool multi)
 	str += multi ? "enabled" : "disabled";
 	_Text.print(str, -1.0f + _Width, 1.0f - _Height * 7, _Height);
 	_Text.print("Press 'M' to switch!", -1.0f + _Width, 1.0f - _Height * 8.2, _Height);
-	_Text.print("Press space to start.", -1.0f + _Width, 1.0f - _Height * 11, _Height);
-	_Text.print("Press escape to quit.", -1.0f + _Width, 1.0f - _Height * 12.2, _Height);
+	str = "Sound: ";
+	str += sound ? "enabled" : "disabled";
+	_Text.print(str, -1.0f + _Width, 1.0f - _Height * 10, _Height);
+	_Text.print("Press 'S' to switch!", -1.0f + _Width, 1.0f - _Height * 11.2, _Height);
+	_Text.print("Press space to start.", -1.0f + _Width, 1.0f - _Height * 13, _Height);
+	_Text.print("Press escape to quit.", -1.0f + _Width, 1.0f - _Height * 14.2, _Height);
 }
 
 void	GlDisplay::drawField()
