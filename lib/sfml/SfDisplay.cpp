@@ -137,7 +137,7 @@ void	SfDisplay::drawField()
 		}
 }
 
-void	SfDisplay::drawMenu(bool multi)
+void	SfDisplay::drawMenu(bool multi, bool sound)
 {
 	drawField();
 
@@ -156,10 +156,17 @@ void	SfDisplay::drawMenu(bool multi)
 	text.setString(str);
 	_Texture.draw(text);
 
-	text.setPosition(UNIT_SIZE * 2, UNIT_SIZE * 8);
+	str = "Sound: ";
+	str += sound ? "enabled" : "disabled";
+	str += ". Press 'S' to switch it!";
+	text.setPosition(UNIT_SIZE * 2, UNIT_SIZE * 7);
+	text.setString(str);
+	_Texture.draw(text);
+
+	text.setPosition(UNIT_SIZE * 2, UNIT_SIZE * 9);
 	text.setString("Press space to start.");
 	_Texture.draw(text);
-	text.setPosition(UNIT_SIZE * 2, UNIT_SIZE * 9);
+	text.setPosition(UNIT_SIZE * 2, UNIT_SIZE * 10);
 	text.setString("Press escape to quit.");
 	_Texture.draw(text);
 }
