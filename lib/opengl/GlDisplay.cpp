@@ -7,7 +7,7 @@
 
 int GlDisplay::_LastKey = 0;
 
-void
+static void
 keycallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	if (action == GLFW_PRESS)
@@ -55,9 +55,9 @@ void	GlDisplay::init(int width, int height)
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	_Width = width;
-	_Height = height;
-	_Window = glfwCreateWindow(width * UNIT_SIZE, height * UNIT_SIZE, "Nibbler", NULL, NULL);
+	_Width = 2.0f / width;
+	_Height = 2.0f / (height + 4);
+	_Window = glfwCreateWindow(width * UNIT_SIZE, (height + 4) * UNIT_SIZE, "Nibbler", NULL, NULL);
 	if (!_Window)
 	{
 		glfwTerminate();
@@ -81,20 +81,19 @@ void	GlDisplay::init(int width, int height)
 
 	glGenBuffers(1, &_VertexBuffer);
 	glGenBuffers(1, &_ColorBuffer);
+
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 void	GlDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 {
-	float	sqrt_wsize = 2 / _Width;
-	float	sqrt_hsize = 2 / _Height;
-
 	_Vertices.insert(_Vertices.end(), {
-		-1 + (posX * sqrt_wsize)		, 1 - (posY * sqrt_hsize), 0.0f,
-		-1 + ((posX + 1) * sqrt_wsize)	, 1 - (posY * sqrt_hsize), 0.0f,
-		-1 + (posX * sqrt_wsize)		, 1 - ((posY + 1) * sqrt_hsize), 0.0f,
-		-1 + ((posX + 1) * sqrt_wsize)	, 1 - (posY * sqrt_hsize), 0.0f,
-		-1 + (posX * sqrt_wsize)		, 1 - ((posY + 1) * sqrt_hsize), 0.0f,
-		-1 + ((posX + 1) * sqrt_wsize)	, 1 - ((posY + 1) * sqrt_hsize), 0.0f
+		-1 + (posX * _Width)		, 1 - (posY * _Height), 0.0f,
+		-1 + ((posX + 1) * _Width)	, 1 - (posY * _Height), 0.0f,
+		-1 + (posX * _Width)		, 1 - ((posY + 1) * _Height), 0.0f,
+		-1 + ((posX + 1) * _Width)	, 1 - (posY * _Height), 0.0f,
+		-1 + (posX * _Width)		, 1 - ((posY + 1) * _Height), 0.0f,
+		-1 + ((posX + 1) * _Width)	, 1 - ((posY + 1) * _Height), 0.0f
 	});
 
 	float c[3] = { 0.0f, 0.0f, 0.0f };
@@ -138,33 +137,54 @@ void	GlDisplay::drawPattern(int posX, int posY, Pattern::Type type)
 
 void	GlDisplay::drawMenu(bool multi)
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear( GL_COLOR_BUFFER_BIT );
 	_Vertices.clear();
 	_Colors.clear();
-	_Text.print("NIBBLER", 0, (_Height * UNIT_SIZE * 2) - UNIT_SIZE * 5, UNIT_SIZE * 4);
+	_Text.print("NIBBLER", -1.0f + _Width, 1.0f - _Height * 4, _Height * 3);
 	std::string str("Multiplayer: ");
 	str += multi ? "enabled" : "disabled";
-	str += ". Press 'M' to switch it!";
-	_Text.print(str, 0, (_Height * UNIT_SIZE * 2) - UNIT_SIZE * 11, UNIT_SIZE * 2);
+	_Text.print(str, -1.0f + _Width, 1.0f - _Height * 7, _Height);
+	_Text.print("Press 'M' to switch!", -1.0f + _Width, 1.0f - _Height * 8.2, _Height);
+	_Text.print("Press space to start.", -1.0f + _Width, 1.0f - _Height * 11, _Height);
+	_Text.print("Press escape to quit.", -1.0f + _Width, 1.0f - _Height * 12.2, _Height);
 }
 
 void	GlDisplay::drawField()
 {
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glClear( GL_COLOR_BUFFER_BIT );
 	_Vertices.clear();
 	_Colors.clear();
+
+	glClear( GL_COLOR_BUFFER_BIT );
+	_Vertices.insert(_Vertices.end(), {
+		-1.0f, 1.0f						, 0.0f,
+		-1.0f, -1.0f + (_Height * 4)	, 0.0f,
+		1.0f , -1.0f + (_Height * 4)	, 0.0f,
+		1.0f , -1.0f + (_Height * 4)	, 0.0f,
+		-1.0f, 1.0f						, 0.0f,
+		1.0f , 1.0f						, 0.0f
+	});
+	for (int i = 0; i < 18; i++)
+		_Colors.push_back(1.0f);
 }
 
 
 void	GlDisplay::drawScoring(int pts, int player, int level, bool multi)
 {
-	(void)pts;
-	(void)player;
-	(void)level;
-	(void)multi;
-	return ;
+	if (multi == true)
+	{
+		if (player == 1)
+		{
+			_Text.print(std::string("Player 1: ") + std::to_string(pts), -1.0f + _Width, -1.0f + _Height * 2.2, _Height);
+			_Text.print(std::string("Level   : ") + std::to_string(level), -1.0f + _Width, -1.0f + _Height * 1, _Height);
+		}
+		else if (player == 2)
+			_Text.print(std::string("Player 2: ") + std::to_string(pts), _Width, -1.0f + _Height * 2.2, _Height);
+	}
+	else
+	{
+		_Text.print(std::string("Score: ") + std::to_string(pts), -1.0f + _Width, -1.0f + _Height * 2.2, _Height);
+		_Text.print(std::string("Level: ") + std::to_string(level), -1.0f + _Width, -1.0f + _Height * 1, _Height);
+	}
 }
 
 void	GlDisplay::display()

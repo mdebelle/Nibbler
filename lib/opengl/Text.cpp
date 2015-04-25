@@ -42,10 +42,10 @@ print(const std::string& text, float x, float y, float size)
 
 	for (unsigned int i = 0; i < text.size(); i++)
 	{
-		float vertex_up_left[2]		{ x + i * size			, y + size };
-		float vertex_up_right[2]	{ x + i * size + size	, y + size };
-		float vertex_down_right[2]	{ x + i * size + size	, y };
-		float vertex_down_left[2]	{ x + i * size			, y };
+		float vertex_up_left[2]		{ x + (i * 0.5f) * size			, y + size };
+		float vertex_up_right[2]	{ x + (i * 0.5f) * size + size	, y + size };
+		float vertex_down_right[2]	{ x + (i * 0.5f) * size + size	, y };
+		float vertex_down_left[2]	{ x + (i * 0.5f) * size			, y };
 
 		vertices.insert(vertices.end(), {
 			vertex_up_left[0], vertex_up_left[1],
