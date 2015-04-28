@@ -38,6 +38,7 @@ fclean: clean
 
 deps:
 	brew update
+	brew tap homebrew/versions
 	brew install glew
 	brew install glfw3
 

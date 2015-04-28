@@ -13,7 +13,7 @@ static int		nan(const char *nb)
 int		main(int ac, char **av)
 {
 	if (ac != 3)
-		std::cerr << "Usage : Nibbler <size x> <size y> <multiplayer>." << std::endl;
+		std::cerr << "Usage : Nibbler <size x> <size y>." << std::endl;
 	else
 	{
 		int x = std::atoi(av[1]);
